@@ -1,0 +1,25 @@
+# Deep-Sea Creature Detection & Classification System
+# Install: pip install -r requirements.txt
+
+# --- Web Framework ---
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+python-multipart>=0.0.6
+
+# --- Object Detection (YOLOv8) ---
+ultralytics>=8.0.200
+
+# --- Ensemble Fusion ---
+ensemble-boxes>=1.0.9
+
+# --- Deep Learning ---
+torch>=2.0.0
+torchvision>=0.15.0
+
+# --- Image Processing ---
+opencv-python-headless>=4.8.0
+pillow>=10.0.0
+numpy>=1.24.0
+
+# --- Dataset Download ---
+roboflow>=1.1.0

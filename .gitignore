@@ -1,0 +1,40 @@
+# --- Python Virtual Environment ---
+venv/
+.venv/
+env/
+bin/
+lib/
+share/
+
+# --- Byte-compiled / Optimized / DLL files ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- IDEs / Editors ---
+.vscode/
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# --- Large Datasets & Cropped Data ---
+data/
+classifier_data/
+
+# --- Trained Weights / Local Models ---
+models/
+yolov8*.pt
+best_classifier.pth
+class_names.json
+
+# --- Log Files ---
+*.log
+logs/
+
+# --- System-specific files ---
+.env
+.roboflow/
