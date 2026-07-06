@@ -424,14 +424,26 @@ def run_agentic_pipeline(
 
     # Final stage: Annotation drawing
     t0 = time.perf_counter()
-    annotated = pipeline.annotate_image(enhanced_image, resolved_detections)
+    if status == "needs_review":
+        if quality_state["is_blurry"]:
+            review_message = (
+                "Image too blurry to analyze reliably. Please try another photo."
+            )
+        else:
+            review_message = (
+                "Detection confidence too low to reliably identify species. "
+                "Please try another photo."
+            )
+        annotated = pipeline.annotate_message(enhanced_image, review_message)
+    else:
+        annotated = pipeline.annotate_image(enhanced_image, resolved_detections)
     annotation_ms = (time.perf_counter() - t0) * 1000.0
 
     total_ms = (time.perf_counter() - t_start) * 1000.0
 
     # If status is needs_review, add status note to trace
     if status == "needs_review":
-        trace.append("Final state: flagged for manual human review due to uncertainty")
+        trace.append(f"Final state: {review_message}")
     else:
         # Add final labels to trace
         for d in resolved_detections:

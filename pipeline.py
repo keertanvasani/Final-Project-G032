@@ -380,6 +380,75 @@ class EnsemblePipeline:
         return annotated
 
     # ------------------------------------------------------------------ #
+    # Review-flag warning annotation
+    # ------------------------------------------------------------------ #
+
+    def annotate_message(
+        self,
+        image: np.ndarray,
+        message: str,
+    ) -> np.ndarray:
+        """Draw a full-width warning banner with *message* on a copy of the image.
+
+        Used when the agentic controller can't reliably classify anything
+        in the image (e.g. it's still too blurry after enhancement) and
+        needs to surface that directly on the returned image itself.
+
+        Parameters
+        ----------
+        image : np.ndarray
+            Source image (BGR, HWC). **Not** modified in-place.
+        message : str
+            Warning text, word-wrapped to fit the image width.
+
+        Returns
+        -------
+        np.ndarray
+            Annotated copy of the image with the warning banner drawn on top.
+        """
+        annotated: np.ndarray = image.copy()
+        h, w = annotated.shape[:2]
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        font_scale = 0.7
+        thickness = 2
+        padding = 14
+
+        # Word-wrap the message to fit within the image width.
+        words = message.split()
+        lines: list[str] = []
+        current = ""
+        for word in words:
+            candidate = f"{current} {word}".strip()
+            (tw, _), _ = cv2.getTextSize(candidate, font, font_scale, thickness)
+            if tw > w - 2 * padding and current:
+                lines.append(current)
+                current = word
+            else:
+                current = candidate
+        if current:
+            lines.append(current)
+
+        (_, line_h), baseline = cv2.getTextSize("Ag", font, font_scale, thickness)
+        line_height = line_h + baseline + 10
+        banner_h = min(h, line_height * len(lines) + 2 * padding)
+
+        overlay: np.ndarray = annotated.copy()
+        cv2.rectangle(overlay, (0, 0), (w, banner_h), (0, 0, 200), cv2.FILLED)
+        cv2.addWeighted(overlay, 0.75, annotated, 0.25, 0, annotated)
+
+        y = padding + line_h
+        for line in lines:
+            (tw, _), _ = cv2.getTextSize(line, font, font_scale, thickness)
+            x = max(padding, (w - tw) // 2)
+            cv2.putText(
+                annotated, line, (x, y), font, font_scale,
+                (255, 255, 255), thickness, cv2.LINE_AA,
+            )
+            y += line_height
+
+        return annotated
+
+    # ------------------------------------------------------------------ #
     # Health check
     # ------------------------------------------------------------------ #
 

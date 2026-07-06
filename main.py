@@ -13,8 +13,11 @@ Endpoints:
 import base64
 import io
 import logging
+import re
 import time
+import uuid
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import Any, Optional
 
 import cv2
@@ -201,6 +204,21 @@ def encode_image_base64(image: np.ndarray) -> str:
     return base64.b64encode(buffer).decode("utf-8")
 
 
+def save_annotated_output(image: np.ndarray, original_filename: Optional[str]) -> Path:
+    """Persist an annotated image to config.OUTPUTS_DIR as a timestamped PNG.
+
+    Every call gets a unique filename (original stem + timestamp + short
+    random suffix) so concurrent/rapid requests never collide.
+    """
+    config.OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
+    stem = Path(original_filename).stem if original_filename else "prediction"
+    safe_stem = re.sub(r"[^A-Za-z0-9_-]", "_", stem)[:60] or "prediction"
+    timestamp = time.strftime("%Y%m%d_%H%M%S")
+    output_path = config.OUTPUTS_DIR / f"{safe_stem}_{timestamp}_{uuid.uuid4().hex[:6]}.png"
+    cv2.imwrite(str(output_path), image)
+    return output_path
+
+
 # ──────────────────────────────────────────────
 # Endpoints
 # ──────────────────────────────────────────────
@@ -294,6 +312,13 @@ async def predict(
             status_code=500,
             detail=f"Model inference failed: {str(e)}",
         )
+
+    # Persist the annotated output (detections or a review-warning banner)
+    try:
+        output_path = save_annotated_output(annotated_image, file.filename)
+        logger.info(f"Annotated output saved to {output_path}")
+    except Exception as e:
+        logger.warning(f"Failed to save annotated output: {e}")
 
     # Encode annotated image to base64
     annotated_b64 = encode_image_base64(annotated_image)

@@ -151,6 +151,11 @@ def get_confidence_color(confidence: float) -> tuple:
         return ANNOTATION_COLORS["low"]
 
 # ──────────────────────────────────────────────
+# Saved prediction outputs
+# ──────────────────────────────────────────────
+OUTPUTS_DIR = PROJECT_ROOT / "outputs"
+
+# ──────────────────────────────────────────────
 # API configuration
 # ──────────────────────────────────────────────
 API_HOST = "0.0.0.0"
