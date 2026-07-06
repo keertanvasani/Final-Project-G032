@@ -54,9 +54,9 @@ Use these talking points when presenting the system to professors, reviewers, or
 
 ## 7. Agentic Self-Correction Loop: Intelligent Autonomy
 
-> "The system doesn't just run the same steps every time — it inspects each image and its own confidence levels, and decides whether to enhance the image, re-check a detection, or escalate to a human reviewer. That decision-making loop is what makes this an agentic system rather than a fixed pipeline."
+> "The system doesn't just run the same steps every time — it inspects each image and its own confidence levels, and decides whether to enhance the image, re-check a detection, or escalate to a human reviewer. That decision-making loop is what makes this an agentic system rather than a fixed pipeline. And when a photo is genuinely too degraded to trust — badly out of focus, for example — the system does not guess. It prints a clear warning directly on the returned image: 'Image too blurry to analyze reliably. Please try another photo.' No silent failures, no fabricated low-confidence labels handed to a reviewer as if they were real."
 
-**Demo action:** Point to the new `decision_trace` array in the JSON response showing the logs of image quality assessment, pre-enhancements applied (like CLAHE/sharpening), zoom-and-recheck actions, and classifier majority vote resolutions.
+**Demo action:** Point to the `decision_trace` array in the JSON response showing the logs of image quality assessment, pre-enhancements applied (like CLAHE/sharpening), zoom-and-recheck actions, and classifier majority vote resolutions. Then upload a deliberately blurry photo to show the red warning banner rendered directly onto the returned image, and note that every prediction — success or warning — is automatically archived as a PNG under `outputs/` for later review.
 
 ---
 
@@ -85,3 +85,6 @@ Use these talking points when presenting the system to professors, reviewers, or
 
 **Q: What happens when the models disagree?**
 > A: When the detector and classifier predict different species, the `agreement` flag is set to `false` and the combined confidence is naturally lower (no agreement boost). This flags uncertain detections for human review — the system is designed to augment human expertise, not replace it.
+
+**Q: What happens if a photo is too blurry to analyze?**
+> A: The agent tries to recover it first — CLAHE contrast correction and a sharpening filter both run automatically when the quality check detects a problem. If detection confidence is still too low afterward, the system does not guess: it flags the image for human review, prints "Image too blurry to analyze reliably. Please try another photo." directly onto the returned image, and logs the same message in the decision trace. Every output, including these warnings, is auto-saved to disk in `outputs/` for later review.

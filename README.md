@@ -51,6 +51,18 @@ A demo-ready AI pipeline that detects and classifies underwater/deep-sea creatur
                     └───────────────────────────┘
 ```
 
+## Agentic Decision-Making
+
+The pipeline is not a fixed sequence of steps. `agent_controller.py` inspects image quality and intermediate model confidence at runtime and decides what to do next:
+
+1. **Quality check** — every image is scored for blur (Laplacian variance), brightness, and contrast.
+2. **Conditional enhancement** — CLAHE contrast/brightness correction and/or a sharpening filter are applied only when the quality check flags a problem, not on every image.
+3. **Low-confidence gate** — if detection confidence stays below 0.4 after enhancement (or nothing is detected at all), the request is flagged for review: classification is skipped, and the returned image gets a red warning banner instead of bounding boxes (e.g. *"Image too blurry to analyze reliably. Please try another photo."*). The same message is appended to `decision_trace`, so the system never silently returns a low-quality guess.
+4. **Zoom-and-recheck** — ambiguous detections (confidence 0.4-0.75) are re-cropped and re-run through detection + fusion at effectively higher resolution; the result is only kept if it improves confidence and geometrically matches the original box.
+5. **Disagreement resolution** — when the detector and classifier disagree on species, a second classification pass runs on a looser crop, and the final class is chosen by majority vote across detector / classifier-tight / classifier-loose.
+
+Every decision taken is logged in the `decision_trace` array returned by `/predict`. Every annotated output — a successful detection or a warning banner — is also automatically saved to `outputs/` as a PNG, so results are reviewable after the fact without any extra client-side code.
+
 ## Quick Start
 
 ### Prerequisites
@@ -228,6 +240,23 @@ Upload an image and get annotated detection results.
 }
 ```
 
+**When the image cannot be reliably analyzed** (e.g. still too blurry after CLAHE/sharpening), `detections` is empty, `summary.total_objects` is `0`, and `annotated_image` contains a red warning banner instead of bounding boxes:
+
+```json
+{
+  "decision_trace": [
+    "Quality check: blur score = 0.7, brightness = 26.9, contrast = 6.3, resolution = (768, 1024)",
+    "Action: Applied CLAHE enhancement due to low brightness: 26.9, low contrast: 6.3",
+    "Action: Applied sharpening filter (blur variance 0.7 < 100.0)",
+    "Detection results: Found 8 boxes (avg conf: 0.31)",
+    "Action: Combined detection confidence too low (< 0.4) or no objects found. Flagged for human review",
+    "Final state: Image too blurry to analyze reliably. Please try another photo."
+  ]
+}
+```
+
+Every call to `/predict` also saves its annotated output (success or warning banner) to `outputs/` as a uniquely-named PNG, regardless of the outcome.
+
 **Error Responses:**
 
 | Code | Reason |
@@ -262,9 +291,10 @@ Upload an image and get annotated detection results.
 │   ├── images/{train,val}/
 │   ├── labels/{train,val}/
 │   └── data.yaml
-└── classifier_data/           # Cropped species images
-    ├── train/{class_name}/
-    └── val/{class_name}/
+├── classifier_data/           # Cropped species images
+│   ├── train/{class_name}/
+│   └── val/{class_name}/
+└── outputs/                   # Auto-saved annotated predictions (PNG)
 ```
 
 ## Configuration
@@ -299,6 +329,9 @@ All parameters are centralized in `config.py`:
 **Import errors**
 - Ensure you activated the virtual environment.
 - Run `pip install -r requirements.txt` again.
+
+**"Image too blurry to analyze reliably" warning banner**
+- The agent could not recover enough detail after CLAHE + sharpening (blur variance stayed below the 100.0 threshold in `config.py`). Retake the photo with better focus/lighting, or adjust the blur/brightness/contrast thresholds in `assess_image_quality()` in `agent_controller.py` if this triggers too often on acceptable images.
 
 ## Dataset
 
