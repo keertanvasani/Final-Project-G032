@@ -2,6 +2,12 @@
 
 A demo-ready AI pipeline that detects and classifies underwater/deep-sea creatures using a **multi-model ensemble** approach. The system combines dual YOLOv8 object detectors, Weighted Boxes Fusion (WBF), and a ResNet18 species classifier to deliver high-confidence, trustworthy results.
 
+Ships with a **web interface** — drop in a photo and get the annotated image back
+alongside the reasoning the system used to produce it. See
+[Web Interface](#web-interface), or [WEBAPP.md](WEBAPP.md) for the full details.
+
+**Repository:** https://github.com/keertanvasani/Final-Project-Phase-1
+
 ## Architecture
 
 ```
@@ -75,8 +81,9 @@ Every decision taken is logged in the `decision_trace` array returned by `/predi
 ### 1. Clone & Setup
 
 ```bash
-# Navigate to the project directory
-cd "Final Year UI part 1"
+# Clone the repository
+git clone https://github.com/keertanvasani/Final-Project-Phase-1.git
+cd Final-Project-Phase-1
 
 # Create a virtual environment (recommended)
 python -m venv venv
@@ -86,6 +93,9 @@ source venv/bin/activate  # macOS/Linux
 # Install dependencies
 pip install -r requirements.txt
 ```
+
+> **Note:** `data/`, `classifier_data/` and `models/` are gitignored, so a fresh
+> clone contains code but no dataset or weights. Follow steps 2–4 to produce them.
 
 ### 2. Download Dataset
 
@@ -136,14 +146,15 @@ python train_classifier.py --epochs 15 --lr 0.0005
 ### 5. Start the Server
 
 ```bash
-# Start with auto-reload (development)
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+# Web interface + API (recommended)
+uvicorn webapp:app --reload --host 0.0.0.0 --port 8000
 
-# Or run directly
-python main.py
+# API only, no front-end
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-The server starts at `http://localhost:8000`.
+Either starts at `http://localhost:8000`. With `webapp:app` that address serves the
+browser interface; `/health` and `/predict` behave identically in both cases.
 
 > **Note:** If you haven't trained models yet, the system will fall back to pretrained COCO models (generic object detection, not species-specific). Train the models for species-specific detection.
 
@@ -170,6 +181,34 @@ print(json.dumps({
 }, indent=2))
 "
 ```
+
+## Web Interface
+
+Start with `uvicorn webapp:app --port 8000` and open `http://localhost:8000`.
+
+`webapp.py` imports the FastAPI app from `main.py` and mounts the static site in
+`frontend/` at the root. Because `/health` and `/predict` are registered on the
+router before the mount, they still match first and everything else falls through
+to the static files. Site and API therefore share one origin — no CORS round-trip,
+and one process to run. Nothing in the model code is modified by any of this.
+
+The page covers:
+
+- **Architecture** as a flowchart with all four agentic decision points drawn
+  inline, each showing its condition and both branches
+- **A comparison** against a typical single-model pipeline, and the mechanisms
+  that differ
+- **Live inference** — drag in a photo, or use one of six one-click samples,
+  including a deliberately blurry one that trips the confidence gate
+- **The `decision_trace`** rendered as a timeline, so the route your image took
+  through the pipeline is visible
+- **Measured performance** — validation metrics and training curves
+
+Accepted uploads are JPEG, PNG and WebP up to 20 MB, matching
+`config.ALLOWED_IMAGE_TYPES` and `config.MAX_IMAGE_SIZE_MB`. HEIC — the iPhone
+default — is rejected with a hint to export as JPEG first.
+
+See [WEBAPP.md](WEBAPP.md) for the file layout and the full table of handled UI states.
 
 ## API Reference
 
@@ -271,6 +310,7 @@ Every call to `/predict` also saves its annotated output (success or warning ban
 
 ```
 ├── main.py                    # FastAPI application
+├── webapp.py                  # Mounts the web UI onto the app from main.py
 ├── agent_controller.py        # Agentic decision-making orchestrator
 ├── pipeline.py                # Full ensemble pipeline orchestrator
 ├── ensemble.py                # WBF fusion logic module
@@ -282,7 +322,15 @@ Every call to `/predict` also saves its annotated output (success or warning ban
 ├── prepare_classifier_data.py # Extract crops for classifier training
 ├── requirements.txt           # Python dependencies
 ├── README.md                  # This file
+├── WEBAPP.md                  # Web interface guide
 ├── DEMO_SCRIPT.md             # Demo talking points
+├── frontend/                  # Browser interface (no build step)
+│   ├── index.html
+│   ├── css/styles.css
+│   ├── js/app.js
+│   └── assets/
+│       ├── samples/           # One-click demo images
+│       └── metrics/           # PR curve, confusion matrix, training curves
 ├── models/                    # Trained model weights
 │   ├── yolov8n_aquarium/
 │   ├── yolov8s_aquarium/
@@ -329,6 +377,15 @@ All parameters are centralized in `config.py`:
 **Import errors**
 - Ensure you activated the virtual environment.
 - Run `pip install -r requirements.txt` again.
+
+**`RuntimeError: Front-end directory not found` on startup**
+- `webapp.py` needs `frontend/` beside it. Run uvicorn from the project root, or
+  start the API on its own with `uvicorn main:app` if you don't need the web UI.
+
+**Web page loads but shows "Backend offline"**
+- The static files are being served but `/health` isn't answering. This happens if
+  the page is opened directly from disk (`file://`) instead of through the server.
+  Use `http://localhost:8000`.
 
 **"Image too blurry to analyze reliably" warning banner**
 - The agent could not recover enough detail after CLAHE + sharpening (blur variance stayed below the 100.0 threshold in `config.py`). Retake the photo with better focus/lighting, or adjust the blur/brightness/contrast thresholds in `assess_image_quality()` in `agent_controller.py` if this triggers too often on acceptable images.
