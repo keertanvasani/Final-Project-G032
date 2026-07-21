@@ -304,20 +304,62 @@ def run_agentic_pipeline(
     detections = ensemble.fuse_detections(res_a, res_b, enhanced_image.shape[:2])
     detection_ms = (time.perf_counter() - t0) * 1000.0
 
-    # Calculate average detector confidence
+    # Detector confidence statistics
     if detections:
-        avg_det_conf = float(np.mean([d["confidence"] for d in detections]))
+        confidences = [d["confidence"] for d in detections]
+        avg_det_conf = float(np.mean(confidences))
+        max_det_conf = float(max(confidences))
     else:
         avg_det_conf = 0.0
+        max_det_conf = 0.0
 
-    trace.append(f"Detection results: Found {len(detections)} boxes (avg conf: {avg_det_conf:.2f})")
+    trace.append(
+        f"Detection results: Found {len(detections)} boxes "
+        f"(avg conf: {avg_det_conf:.2f}, best: {max_det_conf:.2f})"
+    )
 
     # Stage 3: Post-Detection Decision Points
-    if not detections or avg_det_conf < 0.4:
-        # Action: Flag image as low-confidence/uncertain
-        trace.append("Action: Combined detection confidence too low (< 0.4) or no objects found. Flagged for human review")
+    #
+    # Two independent reasons to refuse, kept separate:
+    #
+    #   1. The image was never readable, so nothing found in it can be trusted.
+    #   2. The image was readable but nothing was detected confidently.
+    #
+    # An earlier version collapsed both into a single test on the mean confidence
+    # across all boxes. That conflation caused two failures at once: a long tail
+    # of marginal detections could outvote strong ones, rejecting crowded scenes
+    # that still contained boxes above 0.8; while an unreadable frame could slip
+    # through whenever the detector happened to be confidently wrong about noise.
+    confident = [d for d in detections if d["confidence"] >= config.REVIEW_CONF_THRESHOLD]
+
+    if quality_state["blur_score"] < config.UNUSABLE_BLUR_THRESHOLD:
+        trace.append(
+            f"Action: Image is unreadable (blur variance {quality_state['blur_score']:.1f} < "
+            f"{config.UNUSABLE_BLUR_THRESHOLD:.1f}); detections from it cannot be trusted. "
+            f"Flagged for human review"
+        )
+        status = "needs_review"
+    elif not confident:
+        trace.append(
+            f"Action: No detection reached the {config.REVIEW_CONF_THRESHOLD:.2f} confidence "
+            f"threshold (best was {max_det_conf:.2f}). Flagged for human review"
+        )
         status = "needs_review"
     else:
+        trace.append(
+            f"Action: {len(confident)} of {len(detections)} boxes cleared "
+            f"{config.REVIEW_CONF_THRESHOLD:.2f}; proceeding with all of them"
+        )
+
+        # Deliberately no filtering here. The threshold decides whether the image
+        # is worth analysing at all, not which boxes survive. Weak detections are
+        # kept so the classifier still gets its say — on the shark sample, a box
+        # the detector scored 0.27 is confirmed as fish at 0.99 by the classifier
+        # and ends up at 0.62 combined. Dropping it on the detector's word alone
+        # would discard the second opinion this pipeline exists to provide.
+        # Uncertainty reaches the user through combined confidence and the
+        # low/medium/high annotation colours instead.
+
         # Action: Zoom & Recheck low-confidence bounding boxes
         detections, zoom_trace = rerun_zoomed_detection(enhanced_image, detections, pipeline)
         trace.extend(zoom_trace)

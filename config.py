@@ -69,6 +69,29 @@ YOLO_IOU_THRESHOLD = 0.45        # NMS IoU threshold within each model
 YOLO_IMG_SIZE = 640              # Input image size for YOLO
 
 # ──────────────────────────────────────────────
+# Human-review gate
+# ──────────────────────────────────────────────
+# Minimum confidence for a fused box to be trusted. Boxes below this are
+# discarded after fusion; if none survive, the image is flagged for review.
+#
+# Judged per box rather than on the mean across all boxes. Detections enter the
+# pool from YOLO_CONF_THRESHOLD (0.25) upward, so a crowded scene accumulates a
+# long tail of marginal boxes. Averaging over that tail let weak detections veto
+# strong ones and rejected busier images the hardest — the opposite of intended.
+REVIEW_CONF_THRESHOLD = 0.40
+
+# Laplacian variance below which an image is unreadable and no detection from it
+# can be trusted, however confident the detector claims to be. Separate from
+# REVIEW_CONF_THRESHOLD: that one asks "did we find anything?", this one asks
+# "was there enough image to find it in?".
+#
+# Calibrated against measured blur variance: unusable frames score 0.7-1.0, the
+# softest genuine sample scores 89.4, and the validation set's 1st percentile is
+# 4.4. Distinct from the far more permissive is_blurry check (< 100.0), which
+# only decides whether to apply a sharpening filter.
+UNUSABLE_BLUR_THRESHOLD = 5.0
+
+# ──────────────────────────────────────────────
 # YOLO training parameters
 # ──────────────────────────────────────────────
 YOLO_TRAIN_EPOCHS = 50
