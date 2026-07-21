@@ -126,18 +126,19 @@
           <span class="dec__dia" aria-hidden="true"></span>
           <div>
             <span class="dec__k">Decision 2 · the refusal gate</span>
-            <b>Is average detection confidence ≥ 0.40?</b>
+            <b>Was the image readable, and did any box reach 0.40?</b>
           </div>
         </div>
-        <p class="dec__meta">Also fails when nothing was detected at all</p>
+        <p class="dec__meta">Two independent checks — quality, then confidence</p>
         <div class="dec__paths">
           <div class="path path--yes">
             <span class="path__lab">Yes</span>
-            <p>Continue to refinement and classification</p>
+            <p>Continue to refinement and classification, carrying <em>every</em> box forward — the gate decides whether to analyse the image, not which detections survive</p>
           </div>
           <div class="path path--stop">
             <span class="path__lab">No</span>
             <p><b>The run ends here.</b> Classification never executes. A warning banner is returned instead of boxes, and the reason is written to the trace.</p>
+            <span class="path__guard">Fails if blur variance &lt; 5.0 — the image is unreadable, so nothing found in it can be trusted — <b>or</b> if no single box reaches 0.40</span>
             <span class="path__end">Terminal state · flagged for human review</span>
           </div>
         </div>
@@ -289,11 +290,14 @@
         <div class="uniq__n">02</div>
         <h3>A model allowed to say "no"</h3>
         <p>
-          Below 0.40 average confidence the run stops. Classification never executes, no boxes
-          are drawn, and the response carries a warning with the measured blur and contrast that
+          Two independent checks can stop the run: an unreadable image (blur variance below
+          <b>5.0</b>), or no single box reaching <b>0.40</b>. Classification never executes, no
+          boxes are drawn, and the response carries a warning naming the measured value that
           caused it. Returning nothing is treated as a correct outcome rather than a failure —
           which matters in underwater imaging, where a confident wrong species is far more
-          damaging than an honest refusal.
+          damaging than an honest refusal. Keeping the two checks separate matters as much as
+          having them: judging on an average let a crowd of weak detections outvote strong ones,
+          and let an unreadable frame pass whenever the detector was confidently wrong about noise.
         </p>
       </article>
 
