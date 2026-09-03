@@ -344,10 +344,17 @@
         <div class="stat__v">${total < 1000 ? Math.round(total) : (total / 1000).toFixed(2)}<small>${total < 1000 ? 'ms' : 's'}</small></div>
         <div class="stat__k">Total inference</div>
         <div class="stat__sub">${rows({
-          Detection: `${b.detection_ms ?? 0} ms`,
-          Fusion: `${b.fusion_ms ?? 0} ms`,
-          Classification: `${b.classification_ms ?? 0} ms`,
-          Annotation: `${b.annotation_ms ?? 0} ms`,
+          Preprocess: `${b.preprocessing_ms ?? 0} ms`,
+          'YOLOv8n': `${b.detector_nano_ms ?? 0} ms`,
+          'YOLOv8s': `${b.detector_small_ms ?? 0} ms`,
+          WBF: `${b.wbf_ms ?? 0} ms`,
+          // Only shown when the agent actually took these actions, so a zero
+          // row isn't rendered as though the work happened and cost nothing.
+          ...(b.zoom_ms ? { Zoom: `${b.zoom_ms} ms` } : {}),
+          Classify: `${b.classification_ms ?? 0} ms`,
+          ...(b.reclassification_ms ? { 'Re-classify': `${b.reclassification_ms} ms` } : {}),
+          Annotate: `${b.annotation_ms ?? 0} ms`,
+          Agent: `${b.agent_decision_ms ?? 0} ms`,
         })}</div>
       </div>
       <div class="stat">

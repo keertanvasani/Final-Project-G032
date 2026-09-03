@@ -1,0 +1,226 @@
+{
+  "baseline_id": "IMAGE_V1_BASELINE",
+  "frozen_at_utc": "2026-09-03T01:24:29+00:00",
+  "git": {
+    "commit": "13f6b424a1b4a24c706a636d3ecc9b75262014b3",
+    "branch": "feat/instrumentation",
+    "tracked_files_clean": true
+  },
+  "software": {
+    "python": "3.14.6",
+    "torch": "2.13.0",
+    "torchvision": "0.28.0",
+    "ultralytics": "8.4.115",
+    "cv2": "5.0.0",
+    "numpy": "2.3.5",
+    "ensemble_boxes": null,
+    "fastapi": "0.141.1"
+  },
+  "hardware": {
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "processor": "arm",
+    "device": "cpu"
+  },
+  "models": {
+    "detector_nano": {
+      "path": "models/yolov8n_aquarium/weights/best.pt",
+      "exists": true,
+      "bytes": 6240234,
+      "sha256": "5e5a9e5c319faec3d4b6c01f1bb1ce4633742b56ca959a85e10a9d3420ea4d6b"
+    },
+    "detector_small": {
+      "path": "models/yolov8s_aquarium/weights/best.pt",
+      "exists": true,
+      "bytes": 22511530,
+      "sha256": "7d576e97bfd17b68fd285cab05f66efc5ad1da35dc1b28b5fbe0cdb0c3e0a08f"
+    },
+    "classifier": {
+      "path": "models/classifier/best_classifier.pth",
+      "exists": true,
+      "bytes": 44798923,
+      "sha256": "a0eed5aeb2abf6b72357f639409105fbf903908f19ce3d75031de30ab45cc005"
+    }
+  },
+  "dataset": {
+    "name": "Aquarium Combined",
+    "source": "roboflow://brad-dwyer/aquarium-combined/v2",
+    "license": "CC BY 4.0",
+    "classes": [
+      "fish",
+      "jellyfish",
+      "penguin",
+      "puffin",
+      "shark",
+      "starfish",
+      "stingray"
+    ],
+    "num_classes": 7,
+    "images": {
+      "train": 448,
+      "val": 190
+    },
+    "note": "Aquarium-tank domain. Deep-sea generalisation is NOT established by this baseline."
+  },
+  "parameters": {
+    "detection": {
+      "conf_threshold": 0.25,
+      "nms_iou_threshold": 0.45,
+      "img_size": 640
+    },
+    "fusion_wbf": {
+      "iou_threshold": 0.55,
+      "skip_box_threshold": 0.001,
+      "weights": [
+        2,
+        1
+      ],
+      "conf_type": "avg"
+    },
+    "classifier": {
+      "backbone": "resnet18",
+      "img_size": 224,
+      "crop_padding_agentic": 0.05,
+      "crop_padding_tiebreak": 0.15,
+      "note": "The agentic path passes padding=0.05/0.15 explicitly, overriding config.CROP_PADDING=0.1."
+    },
+    "confidence_fusion": {
+      "detector_weight": 0.6,
+      "classifier_weight": 0.4,
+      "agreement_boost": 0.1
+    },
+    "abstention_gate": {
+      "review_conf_threshold": 0.4,
+      "unusable_blur_threshold": 5.0,
+      "criterion": "per-box (>=1 box must clear review_conf_threshold)",
+      "unit": "image-level abstention"
+    },
+    "quality_triggers": {
+      "clahe_if_brightness_below": 50.0,
+      "clahe_if_brightness_above": 200.0,
+      "clahe_if_contrast_below": 30.0,
+      "sharpen_if_blur_below": 100.0
+    },
+    "zoom_recheck": {
+      "ambiguous_band": [
+        0.4,
+        0.75
+      ],
+      "crop_padding": 0.15,
+      "accept_if_iou_above": 0.4,
+      "accept_only_if_confidence_increases": true
+    },
+    "api": {
+      "allowed_types": [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "image/webp"
+      ],
+      "max_image_mb": 20
+    }
+  },
+  "known_limitations": [
+    "Trained only on aquarium-tank imagery; deep-sea performance unmeasured.",
+    "Abstention operates at image level; per-detection selective risk not yet defined.",
+    "Confidence is uncalibrated \u2014 scores are not probabilities of correctness.",
+    "Closed-set classifier: unseen taxa are forced into one of 7 classes.",
+    "Single training run per model; no seed variance or confidence intervals."
+  ],
+  "measured_action_costs": {
+    "images_measured": 30,
+    "wall_clock_s": 15.3,
+    "device": "cpu",
+    "objects_per_image": {
+      "mean": 8.13,
+      "max": 27
+    },
+    "abstained_images": 2,
+    "reconciliation": {
+      "max_residual_ms": 0.03,
+      "note": "Exclusive components minus measured total; ~0 confirms full accounting."
+    },
+    "stages": {
+      "preprocessing_ms": {
+        "mean_ms": 7.1,
+        "median_ms": 3.045,
+        "p95_ms": 10.26,
+        "max_ms": 91.0,
+        "fired_on_images": 30,
+        "mean_when_fired_ms": 7.1
+      },
+      "detection_ms": {
+        "mean_ms": 88.97,
+        "median_ms": 84.715,
+        "p95_ms": 103.53,
+        "max_ms": 153.47,
+        "fired_on_images": 30,
+        "mean_when_fired_ms": 88.97
+      },
+      "wbf_ms": {
+        "mean_ms": 0.42,
+        "median_ms": 0.32,
+        "p95_ms": 0.81,
+        "max_ms": 1.03,
+        "fired_on_images": 30,
+        "mean_when_fired_ms": 0.42
+      },
+      "zoom_ms": {
+        "mean_ms": 214.482,
+        "median_ms": 135.55,
+        "p95_ms": 766.59,
+        "max_ms": 872.28,
+        "fired_on_images": 21,
+        "mean_when_fired_ms": 306.403
+      },
+      "classification_ms": {
+        "mean_ms": 184.254,
+        "median_ms": 46.04,
+        "p95_ms": 807.28,
+        "max_ms": 950.7,
+        "fired_on_images": 28,
+        "mean_when_fired_ms": 197.415
+      },
+      "reclassification_ms": {
+        "mean_ms": 7.242,
+        "median_ms": 0.0,
+        "p95_ms": 29.99,
+        "max_ms": 56.66,
+        "fired_on_images": 10,
+        "mean_when_fired_ms": 21.726
+      },
+      "annotation_ms": {
+        "mean_ms": 4.943,
+        "median_ms": 2.5,
+        "p95_ms": 14.37,
+        "max_ms": 25.51,
+        "fired_on_images": 30,
+        "mean_when_fired_ms": 4.943
+      },
+      "agent_decision_ms": {
+        "mean_ms": 0.058,
+        "median_ms": 0.05,
+        "p95_ms": 0.12,
+        "max_ms": 0.15,
+        "fired_on_images": 30,
+        "mean_when_fired_ms": 0.058
+      },
+      "detector_nano_ms": {
+        "mean_ms": 32.985,
+        "median_ms": 31.755,
+        "p95_ms": 39.9,
+        "max_ms": 45.42,
+        "fired_on_images": 30,
+        "mean_when_fired_ms": 32.985
+      },
+      "detector_small_ms": {
+        "mean_ms": 55.984,
+        "median_ms": 51.42,
+        "p95_ms": 72.16,
+        "max_ms": 113.57,
+        "fired_on_images": 30,
+        "mean_when_fired_ms": 55.984
+      }
+    }
+  }
+}

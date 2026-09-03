@@ -280,7 +280,16 @@ def run_agentic_pipeline(
     trace = []
     status = "complete"
 
+    # Every stage below is measured rather than estimated. The agent policy
+    # optimises reliability against computational cost, so an action's cost has
+    # to be an observed quantity — a hardcoded constant would make the
+    # accuracy/compute trade-off unfalsifiable.
+    zoom_ms = 0.0
+    classification_ms = 0.0
+    reclassification_ms = 0.0
+
     # Stage 1: Pre-processing Quality Check & Decision
+    t_pre = time.perf_counter()
     quality_state = assess_image_quality(image)
     trace.append(
         f"Quality check: blur score = {quality_state['blur_score']:.1f}, "
@@ -295,14 +304,23 @@ def run_agentic_pipeline(
         trace.extend(enhance_trace)
     else:
         trace.append("Action: Image is well-formed, skipping pre-enhancements")
+    preprocessing_ms = (time.perf_counter() - t_pre) * 1000.0
 
     # Stage 2: Dual Detection + WBF Fusion
-    t0 = time.perf_counter()
+    # Each detector is timed independently so the two arms of the ensemble can
+    # be costed separately — they differ enough in capacity that a single
+    # combined figure would hide the trade-off.
+    det_timings: dict[str, float] = {}
     res_a, res_b = ensemble.run_dual_detection(
-        enhanced_image, pipeline.model_a, pipeline.model_b
+        enhanced_image, pipeline.model_a, pipeline.model_b, timings=det_timings
     )
+    detector_nano_ms = det_timings.get("detector_nano_ms", 0.0)
+    detector_small_ms = det_timings.get("detector_small_ms", 0.0)
+    detection_ms = detector_nano_ms + detector_small_ms
+
+    t_wbf = time.perf_counter()
     detections = ensemble.fuse_detections(res_a, res_b, enhanced_image.shape[:2])
-    detection_ms = (time.perf_counter() - t0) * 1000.0
+    wbf_ms = (time.perf_counter() - t_wbf) * 1000.0
 
     # Detector confidence statistics
     if detections:
@@ -360,21 +378,23 @@ def run_agentic_pipeline(
         # Uncertainty reaches the user through combined confidence and the
         # low/medium/high annotation colours instead.
 
-        # Action: Zoom & Recheck low-confidence bounding boxes
+        # Action: Zoom & Recheck low-confidence bounding boxes.
+        # Timed as a whole: the cost of the ZOOM action is its total wall time,
+        # including the detector and fusion passes it triggers internally.
+        t_zoom = time.perf_counter()
         detections, zoom_trace = rerun_zoomed_detection(enhanced_image, detections, pipeline)
+        zoom_ms = (time.perf_counter() - t_zoom) * 1000.0
         trace.extend(zoom_trace)
 
     # Stage 4: Species Classification & Disagreement Resolving
-    t0 = time.perf_counter()
     resolved_detections = []
-    classifier_ms = 0.0
-    fusion_ms = 5.0  # Estimated WBF fusion time
 
     if detections and status != "needs_review":
         # Extract crops with standard padding (5%)
+        t_cls = time.perf_counter()
         standard_crops = [pipeline._extract_crop(enhanced_image, det["bbox"], padding=0.05) for det in detections]
         cls_results = pipeline.classifier.classify_crops(standard_crops) if standard_crops else []
-        classifier_ms += (time.perf_counter() - t0) * 1000.0
+        classification_ms = (time.perf_counter() - t_cls) * 1000.0
 
         for idx, (det, cls_res) in enumerate(zip(detections, cls_results)):
             det_class = det["class_name"]
@@ -406,10 +426,12 @@ def run_agentic_pipeline(
                     f"vs Classifier (5% crop): '{cls_class}' ({cls_conf:.2f})"
                 )
 
-                t_t0 = time.perf_counter()
+                # Counted separately from the first classification pass: this is
+                # the cost of the tie-break action, not of routine classification.
+                t_recls = time.perf_counter()
                 loose_crop = pipeline._extract_crop(enhanced_image, det["bbox"], padding=0.15)
                 cls_loose = pipeline.classifier.classify_crop(loose_crop)
-                classifier_ms += (time.perf_counter() - t_t0) * 1000.0
+                reclassification_ms += (time.perf_counter() - t_recls) * 1000.0
 
                 loose_class = cls_loose["class_name"]
                 loose_conf = cls_loose["confidence"]
@@ -465,7 +487,7 @@ def run_agentic_pipeline(
         resolved_detections = []
 
     # Final stage: Annotation drawing
-    t0 = time.perf_counter()
+    t_annot = time.perf_counter()
     if status == "needs_review":
         if quality_state["is_blurry"]:
             review_message = (
@@ -479,9 +501,19 @@ def run_agentic_pipeline(
         annotated = pipeline.annotate_message(enhanced_image, review_message)
     else:
         annotated = pipeline.annotate_image(enhanced_image, resolved_detections)
-    annotation_ms = (time.perf_counter() - t0) * 1000.0
+    annotation_ms = (time.perf_counter() - t_annot) * 1000.0
 
     total_ms = (time.perf_counter() - t_start) * 1000.0
+
+    # Controller overhead — quality branching, gate evaluation, vote logic and
+    # bookkeeping — recovered as the residual rather than timed directly, so the
+    # components always reconcile against the measured total. A large residual
+    # is itself a signal that something is unaccounted for.
+    measured_ms = (
+        preprocessing_ms + detection_ms + wbf_ms + zoom_ms
+        + classification_ms + reclassification_ms + annotation_ms
+    )
+    agent_decision_ms = max(0.0, total_ms - measured_ms)
 
     # If status is needs_review, add status note to trace
     if status == "needs_review":
@@ -497,11 +529,20 @@ def run_agentic_pipeline(
         "total_objects": len(resolved_detections),
         "average_confidence": round(avg_conf, 4),
         "inference_time_ms": round(total_ms, 2),
+        # Mutually exclusive components that reconcile to inference_time_ms.
+        # detection_ms is the sum of the two detector arms, both of which are
+        # also reported individually.
         "inference_breakdown": {
+            "preprocessing_ms": round(preprocessing_ms, 2),
+            "detector_nano_ms": round(detector_nano_ms, 2),
+            "detector_small_ms": round(detector_small_ms, 2),
             "detection_ms": round(detection_ms, 2),
-            "fusion_ms": round(fusion_ms, 2),
-            "classification_ms": round(classifier_ms, 2),
+            "wbf_ms": round(wbf_ms, 2),
+            "zoom_ms": round(zoom_ms, 2),
+            "classification_ms": round(classification_ms, 2),
+            "reclassification_ms": round(reclassification_ms, 2),
             "annotation_ms": round(annotation_ms, 2),
+            "agent_decision_ms": round(agent_decision_ms, 2),
         },
         "models_used": {
             "detector_1": "YOLOv8n",
