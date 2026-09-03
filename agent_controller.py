@@ -256,6 +256,180 @@ def rerun_zoomed_detection(
 
 
 # ──────────────────────────────────────────────────────────────────────
+# Per-detection classification + disagreement resolution
+# ──────────────────────────────────────────────────────────────────────
+def resolve_detection(
+    idx: int,
+    det: dict[str, Any],
+    cls_res: dict[str, Any],
+    pipeline: EnsemblePipeline,
+    enhanced_image: np.ndarray,
+) -> tuple[dict[str, Any], list[str], float]:
+    """Score one detection and resolve detector/classifier disagreement.
+
+    Extracted verbatim from the Stage-4 loop of :func:`run_agentic_pipeline`
+    so the same logic serves both the deployed pipeline and the evaluation
+    perception path (:func:`run_perception`); duplicating it would risk the
+    two drifting apart. Behaviour is unchanged — the trace strings, the
+    combined-confidence arithmetic and the majority vote are identical.
+
+    Parameters
+    ----------
+    idx : int
+        Zero-based index of this detection; the object id is ``idx + 1``.
+    det : dict
+        Fused detection with ``class_name``, ``confidence``, ``bbox``.
+    cls_res : dict
+        Classification of the 5%-padded crop (``class_name``, ``confidence``).
+    pipeline, enhanced_image
+        Used only to re-classify a looser crop on disagreement.
+
+    Returns
+    -------
+    (resolved_det, trace_lines, reclassification_ms)
+    """
+    trace: list[str] = []
+    reclassification_ms = 0.0
+
+    det_class = det["class_name"]
+    cls_class = cls_res["class_name"]
+    det_conf = det["confidence"]
+    cls_conf = cls_res["confidence"]
+
+    agreement = det_class == cls_class
+
+    if agreement:
+        combined = config.DETECTOR_WEIGHT * det_conf + config.CLASSIFIER_WEIGHT * cls_conf
+        combined = min(combined * (1 + config.AGREEMENT_BOOST), 1.0)
+        det.update({
+            "id": idx + 1,
+            "detector_class": det_class,
+            "detector_confidence": det_conf,
+            "classifier_class": cls_class,
+            "classifier_confidence": cls_conf,
+            "combined_confidence": combined,
+            "agreement": True,
+        })
+        return det, trace, reclassification_ms
+
+    # Disagreement: tie-break on a looser 15% crop, then majority vote.
+    trace.append(
+        f"Warning: Disagreement on Object {idx+1}. Detector: '{det_class}' ({det_conf:.2f}) "
+        f"vs Classifier (5% crop): '{cls_class}' ({cls_conf:.2f})"
+    )
+
+    t_recls = time.perf_counter()
+    loose_crop = pipeline._extract_crop(enhanced_image, det["bbox"], padding=0.15)
+    cls_loose = pipeline.classifier.classify_crop(loose_crop)
+    reclassification_ms += (time.perf_counter() - t_recls) * 1000.0
+
+    loose_class = cls_loose["class_name"]
+    loose_conf = cls_loose["confidence"]
+
+    opinions = [det_class, cls_class, loose_class]
+    counts: dict[str, int] = {}
+    for op in opinions:
+        counts[op] = counts.get(op, 0) + 1
+    majority_class = max(counts, key=counts.get)
+    majority_count = counts[majority_class]
+
+    if majority_count >= 2:
+        resolved_class = majority_class
+        trace.append(
+            f"Action: Disagreement resolved to '{resolved_class}' "
+            f"via majority vote: Detector ('{det_class}'), "
+            f"Classifier Std ('{cls_class}'), Classifier Loose ('{loose_class}')"
+        )
+    else:
+        resolved_class = det_class
+        trace.append(
+            f"Action: Disagreement deadlock (no majority). Defaulted to detector class "
+            f"'{det_class}'"
+        )
+
+    resolved_conf = cls_conf if resolved_class == cls_class else (
+        loose_conf if resolved_class == loose_class else det_conf)
+    combined = config.DETECTOR_WEIGHT * det_conf + config.CLASSIFIER_WEIGHT * resolved_conf
+
+    det.update({
+        "id": idx + 1,
+        "detector_class": det_class,
+        "detector_confidence": det_conf,
+        "classifier_class": resolved_class,
+        "classifier_confidence": resolved_conf,
+        "combined_confidence": combined,
+        "agreement": False,
+    })
+    return det, trace, reclassification_ms
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Perception path (evaluation) — scored detections without the accept gate
+# ──────────────────────────────────────────────────────────────────────
+def run_perception(
+    image: np.ndarray,
+    pipeline: EnsemblePipeline,
+) -> dict[str, Any]:
+    """Run detection → fusion → classification → scoring, but no accept gate.
+
+    This is the perception stage of the evidence-acquisition architecture,
+    separated from the acceptance *policy*. It runs exactly what
+    :func:`run_agentic_pipeline` runs — conditional enhancement, dual
+    detection, WBF, zoom-and-recheck, per-crop classification and
+    disagreement resolution — and returns **every** scored detection.
+
+    The one gate it keeps is the unreadable-image gate: below
+    ``UNUSABLE_BLUR_THRESHOLD`` there is no trustworthy evidence to score, so
+    it returns no detections (status ``"unreadable"``). What it does *not*
+    apply is the ``REVIEW_CONF_THRESHOLD`` acceptance gate — evaluation needs
+    the full confidence range to sweep a risk–coverage curve, and an
+    acceptance policy is reconstructed downstream by thresholding
+    ``combined_confidence``. See experiments/PROTOCOL.md §3.
+
+    Returns
+    -------
+    dict with keys:
+        detections : list[dict]  — each scored like run_agentic_pipeline's output
+        status     : "ok" | "unreadable" | "empty"
+        quality    : the image-quality state dict
+        timings    : per-stage milliseconds
+    """
+    quality_state = assess_image_quality(image)
+
+    enhanced_image = image
+    if quality_state["needs_enhancement"] or quality_state["is_blurry"]:
+        enhanced_image, _ = enhance_image(image, quality_state)
+
+    if quality_state["blur_score"] < config.UNUSABLE_BLUR_THRESHOLD:
+        return {"detections": [], "status": "unreadable", "quality": quality_state,
+                "timings": {}}
+
+    det_timings: dict[str, float] = {}
+    res_a, res_b = ensemble.run_dual_detection(
+        enhanced_image, pipeline.model_a, pipeline.model_b, timings=det_timings)
+    detections = ensemble.fuse_detections(res_a, res_b, enhanced_image.shape[:2])
+
+    if not detections:
+        return {"detections": [], "status": "empty", "quality": quality_state,
+                "timings": det_timings}
+
+    # Same discretionary refinement the deployed pipeline performs.
+    detections, _ = rerun_zoomed_detection(enhanced_image, detections, pipeline)
+
+    standard_crops = [pipeline._extract_crop(enhanced_image, d["bbox"], padding=0.05)
+                      for d in detections]
+    cls_results = pipeline.classifier.classify_crops(standard_crops)
+
+    scored = []
+    for idx, (det, cls_res) in enumerate(zip(detections, cls_results)):
+        resolved, _, _ = resolve_detection(idx, det, cls_res, pipeline, enhanced_image)
+        scored.append(resolved)
+
+    return {"detections": scored, "status": "ok", "quality": quality_state,
+            "timings": det_timings}
+
+
+# ──────────────────────────────────────────────────────────────────────
 # Main Agentic Pipeline Orchestrator
 # ──────────────────────────────────────────────────────────────────────
 def run_agentic_pipeline(
@@ -397,91 +571,11 @@ def run_agentic_pipeline(
         classification_ms = (time.perf_counter() - t_cls) * 1000.0
 
         for idx, (det, cls_res) in enumerate(zip(detections, cls_results)):
-            det_class = det["class_name"]
-            cls_class = cls_res["class_name"]
-            det_conf = det["confidence"]
-            cls_conf = cls_res["confidence"]
-
-            agreement = det_class == cls_class
-
-            if agreement:
-                # Direct match, compute combined confidence with agreement boost
-                combined = config.DETECTOR_WEIGHT * det_conf + config.CLASSIFIER_WEIGHT * cls_conf
-                combined = min(combined * (1 + config.AGREEMENT_BOOST), 1.0)
-
-                det.update({
-                    "id": idx + 1,
-                    "detector_class": det_class,
-                    "detector_confidence": det_conf,
-                    "classifier_class": cls_class,
-                    "classifier_confidence": cls_conf,
-                    "combined_confidence": combined,
-                    "agreement": True
-                })
-                resolved_detections.append(det)
-            else:
-                # Disagreement! Run tie-breaker classifier on slightly larger crop (15%)
-                trace.append(
-                    f"Warning: Disagreement on Object {idx+1}. Detector: '{det_class}' ({det_conf:.2f}) "
-                    f"vs Classifier (5% crop): '{cls_class}' ({cls_conf:.2f})"
-                )
-
-                # Counted separately from the first classification pass: this is
-                # the cost of the tie-break action, not of routine classification.
-                t_recls = time.perf_counter()
-                loose_crop = pipeline._extract_crop(enhanced_image, det["bbox"], padding=0.15)
-                cls_loose = pipeline.classifier.classify_crop(loose_crop)
-                reclassification_ms += (time.perf_counter() - t_recls) * 1000.0
-
-                loose_class = cls_loose["class_name"]
-                loose_conf = cls_loose["confidence"]
-
-                # Opinions:
-                # 1. Detector: det_class
-                # 2. Classifier Std (5%): cls_class
-                # 3. Classifier Loose (15%): loose_class
-                opinions = [det_class, cls_class, loose_class]
-
-                # Count frequencies
-                counts = {}
-                for op in opinions:
-                    counts[op] = counts.get(op, 0) + 1
-
-                # Find majority vote class
-                majority_class = max(counts, key=counts.get)
-                majority_count = counts[majority_class]
-
-                if majority_count >= 2:
-                    resolved_class = majority_class
-                    decision_str = (
-                        f"Action: Disagreement resolved to '{resolved_class}' "
-                        f"via majority vote: Detector ('{det_class}'), "
-                        f"Classifier Std ('{cls_class}'), Classifier Loose ('{loose_class}')"
-                    )
-                else:
-                    # All three disagree, select detector class
-                    resolved_class = det_class
-                    decision_str = (
-                        f"Action: Disagreement deadlock (no majority). Defaulted to detector class "
-                        f"'{det_class}'"
-                    )
-
-                trace.append(decision_str)
-
-                # Set classifier class to the resolved class and calculate combined confidence
-                resolved_conf = cls_conf if resolved_class == cls_class else (loose_conf if resolved_class == loose_class else det_conf)
-                combined = config.DETECTOR_WEIGHT * det_conf + config.CLASSIFIER_WEIGHT * resolved_conf
-
-                det.update({
-                    "id": idx + 1,
-                    "detector_class": det_class,
-                    "detector_confidence": det_conf,
-                    "classifier_class": resolved_class,
-                    "classifier_confidence": resolved_conf,
-                    "combined_confidence": combined,
-                    "agreement": False
-                })
-                resolved_detections.append(det)
+            resolved, res_trace, res_ms = resolve_detection(
+                idx, det, cls_res, pipeline, enhanced_image)
+            reclassification_ms += res_ms
+            trace.extend(res_trace)
+            resolved_detections.append(resolved)
     else:
         # Fill in empty details for return
         resolved_detections = []
