@@ -274,6 +274,42 @@ alone would still let the scorer tune on one taxon and be tested on another
 recorded minutes later in the same dive, under identical optics and
 illumination.
 
+### 5.1 Fit eligibility (added after the split was built)
+
+Partitioning OOD *roles* by class does not partition the *images* — a
+`J_cal` image can and does contain `shrimp`, whose role is `OOD_test`.
+Measured on the Phase A split, more OOD annotations sit outside their host
+role than inside it:
+
+| Split | Fit-eligible OOD | Present but excluded |
+|---|---|---|
+| `J_cal` | 867 | 2,131 |
+| `J_policy` | 592 | 2,774 |
+| `J_test` | 706 | 3,309 |
+
+Two distinct uses of OOD data must therefore be kept apart:
+
+- **Error accounting.** `OOD_ERR` applies to *any* detection matching a GT
+  outside `KNOWN_CLASSES`, in any split, regardless of role. A shrimp called
+  `fish` is an error wherever it occurs.
+- **Fitting.** Calibration, the meta-confidence model and the policy may use
+  as OOD signal **only their host split's role classes**. Far-OOD
+  (`machine`) is excluded from fitting everywhere and evaluated at test only.
+
+Without this, a meta-confidence model trained on `J_cal` would learn "this
+looks unreliable" from shrimp and then be evaluated on shrimp as an unseen
+taxon — the novelty claim behind H3 would be false while every split
+remained nominally class-disjoint.
+
+The cost is real: `J_cal` loses ~2,131 OOD detections as training signal.
+Negative signal remains available from `CLS_ERR`, `LOC_ERR`, `BG_FP` and the
+867 dev-role OOD detections, which is sufficient. The alternative — a claim
+that does not survive the question "did the meta-model ever see a shrimp?" —
+is not.
+
+`make_splits.py` emits `ood_fit_classes` and `ood_excluded_from_fit` per
+split so this is enforced by the manifest rather than by memory.
+
 ### Near-OOD partition (Phase A, by descending frequency, round-robin)
 
 | Split | Classes | Test annotations |
