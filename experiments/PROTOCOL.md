@@ -1,7 +1,8 @@
 # Evaluation Protocol — Part 1
 
-**Status:** DRAFT. Sections marked **[DECISION]** need sign-off before any
-number produced under this protocol is reportable.
+**Status:** ACTIVE. All six open decisions resolved (§9); three confirmatory
+hypotheses pre-registered (§7.4). Binding from this point — amend by dated
+addition, never by editing in place.
 
 This document is step 0 of the Part 1 roadmap. It fixes the unit of
 evaluation, the definition of correctness, the data splits, the OOD
@@ -86,6 +87,28 @@ Ground-truth objects with `class ∉ KNOWN_CLASSES` are **excluded from the
 recall denominator** — the model cannot be penalised for failing to detect
 a class it was never trained on. They are used only to identify `OOD_ERR`.
 
+### 2.4 Label-space mapping (Phase A)
+
+The aquarium model's 7 classes map onto Jedi as follows:
+
+| | classes | test annotations |
+|---|---|---|
+| **KNOWN** | fish, jellyfish, shark, starfish | **1,538 (33.9%)** |
+| No Jedi counterpart | penguin, puffin | — |
+| **OOD** | the other 16 Jedi classes | **3,005 (66.1%)** |
+
+**`ray` is treated as OOD, not as `stingray`** (decision 9.3). Batoidea
+includes skates, electric rays and guitarfish; a deep-sea *ray* is more
+likely a skate than the aquarium stingrays the classifier was trained on.
+Scoring a `stingray` prediction as correct would credit the model for a
+match that cannot be verified from the annotation. The conservative reading
+is used, and this is an explicit assumption, not a silent one. At 18
+annotations the choice does not move aggregate numbers; it is made for
+correctness rather than effect.
+
+Two-thirds of test annotations being OOD is not an artefact of a narrow
+label space — it is the condition the study exists to characterise.
+
 ---
 
 ## 3. Selective-prediction metrics
@@ -108,22 +131,22 @@ Report:
 - **Coverage at fixed risk** — e.g. recall achievable at ≤ 10% selective risk
 - **Abstention rate**, split by cause (unreadable image vs. low confidence)
 
-### [DECISION 3.1] — Coverage denominator
+### 3.1 Coverage denominator — RESOLVED: report both
 
-`|D|` depends on the policy: zoom-and-recheck can alter boxes, so two
-policies do not share an identical emitted set, and raw coverage is not
-strictly comparable between them.
+`|D|` depends on the policy — zoom-and-recheck alters boxes, so two policies
+do not share an identical emitted set and raw coverage is not strictly
+comparable between them.
 
-Options:
+Both axes are therefore reported:
 
-- **(a) Policy-local `D`** — classic selective prediction; report `|D|`
-  alongside every curve. Simple, but coverage is not directly comparable.
-- **(b) GT-anchored** — use `selective_recall` as the coverage axis. Fully
-  comparable across policies since both axes are anchored to ground truth.
-- **(c) Both** — plot (a) as primary and (b) as the comparability check.
+- **Policy-local coverage** (`|A| / |D|`) — the classic selective-prediction
+  curve. `|D|` is printed alongside every curve so the denominator is never
+  implicit.
+- **GT-anchored coverage** (`selective_recall`) — comparable across policies
+  because both axes are anchored to ground truth.
 
-**Recommendation: (c).** The cost is one extra curve; the benefit is that
-cross-policy claims survive scrutiny.
+Cross-policy claims are made on the GT-anchored curve. The policy-local
+curve is reported for continuity with the selective-prediction literature.
 
 ---
 
@@ -190,19 +213,31 @@ to an optimism that does not exist at deployment.
 Proportions are over *dives*, not images, so realised image counts will
 differ. Report actual counts once split.
 
-### [DECISION 4.3] — Primary training corpus
+### 4.3 Experimental platform — RESOLVED: two phases
 
-- **(a) Jedi as primary, aquarium as the shift source.** Larger (8k), in
-  domain, supports a five-way split. Requires retraining; the 7-class label
-  space maps onto only 5 Jedi classes.
-- **(b) Aquarium as primary, Jedi as OOD/shift test only.** No retraining;
-  preserves `IMAGE_V1_BASELINE` as the direct object of study, but 638
-  images cannot support five splits.
-- **(c) Both, as a 2×2 domain matrix.**
+**Phase A — frozen aquarium baseline, Jedi as shift + open-set test.**
+No retraining. `IMAGE_V1_BASELINE` is evaluated directly on Jedi under
+dive-grouped splits. Because the model never saw any Jedi image, weight
+leakage is not a concern here and only three splits are required:
 
-**Recommendation: (b) first, then (a).** Running the shift evaluation
-against the frozen baseline yields the motivating figure immediately and
-without retraining. Retrain on Jedi only if the result warrants it.
+| Split | Purpose |
+|---|---|
+| `J_cal` | calibration + meta-confidence fitting |
+| `J_policy` | exploration rollouts + policy learning |
+| `J_test` | final evaluation — single use |
+
+Phase A produces the motivating result — how a system trained in aquaria
+behaves on real deep-sea imagery it has no labels for — at zero training
+cost, and determines whether Phase B is worth running.
+
+**Phase B — retrain on Jedi with deliberately held-out classes.** The main
+platform. Training uses a subset of Jedi's 20 classes; the remainder are
+withheld entirely so they constitute genuine unseen taxa at test time.
+Requires the full five-way split of §4.2.
+
+Phase B is gated on Phase A. Note that training on all 20 Jedi classes would
+destroy the OOD test set — the class holdout is what makes the open-set
+claim possible, so it is a design requirement, not a convenience.
 
 ---
 
@@ -232,7 +267,36 @@ same classes across dev and test would measure only whether the scorer
 memorised those specific taxa. Partitions are stratified by annotation
 frequency so no split is composed solely of rare classes.
 
-Metrics: AUROC, FPR@95TPR, AUPR-Out; ID-vs-OOD score separation.
+**Both constraints apply simultaneously.** The class partition is enforced
+*within* the dive-disjoint image splits: `OOD_dev` draws only from `J_cal`
+images, `OOD_val` from `J_policy`, `OOD_test` from `J_test`. Class-disjoint
+alone would still let the scorer tune on one taxon and be tested on another
+recorded minutes later in the same dive, under identical optics and
+illumination.
+
+### Near-OOD partition (Phase A, by descending frequency, round-robin)
+
+| Split | Classes | Test annotations |
+|---|---|---|
+| `OOD_dev` | coral/sea-anemone, sea-cucumber, squat-lobster, squid, ray | 789 |
+| `OOD_val` | crab, crinoid, octopus, urchin, tunicate | 585 |
+| `OOD_test` | shrimp, sponge, comb-jelly, sea-spider, ragworm | 487 |
+
+### Far-OOD
+
+`machine` (1,144 annotations — ROV hardware) is held out of the near-OOD
+partition entirely and reported as its own category, evaluated only at test
+time with no tuning. Folding it into `OOD_dev` would make development almost
+entirely far-OOD while testing was entirely biological, and its 1,144
+annotations would dominate any frequency-stratified split.
+
+A confident species label on a piece of submersible hardware is the most
+legible failure this system can produce, and is reported as a standalone
+number.
+
+Metrics: AUROC, FPR@95TPR, AUPR-Out; ID-vs-OOD score separation. Near-OOD
+and far-OOD are always reported separately — averaging them hides that the
+hard case is the one that matters.
 
 ---
 
@@ -277,8 +341,12 @@ option at negligible cost.
 ### 7.1 Stochastic training → seeds
 
 Components with training randomness (detector, classifier, meta-confidence
-model, learned policy) are trained with **≥3 seeds**. Report mean ± std;
-never a single run.
+model, learned policy) are trained with **3 seeds** — the accepted floor for
+reporting mean ± std. Never a single run.
+
+Small policies over tabular state are often seed-sensitive. If the learned
+policy's across-seed std exceeds the effect it is claimed to produce, that
+is a finding to report, not a reason to add seeds until it disappears.
 
 ### 7.2 Deterministic inference ablations → bootstrap
 
@@ -301,11 +369,43 @@ bootstrap over the per-image difference, or McNemar's test for binary
 outcomes. Overlapping independent CIs do not establish absence of a
 difference.
 
-### 7.4 Multiple comparisons
+### 7.4 Multiple comparisons — pre-registered confirmatory family
 
-The ablation table has ~12 rows. Apply **Holm–Bonferroni** across the family
-of confirmatory comparisons, or label the table exploratory and report
-uncorrected p-values as such. State which; do not leave it implicit.
+Three hypotheses are confirmatory. **Holm–Bonferroni is applied across these
+three only.** Every other comparison — the ~12 ablation rows, calibration
+method selection, abstention-strategy comparison — is **exploratory**,
+reported with bootstrap CIs, no correction, and labelled as such in the
+caption.
+
+Correcting across all twelve would very likely erase effects that are real;
+correcting across none would forfeit any confirmatory claim. Naming a small
+family in advance is what keeps both the power and the honesty.
+
+#### Pre-registered hypotheses
+
+Fixed before `S_test` / `J_test` is touched. Each is one-sided, tested by
+**paired cluster bootstrap over dives** (≥1,000 resamples).
+
+**H1 — adaptive acquisition improves reliability at matched compute.**
+> The learned budget-aware policy achieves lower AURC (GT-anchored,
+> per-detection) than the `IMAGE_V1_BASELINE` rule agent, with mean compute
+> cost matched to within ±5%.
+
+**H2 — it does so without proportional compute growth.**
+> At matched selective risk, the learned policy's mean per-image
+> discretionary cost is lower than the rule agent's.
+
+**H3 — uncertainty-aware abstention reduces confident errors on unseen taxa.**
+> At matched GT-anchored coverage, the OOD-aware gate yields a lower
+> `OOD_ERR` rate among accepted detections than the baseline confidence gate.
+
+H1 and H2 together are the paper's central claim: *better reliability, not
+merely more computation.* H1 alone would be satisfiable by spending more; H2
+alone by doing less. Both must hold.
+
+If H1 fails but H2 holds, the honest result is a compute reduction at equal
+reliability — still publishable, and it must be reported that way rather
+than reframed after the fact.
 
 ---
 
@@ -323,24 +423,24 @@ uncorrected p-values as such. State which; do not leave it implicit.
 
 ---
 
-## 9. Open decisions
+## 9. Resolved decisions
 
-| # | Decision | Recommendation |
-|---|---|---|
-| 3.1 | Coverage denominator | Report both policy-local and GT-anchored |
-| 4.3 | Primary training corpus | Aquarium first (no retrain), Jedi second |
-| 9.1 | Seed count | 3 (5 if GPU budget allows) |
-| 9.2 | IoU threshold | 0.50 primary; report 0.5:0.95 sweep as secondary |
-| 9.3 | `ray` → `stingray` mapping | Treat as the same class; document as an assumption |
-| 9.4 | Multiple-comparison policy | Holm–Bonferroni on confirmatory rows |
+All six are settled. Changing any of them invalidates results produced under
+the previous setting; amend by adding a dated entry rather than editing in
+place.
 
-### [DECISION 9.3] — the `ray` / `stingray` mapping
+| # | Decision | Resolution | §
+|---|---|---|---|
+| 3.1 | Coverage denominator | Report both; cross-policy claims on GT-anchored | 3.1 |
+| 4.3 | Experimental platform | Two phases — frozen aquarium first, Jedi retrain second | 4.3 |
+| 9.1 | Seed count | 3, for stochastic training only | 7.1 |
+| 9.2 | IoU threshold | 0.50 primary; 0.5:0.95 sweep secondary | 2.1 |
+| 9.3 | `ray` mapping | Treated as **OOD**, not as `stingray` | 2.4 |
+| 9.4 | Multiple comparisons | 3 pre-registered confirmatory (Holm–Bonferroni); rest exploratory | 7.4 |
 
-Jedi labels `ray` (18 test annotations); the model predicts `stingray`.
-Treating them as equivalent is a biological approximation — not all rays are
-stingrays. With only 18 annotations the choice barely moves aggregate
-numbers, but it must be stated rather than silently applied. The
-alternative is to exclude `ray` from the overlap set and treat it as OOD.
+**9.2 note.** IoU 0.50 as the primary operating point matches COCO
+convention and keeps the error taxonomy interpretable; the 0.5:0.95 sweep is
+reported alongside so the result is not an artefact of one threshold.
 
 ---
 
