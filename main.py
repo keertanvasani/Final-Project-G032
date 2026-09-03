@@ -56,11 +56,24 @@ class DetectionResult(BaseModel):
 
 
 class InferenceBreakdown(BaseModel):
-    """Timing breakdown for each pipeline stage."""
-    detection_ms: float
-    fusion_ms: float
-    classification_ms: float
-    annotation_ms: float
+    """Measured wall-clock cost of each pipeline stage, in milliseconds.
+
+    Components are mutually exclusive and reconcile to ``inference_time_ms``.
+    ``detection_ms`` is the sum of the two detector arms, which are also
+    reported individually. ``zoom_ms`` covers the whole zoom-and-recheck
+    action including the detector and fusion passes it triggers internally,
+    because that total is the cost of choosing that action.
+    """
+    preprocessing_ms: float = Field(..., description="Quality assessment + conditional enhancement")
+    detector_nano_ms: float = Field(..., description="YOLOv8n forward pass (initial detection)")
+    detector_small_ms: float = Field(..., description="YOLOv8s forward pass (initial detection)")
+    detection_ms: float = Field(..., description="Both detector arms combined")
+    wbf_ms: float = Field(..., description="Weighted Boxes Fusion (initial)")
+    zoom_ms: float = Field(..., description="Zoom-and-recheck action, including nested detection")
+    classification_ms: float = Field(..., description="First classification pass over all crops")
+    reclassification_ms: float = Field(..., description="Disagreement tie-break passes")
+    annotation_ms: float = Field(..., description="Drawing boxes or the warning banner")
+    agent_decision_ms: float = Field(..., description="Controller overhead, recovered as residual")
 
 
 class ModelsUsed(BaseModel):
@@ -343,10 +356,7 @@ async def predict(
         average_confidence=round(summary["average_confidence"], 4),
         inference_time_ms=round(summary["inference_time_ms"], 1),
         inference_breakdown=InferenceBreakdown(
-            detection_ms=round(summary["inference_breakdown"]["detection_ms"], 1),
-            fusion_ms=round(summary["inference_breakdown"]["fusion_ms"], 1),
-            classification_ms=round(summary["inference_breakdown"]["classification_ms"], 1),
-            annotation_ms=round(summary["inference_breakdown"]["annotation_ms"], 1),
+            **{k: round(v, 2) for k, v in summary["inference_breakdown"].items()}
         ),
         models_used=ModelsUsed(**summary["models_used"]),
     )

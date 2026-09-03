@@ -14,6 +14,7 @@ Typical usage:
 from __future__ import annotations
 
 import logging
+import time
 from typing import Any
 
 import numpy as np
@@ -33,6 +34,7 @@ def run_dual_detection(
     image: np.ndarray,
     model_a: YOLO,
     model_b: YOLO,
+    timings: dict[str, float] | None = None,
 ) -> tuple[Any, Any]:
     """Run two YOLO models on the same image and return their raw results.
 
@@ -47,6 +49,14 @@ def run_dual_detection(
         First YOLO model instance (e.g. YOLOv8-nano).
     model_b : YOLO
         Second YOLO model instance (e.g. YOLOv8-small).
+    timings : dict[str, float], optional
+        If supplied, per-model wall-clock cost is *added* into this dict
+        under ``detector_nano_ms`` and ``detector_small_ms``. Accumulating
+        rather than overwriting keeps the totals correct when detection is
+        invoked more than once per image (the zoom-and-recheck action
+        re-runs both models on a crop). Timing the two models separately
+        is what lets the per-action cost model be measured instead of
+        assumed.
 
     Returns
     -------
@@ -58,18 +68,25 @@ def run_dual_detection(
     logger.debug("Running dual YOLO detection (conf=%.2f, iou=%.2f).",
                  config.YOLO_CONF_THRESHOLD, config.YOLO_IOU_THRESHOLD)
 
+    t0 = time.perf_counter()
     results_a = model_a.predict(
         source=image,
         conf=config.YOLO_CONF_THRESHOLD,
         iou=config.YOLO_IOU_THRESHOLD,
         verbose=False,
     )
+    t1 = time.perf_counter()
     results_b = model_b.predict(
         source=image,
         conf=config.YOLO_CONF_THRESHOLD,
         iou=config.YOLO_IOU_THRESHOLD,
         verbose=False,
     )
+    t2 = time.perf_counter()
+
+    if timings is not None:
+        timings["detector_nano_ms"] = timings.get("detector_nano_ms", 0.0) + (t1 - t0) * 1000.0
+        timings["detector_small_ms"] = timings.get("detector_small_ms", 0.0) + (t2 - t1) * 1000.0
 
     logger.debug(
         "Model-A detections: %d | Model-B detections: %d",
