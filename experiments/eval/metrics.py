@@ -136,11 +136,23 @@ def dive_bootstrap(
     boots: list[float] = []
     n = len(dives)
     for _ in range(n_boot):
-        sample = [dives[rng.randrange(n)] for _ in range(n)]
         recs: list[dict[str, Any]] = []
         kgt = 0
-        for d in sample:
-            recs.extend(records_by_dive[d])
+        # Each draw is an independent cluster copy. A dive drawn twice must
+        # count twice in BOTH the summed denominator and any set-based
+        # numerator (e.g. recalled GT), so its records are re-keyed per draw:
+        # without this, recall's numerator dedupes duplicated dives while the
+        # denominator sums them, biasing the interval below the point
+        # estimate. Ratio-of-count metrics are unaffected; re-keying is
+        # harmless to them.
+        for k in range(n):
+            d = dives[rng.randrange(n)]
+            tag = f"{k}\x00"
+            for r in records_by_dive[d]:
+                rc = dict(r)
+                if rc.get("file") is not None:
+                    rc["file"] = tag + rc["file"]
+                recs.append(rc)
             kgt += known_gt_by_dive[d]
         boots.append(metric_fn(recs, kgt))
 
