@@ -2,3 +2,4 @@
 # Committing them would bloat the repo with large derived artifacts.
 *.jsonl
 *_report.json
+*_aggregation.json
