@@ -1,0 +1,42 @@
+{
+  "per_split": {
+    "coco_train_data": {
+      "images": 4864,
+      "dives": 2316,
+      "unparsed_filenames": 0
+    },
+    "coco_valid_data": {
+      "images": 847,
+      "dives": 578,
+      "unparsed_filenames": 0
+    },
+    "coco_test_data": {
+      "images": 2440,
+      "dives": 1397,
+      "unparsed_filenames": 0
+    }
+  },
+  "contamination": {
+    "coco_test_data vs coco_train_data": {
+      "contaminated": 1399,
+      "total": 2440,
+      "fraction": 0.5734
+    },
+    "coco_test_data vs coco_train_data+coco_valid_data": {
+      "contaminated": 1563,
+      "total": 2440,
+      "fraction": 0.6406
+    },
+    "coco_valid_data vs coco_train_data": {
+      "contaminated": 469,
+      "total": 847,
+      "fraction": 0.5537
+    }
+  },
+  "shared_dives": {
+    "coco_train_data|coco_valid_data": 302,
+    "coco_train_data|coco_test_data": 749,
+    "coco_valid_data|coco_test_data": 200
+  },
+  "total_unique_dives": 3152
+}

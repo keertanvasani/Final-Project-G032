@@ -1,0 +1,4 @@
+# Cached predictions and reports are regenerable from run_phase_a.py.
+# Committing them would bloat the repo with large derived artifacts.
+*.jsonl
+*_report.json
