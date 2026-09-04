@@ -457,6 +457,21 @@ than reframed after the fact.
 - Pre-register: metrics, comparisons, and the primary hypothesis are fixed
   in this document before the test run.
 
+### 8.1 Log — J_test baseline read (Phase A)
+
+`J_test` was evaluated once against the frozen `IMAGE_V1_BASELINE` to
+establish the baseline reference (`results/phase_a/RESULTS.md`). Measuring a
+frozen system cannot tune it, so this is the canonical single use of the
+test set, and those numbers are the locked baseline row of the final
+comparison — not a design input.
+
+From here, all Phase 1 design and exploration (calibration, uncertainty
+features, OOD scorer, abstention aggregation, meta-confidence, policy
+learning, ablations) uses **`J_cal` / `J_policy` only**. `J_test` is not read
+again until the final agent-vs-baseline evaluation. Re-examining it during
+design would convert every confirmatory result in §7.4 into an exploratory
+one.
+
 ---
 
 ## 9. Resolved decisions
