@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deep-Sea Creature Detection &amp; Classification</title>
+<meta name="description" content="A multi-model ensemble that detects and classifies deep-sea creatures using dual YOLOv8 detectors, Weighted Boxes Fusion and a ResNet18 species classifier.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐟</text></svg>">
+</head>
+<body>
+
+<!-- ══════════════════ NAV ══════════════════ -->
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a class="nav__brand" href="#top">
+      <span class="nav__mark" aria-hidden="true"></span>
+      <span>DeepSea<strong>Detect</strong></span>
+    </a>
+    <nav class="nav__links">
+      <a href="#how">How it works</a>
+      <a href="#unique">What's different</a>
+      <a href="#try">Try it</a>
+      <a href="#research">Findings</a>
+      <a href="#performance">Performance</a>
+    </nav>
+    <div class="nav__status" id="healthPill" data-state="checking">
+      <span class="dot"></span><span id="healthText">Checking…</span>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<section class="hero">
+  <div class="hero__bg" aria-hidden="true">
+    <div class="ray ray--1"></div><div class="ray ray--2"></div><div class="ray ray--3"></div>
+    <div class="motes" id="motes"></div>
+  </div>
+
+  <div class="hero__content">
+    <div class="badge">Final Year Project · Computer Vision</div>
+    <h1 class="hero__title">
+      Deep-sea creature<br><span class="grad">detection &amp; classification</span>
+    </h1>
+    <p class="hero__sub">
+      An agentic ensemble pipeline that finds and identifies underwater species.
+      Two YOLOv8 detectors are fused with Weighted Boxes Fusion, then every region
+      is re-checked by a ResNet18 classifier — and the system explains every decision it made.
+      It scores 0.78&nbsp;mAP in the aquarium it was trained for. The research is about what
+      it does <em>outside</em> that aquarium, and whether it knows when it doesn't know.
+    </p>
+    <div class="hero__cta">
+      <a href="#try" class="btn btn--primary">Try it with your photo</a>
+      <a href="#research" class="btn btn--ghost">See what we measured</a>
+    </div>
+
+    <ul class="hero__stats">
+      <li><b>3</b><span>neural models</span></li>
+      <li><b>8,151</b><span>deep-sea frames evaluated</span></li>
+      <li><b>88.8%</b><span>wrong, out of domain</span></li>
+      <li><b>0.806</b><span>novelty AUROC recovered</span></li>
+    </ul>
+  </div>
+  <div class="hero__scroll" aria-hidden="true"><span></span></div>
+</section>
+
+<!-- ══════════════════ HOW IT WORKS ══════════════════ -->
+<section id="how" class="section">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">Architecture</span>
+      <h2>One image, five stages, three models</h2>
+      <p class="lede">
+        A single detector produces confident-looking mistakes. This pipeline makes two
+        independent detectors argue, fuses what they agree on, and then asks a dedicated
+        classifier to confirm the species before anything is shown to you.
+        Each of the four decision points below was built so its effect could be
+        <em>measured</em> rather than assumed — and
+        <a href="#research">measuring them</a> is where the research findings come from.
+      </p>
+    </div>
+
+    <!-- Pipeline diagram with agentic decision points -->
+    <div class="pipe" role="img" aria-label="Flowchart. Input image. Decision: is the image usable as-is — yes skips enhancement, no applies CLAHE and sharpening. Both YOLOv8n and YOLOv8s detect, fused by Weighted Boxes Fusion. Decision: is average confidence at least 0.40 — no ends the run with a review warning, yes continues. Decision: is a box ambiguous between 0.40 and 0.75 — yes triggers a zoomed re-check. ResNet18 classifies each crop. Decision: do detector and classifier agree — yes applies an agreement boost, no runs a three-way majority vote. Output is the annotated image plus the decision trace.">
+
+      <div class="pipe__row">
+        <div class="node node--io"><span class="node__k">Input</span><b>Your image</b></div>
+      </div>
+      <div class="pipe__arrow"></div>
+
+      <!-- ◆ Decision 1 — quality -->
+      <div class="dec">
+        <div class="dec__head">
+          <span class="dec__dia" aria-hidden="true"></span>
+          <div>
+            <span class="dec__k">Decision 1 · before any model runs</span>
+            <b>Is the image usable as it is?</b>
+          </div>
+        </div>
+        <p class="dec__meta">Laplacian blur variance, mean brightness, contrast</p>
+        <div class="dec__paths">
+          <div class="path path--yes">
+            <span class="path__lab">Yes</span>
+            <p>Skip enhancement — the image is passed through untouched</p>
+          </div>
+          <div class="path path--no">
+            <span class="path__lab">No</span>
+            <p>CLAHE on the L channel if brightness &lt; 50 or &gt; 200, or contrast &lt; 30. Sharpening kernel if blur variance &lt; 100</p>
+          </div>
+        </div>
+      </div>
+      <div class="pipe__arrow"></div>
+
+      <div class="pipe__split"><span></span><span></span></div>
+      <div class="pipe__row pipe__row--two">
+        <div class="node node--model"><span class="node__k">Detector A</span><b>YOLOv8n</b><small>seed 42 · mosaic only</small></div>
+        <div class="node node--model"><span class="node__k">Detector B</span><b>YOLOv8s</b><small>seed 123 · + mixup, copy-paste</small></div>
+      </div>
+      <div class="pipe__merge"><span></span><span></span></div>
+
+      <div class="pipe__row">
+        <div class="node node--fuse"><span class="node__k">Fusion</span><b>Weighted Boxes Fusion</b><small>IoU 0.55 · weights [2, 1]</small></div>
+      </div>
+      <div class="pipe__arrow"></div>
+
+      <!-- ◆ Decision 2 — the refusal gate -->
+      <div class="dec dec--gate">
+        <div class="dec__head">
+          <span class="dec__dia" aria-hidden="true"></span>
+          <div>
+            <span class="dec__k">Decision 2 · the refusal gate</span>
+            <b>Was the image readable, and did any box reach 0.40?</b>
+          </div>
+        </div>
+        <p class="dec__meta">Two independent checks — quality, then confidence</p>
+        <div class="dec__paths">
+          <div class="path path--yes">
+            <span class="path__lab">Yes</span>
+            <p>Continue to refinement and classification, carrying <em>every</em> box forward — the gate decides whether to analyse the image, not which detections survive</p>
+          </div>
+          <div class="path path--stop">
+            <span class="path__lab">No</span>
+            <p><b>The run ends here.</b> Classification never executes. A warning banner is returned instead of boxes, and the reason is written to the trace.</p>
+            <span class="path__guard">Fails if blur variance &lt; 5.0 — the image is unreadable, so nothing found in it can be trusted — <b>or</b> if no single box reaches 0.40</span>
+            <span class="path__end">Terminal state · flagged for human review</span>
+          </div>
+        </div>
+      </div>
+      <div class="pipe__arrow"></div>
+
+      <!-- ◆ Decision 3 — zoom & re-check -->
+      <div class="dec">
+        <div class="dec__head">
+          <span class="dec__dia" aria-hidden="true"></span>
+          <div>
+            <span class="dec__k">Decision 3 · per bounding box</span>
+            <b>Is this box ambiguous — between 0.40 and 0.75?</b>
+          </div>
+        </div>
+        <div class="dec__paths">
+          <div class="path path--no">
+            <span class="path__lab">No</span>
+            <p>Confident or already rejected — keep the box unchanged</p>
+          </div>
+          <div class="path path--yes">
+            <span class="path__lab">Yes</span>
+            <p>Re-crop with 15% padding and run <em>both</em> detectors plus WBF again at higher effective resolution</p>
+            <span class="path__guard">Replaced only if the new box overlaps the original at IoU &gt; 0.4 <b>and</b> scores strictly higher — otherwise the original survives</span>
+          </div>
+        </div>
+      </div>
+      <div class="pipe__arrow"></div>
+
+      <div class="pipe__row">
+        <div class="node node--crop"><span class="node__k">Crop</span><b>Region extraction</b><small>5% padding per box</small></div>
+      </div>
+      <div class="pipe__arrow"></div>
+
+      <div class="pipe__row">
+        <div class="node node--model"><span class="node__k">Classifier</span><b>ResNet18</b><small>224px · 7-class species head</small></div>
+      </div>
+      <div class="pipe__arrow"></div>
+
+      <!-- ◆ Decision 4 — disagreement -->
+      <div class="dec">
+        <div class="dec__head">
+          <span class="dec__dia" aria-hidden="true"></span>
+          <div>
+            <span class="dec__k">Decision 4 · per object</span>
+            <b>Do the detector and the classifier agree?</b>
+          </div>
+        </div>
+        <div class="dec__paths">
+          <div class="path path--yes">
+            <span class="path__lab">Yes</span>
+            <p>Combined score = 0.6 × detector + 0.4 × classifier, then a 10% agreement boost, capped at 1.0</p>
+          </div>
+          <div class="path path--no">
+            <span class="path__lab">No</span>
+            <p>Re-classify on a looser 15% crop, then take a majority vote across three opinions — detector, classifier at 5%, classifier at 15%</p>
+            <span class="path__guard">Two matching opinions win. A three-way deadlock defaults to the detector, and no agreement boost is applied</span>
+          </div>
+        </div>
+      </div>
+      <div class="pipe__arrow"></div>
+
+      <div class="pipe__row">
+        <div class="node node--io"><span class="node__k">Output</span><b>Annotated image + decision trace</b></div>
+      </div>
+    </div>
+
+    <p class="pipe__note">
+      Four decision points, and only the first and last run on every image. Which branches fire
+      depends entirely on what the photo turns out to contain — the trace under your result
+      shows the exact route your image took.
+    </p>
+
+  </div>
+</section>
+
+<!-- ══════════════════ WHAT MAKES IT DIFFERENT ══════════════════ -->
+<section id="unique" class="section section--divide">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">Contribution</span>
+      <h2>Why this isn't just a YOLO wrapper</h2>
+      <p class="lede">
+        Wrapping a pretrained detector in an API is a solved problem. The work here is in what
+        happens <em>around</em> the detector — a second opinion on every object, guard conditions
+        on every refinement, and the willingness to return nothing at all. And then the part
+        most pipelines skip: checking whether any of it actually earns its place.
+      </p>
+    </div>
+
+    <div class="vs">
+      <table class="vstable">
+        <caption class="sr-only">Comparison between a typical single-model pipeline and this system</caption>
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Typical single-model pipeline</th>
+            <th scope="col" class="vstable__mine">This system</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Detection</th>
+            <td>One YOLO model</td>
+            <td class="vstable__mine">Two, trained to fail <em>differently</em>, merged with Weighted Boxes Fusion</td>
+          </tr>
+          <tr>
+            <th scope="row">Species decision</th>
+            <td>Whatever the detector says</td>
+            <td class="vstable__mine">A separate ResNet18 re-examines every crop</td>
+          </tr>
+          <tr>
+            <th scope="row">Poor-quality input</th>
+            <td>Predicts anyway</td>
+            <td class="vstable__mine">Stops below 0.40 and reports the measured reason</td>
+          </tr>
+          <tr>
+            <th scope="row">Control flow</th>
+            <td>Fixed sequence, identical for every image</td>
+            <td class="vstable__mine">Branches at four decision points based on the image</td>
+          </tr>
+          <tr>
+            <th scope="row">Confidence</th>
+            <td>Raw detector score</td>
+            <td class="vstable__mine">Weighted fusion of both models, plus an agreement boost</td>
+          </tr>
+          <tr>
+            <th scope="row">Explainability</th>
+            <td>Bounding boxes only</td>
+            <td class="vstable__mine">Every branch taken is emitted as a readable trace</td>
+          </tr>
+          <tr>
+            <th scope="row">Adaptive actions</th>
+            <td>Assumed to help, never checked</td>
+            <td class="vstable__mine">Forced on every detection and scored against <em>not</em> doing them</td>
+          </tr>
+          <tr>
+            <th scope="row">Evaluation</th>
+            <td>Random train/test split</td>
+            <td class="vstable__mine">Dive-disjoint splits after auditing 57.3% leakage out of the supplied ones</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="uniq">
+      <article class="uniq__card">
+        <div class="uniq__n">01</div>
+        <h3>Two detectors trained to disagree</h3>
+        <p>
+          The nano and small models differ by far more than capacity. They were trained from
+          different seeds — 42 and 123 — on deliberately different augmentation recipes, with
+          the small model adding mixup at 0.15 and copy-paste at 0.1. Decorrelated failure is
+          the entire point: two models that make the <em>same</em> mistakes tell you nothing by
+          agreeing. WBF then weights them <b>[2, 1]</b> rather than averaging them blindly.
+        </p>
+      </article>
+
+      <article class="uniq__card">
+        <div class="uniq__n">02</div>
+        <h3>A model allowed to say "no"</h3>
+        <p>
+          Two independent checks can stop the run: an unreadable image (blur variance below
+          <b>5.0</b>), or no single box reaching <b>0.40</b>. Classification never executes, no
+          boxes are drawn, and the response carries a warning naming the measured value that
+          caused it. Returning nothing is treated as a correct outcome rather than a failure —
+          which matters in underwater imaging, where a confident wrong species is far more
+          damaging than an honest refusal. Keeping the two checks separate matters as much as
+          having them: judging on an average let a crowd of weak detections outvote strong ones,
+          and let an unreadable frame pass whenever the detector was confidently wrong about noise.
+        </p>
+      </article>
+
+      <article class="uniq__card">
+        <div class="uniq__n">03</div>
+        <h3>Refinement that has to prove itself</h3>
+        <p>
+          The zoom-and-recheck pass may only replace a box when the re-detected region overlaps
+          the original at <b>IoU &gt; 0.4</b> <em>and</em> scores strictly higher. Both guards
+          must hold or the original survives untouched. A second look is permitted to improve an
+          answer, never to invent one — so the refinement step cannot drift onto a different object.
+        </p>
+      </article>
+
+      <article class="uniq__card">
+        <div class="uniq__n">04</div>
+        <h3>Three opinions, not two</h3>
+        <p>
+          When the detector and classifier disagree, the system doesn't pick a favourite. It
+          manufactures a third opinion by re-classifying a looser 15% crop, then takes a majority
+          vote. Two matching opinions win; a genuine three-way deadlock defaults to the detector
+          and forfeits the agreement boost. Either way the disagreement is surfaced in the
+          result rather than quietly resolved.
+        </p>
+      </article>
+    </div>
+
+    <div class="claim">
+      <p>
+        None of this requires a larger model or more data. It is the same 638-image dataset most
+        aquarium-detection projects use — the difference is entirely in the decision logic
+        wrapped around it, and every one of those decisions is visible in the output.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ TRY IT ══════════════════ -->
+<section id="try" class="section section--alt">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">Live inference</span>
+      <h2>Test the model</h2>
+      <p class="lede">
+        Upload an underwater photo and the full pipeline runs on it — detection, fusion,
+        classification and annotation. Everything runs locally on this machine.
+      </p>
+    </div>
+
+    <div class="try">
+      <!-- Drop zone -->
+      <div class="drop" id="dropZone" tabindex="0" role="button"
+           aria-label="Upload an image: click to browse or drag a file here">
+        <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" hidden>
+
+        <div class="drop__idle" id="dropIdle">
+          <div class="drop__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 16V4m0 0L8 8m4-4 4 4" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M3 15v3a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3v-3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <p class="drop__title">Drop an image here</p>
+          <p class="drop__hint">or <span class="link">browse your files</span></p>
+          <p class="drop__meta">JPEG, PNG or WebP · up to 20 MB</p>
+        </div>
+
+        <div class="drop__preview" id="dropPreview" hidden>
+          <img id="previewImg" alt="Selected image preview">
+          <div class="drop__file">
+            <span id="fileName">image.jpg</span>
+            <button type="button" class="chipbtn" id="clearBtn">Change</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Samples -->
+      <div class="samples">
+        <p class="samples__label">No photo handy? Try a sample:</p>
+        <div class="samples__row" id="sampleRow">
+          <button class="sample" data-src="assets/samples/fish.jpg" data-name="fish.jpg">
+            <img src="assets/samples/fish.jpg" alt=""><span>Fish</span></button>
+          <button class="sample" data-src="assets/samples/jellyfish.jpg" data-name="jellyfish.jpg">
+            <img src="assets/samples/jellyfish.jpg" alt=""><span>Jellyfish</span></button>
+          <button class="sample" data-src="assets/samples/penguins.jpg" data-name="penguins.jpg">
+            <img src="assets/samples/penguins.jpg" alt=""><span>Penguins</span></button>
+          <button class="sample" data-src="assets/samples/shark.jpg" data-name="shark.jpg">
+            <img src="assets/samples/shark.jpg" alt=""><span>Shark</span></button>
+          <button class="sample" data-src="assets/samples/starfish.jpg" data-name="starfish.jpg">
+            <img src="assets/samples/starfish.jpg" alt=""><span>Starfish</span></button>
+          <button class="sample sample--warn" data-src="assets/samples/blurry.jpg" data-name="blurry.jpg">
+            <img src="assets/samples/blurry.jpg" alt=""><span>Blurry ⚠</span></button>
+        </div>
+      </div>
+
+      <!-- Action -->
+      <div class="actions">
+        <button class="btn btn--primary btn--lg" id="analyzeBtn" disabled>
+          <span id="analyzeLabel">Analyse image</span>
+        </button>
+        <p class="actions__note" id="actionNote">Select an image to begin.</p>
+      </div>
+
+      <!-- Error -->
+      <div class="alert alert--error" id="errorBox" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5" stroke-linecap="round"/>
+        </svg>
+        <div><strong id="errorTitle">Something went wrong</strong><p id="errorMsg"></p></div>
+      </div>
+
+      <!-- Loading -->
+      <div class="loading" id="loadingBox" hidden>
+        <div class="loading__bar"><span></span></div>
+        <ol class="loading__steps" id="loadingSteps">
+          <li data-step="quality">Assessing image quality</li>
+          <li data-step="detect">Running dual YOLOv8 detection</li>
+          <li data-step="fuse">Fusing boxes (WBF)</li>
+          <li data-step="classify">Classifying species (ResNet18)</li>
+          <li data-step="annotate">Drawing annotations</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ RESULTS ══════════════════ -->
+<section id="results" class="section" hidden>
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">Result</span>
+      <h2 id="resultTitle">Detection complete</h2>
+      <p class="lede" id="resultLede"></p>
+    </div>
+
+    <!-- Review warning -->
+    <div class="alert alert--warn" id="reviewBox" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M12 4 2.5 20h19L12 4Z" stroke-linejoin="round"/><path d="M12 10v4M12 17v.5" stroke-linecap="round"/>
+      </svg>
+      <div>
+        <strong>Flagged for human review</strong>
+        <p id="reviewMsg"></p>
+        <p class="alert__sub">The model deliberately declined to guess rather than return an unreliable result — this is the low-confidence gate doing its job.</p>
+      </div>
+    </div>
+
+    <!-- Image comparison -->
+    <div class="compare">
+      <div class="compare__head">
+        <div class="toggle" role="tablist" aria-label="Image view">
+          <button role="tab" class="toggle__btn is-active" data-view="annotated">Annotated</button>
+          <button role="tab" class="toggle__btn" data-view="original">Original</button>
+          <button role="tab" class="toggle__btn" data-view="split">Side by side</button>
+        </div>
+        <a class="btn btn--sm" id="downloadBtn" download="annotated.png">Download PNG</a>
+      </div>
+      <div class="compare__stage" id="compareStage" data-view="annotated">
+        <figure class="compare__pane compare__pane--orig">
+          <img id="origImg" alt="Original uploaded image">
+          <figcaption>Original</figcaption>
+        </figure>
+        <figure class="compare__pane compare__pane--annot">
+          <img id="annotImg" alt="Annotated result with detected creatures">
+          <figcaption>Annotated</figcaption>
+        </figure>
+      </div>
+      <div class="legend">
+        <span class="legend__item"><i style="background:rgb(83,200,0)"></i>High ≥ 0.75</span>
+        <span class="legend__item"><i style="background:rgb(255,191,0)"></i>Medium ≥ 0.50</span>
+        <span class="legend__item"><i style="background:rgb(255,100,0)"></i>Low &lt; 0.50</span>
+        <span class="legend__note">Box colour matches the model's combined confidence.</span>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats" id="statsRow"></div>
+
+    <!-- Detections + trace -->
+    <div class="results__grid">
+      <div class="panel">
+        <div class="panel__head">
+          <h3>Detections</h3>
+          <span class="panel__count" id="detCount">0</span>
+        </div>
+        <div class="panel__body" id="detList"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel__head">
+          <h3>Agent decision trace</h3>
+          <span class="panel__hint">what the model chose to do</span>
+        </div>
+        <div class="panel__body">
+          <ol class="trace" id="traceList"></ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="results__foot">
+      <button class="btn btn--ghost" id="againBtn">Analyse another image</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ RESEARCH FINDINGS ══════════════════ -->
+<section id="research" class="section section--divide">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">Research</span>
+      <h2>What happens when this system leaves the aquarium</h2>
+      <p class="lede">
+        The metrics below this section are in-domain: bright tanks, seven familiar species.
+        The research question is what happens on real deep-sea footage, where two-thirds of the
+        organisms belong to taxa the model has no label for. Every figure here is measured on
+        dive-disjoint splits with bootstrap confidence intervals — and each one identifies a
+        specific, addressable weakness rather than a general shortfall.
+      </p>
+    </div>
+
+    <div class="metrics">
+      <table class="mtable">
+        <caption class="sr-only">What the frozen pipeline does on deep-sea footage</caption>
+        <thead>
+          <tr>
+            <th scope="col">Running the frozen pipeline on 3,261 deep-sea frames</th>
+            <th scope="col">Measured</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Organisms outside its seven-class vocabulary</th><td>66.1%</td></tr>
+          <tr><th scope="row">Answers it gives that are wrong</th><td>88.8%</td></tr>
+          <tr><th scope="row">Accepted detections that are confident labels on unknown taxa</th><td>21.3%</td></tr>
+          <tr><th scope="row">Detections that are correct</th><td>10.7%</td></tr>
+          <tr><th scope="row">Boxes drawn on empty water</th><td>41.9%</td></tr>
+        </tbody>
+      </table>
+
+      <div class="metrics__note">
+        <h4>Why the threshold cannot be tuned to fix it</h4>
+        <p>
+          Selective risk stays near <b>0.89</b> across the whole useful range, and even at the
+          very lowest coverage the floor is about <b>0.65</b>. The out-of-distribution error rate
+          <em>rises</em> as the confidence bar is raised — the system's most confident deep-sea
+          detections are among its most likely to be confident misidentifications. Confidence
+          carries almost no information about correctness here, so no threshold makes it reliable.
+        </p>
+      </div>
+    </div>
+
+    <div class="charts">
+      <figure class="chart">
+        <img src="assets/metrics/research-risk-coverage.png" alt="Risk and out-of-distribution error against coverage on deep-sea imagery" loading="lazy">
+        <figcaption>Risk stays flat as coverage falls — the gap this work exists to close</figcaption>
+      </figure>
+      <figure class="chart">
+        <img src="assets/metrics/research-ood-comparison.png" alt="Novelty detection AUROC using aquarium features versus retrained features" loading="lazy">
+        <figcaption>Novelty detection: confidence is at chance, the representation is not</figcaption>
+      </figure>
+      <figure class="chart">
+        <img src="assets/metrics/research-feature-weights.png" alt="Standardised feature weights learned by the accept/abstain policy" loading="lazy">
+        <figcaption>The learned gate weights novelty ~5&times; over confidence</figcaption>
+      </figure>
+    </div>
+
+    <div class="metrics">
+      <table class="mtable">
+        <caption class="sr-only">Results of the uncertainty layer</caption>
+        <thead>
+          <tr><th scope="col">What was added</th><th scope="col">Before</th><th scope="col">After</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Calibration error (ECE)</th><td>0.467</td><td class="best">0.016</td></tr>
+          <tr><th scope="row">Novelty detection (AUROC)</th><td>0.553</td><td class="best">0.806</td></tr>
+          <tr><th scope="row">Wrong answers at 30% coverage</th><td>0.846</td><td class="best">0.776</td></tr>
+          <tr><th scope="row">Confident errors on unknown taxa</th><td>0.373</td><td class="best">0.182</td></tr>
+          <tr><th scope="row">Detector mAP@50 on deep-sea imagery</th><td>0.652</td><td class="best">0.688</td></tr>
+        </tbody>
+      </table>
+
+      <div class="metrics__note">
+        <h4>The finding the numbers point at</h4>
+        <p>
+          Raw confidence said <b>0.558</b> while the system was right <b>9%</b> of the time.
+          After calibration the score means what it says — though the honest reading is that
+          calibration mostly restores <em>honesty</em>, not skill, since it keeps the ranking a
+          constant predictor could not. The larger result is that the information needed to
+          recognise <em>“this is something new”</em> survives inside the network and is destroyed
+          by the layer that turns it into a species name. A policy trained on the data found
+          this on its own, weighting that novelty signal about five times more heavily than
+          confidence. Recovering signal the architecture was discarding is a design fix, and it
+          is the direction the next phase builds on.
+        </p>
+      </div>
+    </div>
+
+    <div class="charts">
+      <figure class="chart">
+        <img src="assets/metrics/research-action-effects.png" alt="Effect of each discretionary action on correctness, with confidence intervals" loading="lazy">
+        <figcaption>Every adaptive action, measured against not doing it — none is above zero</figcaption>
+      </figure>
+      <figure class="chart">
+        <img src="assets/metrics/research-degradation.png" alt="Selective risk and abstention rate against degradation severity" loading="lazy">
+        <figcaption>Only blur is noticed. Colour shift and compression are not</figcaption>
+      </figure>
+      <figure class="chart">
+        <img src="assets/metrics/research-learned-gate.png" alt="Risk-coverage curves for the baseline, calibrated and learned gates" loading="lazy">
+        <figcaption>The learned gate, across the full coverage range</figcaption>
+      </figure>
+    </div>
+
+    <div class="metrics__note">
+      <h4>The result that sets up the next phase</h4>
+      <p>
+        Each of the four adaptive actions — enhance, zoom, reclassify, re-detect — was forced on
+        every detection and scored against ground truth, on both the frozen and the retrained
+        model. <b>None of them earns its compute.</b> Enhancement does most damage on precisely
+        the images its own trigger selects; zoom changes almost nothing; the majority vote is no
+        better than simply trusting the classifier.
+      </p>
+      <p>
+        Nobody had checked. These rules were written on intuition and have been firing on faith
+        since the system was built, and this is the first time any of them has been held to a
+        counterfactual. Removing the layer makes the system <em>more</em> accurate and cheaper —
+        an immediate win — but the durable result is the method: an action that cannot beat not
+        doing it has no business in the pipeline, and the learned policy now has a measured
+        baseline to beat instead of a set of assumptions to imitate.
+      </p>
+    </div>
+
+    <div class="metrics__note">
+      <h4>Where this goes next</h4>
+      <p>
+        Three things follow directly. The novelty signal is strongest in the classifier's
+        <em>logits</em> once it is trained on the right domain, so an explicit open-set training
+        objective is the obvious next step rather than a post-hoc score. The learned gate
+        currently decides only accept-or-abstain; extending it to choose <em>which</em> evidence
+        to acquire, under a per-image compute budget, is the remaining contribution. And the
+        same framework carries to video unchanged — a track is just an observation with more
+        evidence attached, which is where the temporal work begins.
+      </p>
+    </div>
+
+    <p class="species__note">
+      Full numbers, confidence intervals and caveats: <code>experiments/RESULTS.md</code>.
+      Every result here is on a development split; the held-out test set has been read once, to
+      establish the baseline above, and not since — so none of these numbers has been tuned
+      against the data they will finally be judged on.
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════ PERFORMANCE ══════════════════ -->
+<section id="performance" class="section section--alt">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">Evaluation</span>
+      <h2>Measured performance — in the aquarium</h2>
+      <p class="lede">
+        Both detectors were trained for 50 epochs on the Aquarium Combined dataset
+        with early-stopping patience of 15. Metrics are on the held-out validation split,
+        and describe the domain the model was built for — not the deep-sea results above.
+      </p>
+    </div>
+
+    <div class="metrics">
+      <table class="mtable">
+        <caption class="sr-only">Detection metrics for both YOLOv8 variants</caption>
+        <thead>
+          <tr><th scope="col">Metric</th><th scope="col">YOLOv8n <small>nano</small></th><th scope="col">YOLOv8s <small>small</small></th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">mAP@50</th><td>0.750</td><td class="best">0.780</td></tr>
+          <tr><th scope="row">mAP@50-95</th><td>0.450</td><td class="best">0.487</td></tr>
+          <tr><th scope="row">Precision</th><td>0.794</td><td class="best">0.813</td></tr>
+          <tr><th scope="row">Recall</th><td>0.677</td><td class="best">0.730</td></tr>
+          <tr><th scope="row">Training time</th><td>27 min</td><td>48 min</td></tr>
+        </tbody>
+      </table>
+
+      <div class="metrics__note">
+        <h4>Why keep the weaker model?</h4>
+        <p>
+          The nano detector is not redundant. It was trained with a different seed and a
+          different augmentation recipe, so it fails on different images than the small
+          variant. Weighted Boxes Fusion exploits exactly that — it weights nano at
+          <b>2</b> against small at <b>1</b> because agreement between two dissimilar
+          models is stronger evidence than a single confident score.
+        </p>
+      </div>
+    </div>
+
+    <div class="charts">
+      <figure class="chart">
+        <img src="assets/metrics/pr-curve.png" alt="Precision-recall curve per class for YOLOv8s" loading="lazy">
+        <figcaption>Precision–recall by class (YOLOv8s)</figcaption>
+      </figure>
+      <figure class="chart">
+        <img src="assets/metrics/confusion-matrix.png" alt="Normalised confusion matrix across the seven species" loading="lazy">
+        <figcaption>Normalised confusion matrix</figcaption>
+      </figure>
+      <figure class="chart">
+        <img src="assets/metrics/training-curves.png" alt="Loss and metric curves across 50 training epochs" loading="lazy">
+        <figcaption>Training curves — 50 epochs</figcaption>
+      </figure>
+    </div>
+
+    <div class="species">
+      <h3>The seven classes</h3>
+      <div class="species__row">
+        <span class="tag">fish</span><span class="tag">jellyfish</span><span class="tag">penguin</span>
+        <span class="tag">puffin</span><span class="tag">shark</span><span class="tag">starfish</span>
+        <span class="tag">stingray</span>
+      </div>
+      <p class="species__note">
+        Dataset: <a href="https://universe.roboflow.com/brad-dwyer/aquarium-combined" target="_blank" rel="noopener">Aquarium Combined</a>
+        — 638 images from Henry Doorly Zoo and the National Aquarium, licensed CC BY 4.0.
+      </p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__inner">
+    <p><strong>Deep-Sea Creature Detection &amp; Classification System</strong></p>
+    <p class="foot__meta">
+      YOLOv8 (Ultralytics) · Weighted Boxes Fusion (ensemble-boxes) · ResNet18 (torchvision) · FastAPI
+    </p>
+    <p class="foot__meta">Academic project. Dataset © its original authors under CC BY 4.0.</p>
+  </div>
+</footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>

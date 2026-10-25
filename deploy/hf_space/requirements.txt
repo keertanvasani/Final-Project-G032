@@ -1,0 +1,17 @@
+# Runtime dependencies for the CPU-only Hugging Face Space.
+#
+# torch and torchvision are deliberately absent: the Dockerfile installs the
+# CPU wheels from PyTorch's CPU index first, and listing them here would let pip
+# resolve them from PyPI instead, pulling in the multi-gigabyte CUDA build.
+#
+# Versions match the environment the weights were trained and verified in.
+# The .pt files are pickles of ultralytics classes, so ultralytics is pinned.
+ultralytics==8.4.138
+ensemble-boxes==1.0.9
+fastapi==0.141.1
+uvicorn[standard]==0.52.4
+python-multipart==0.0.32
+pydantic==2.13.5
+opencv-python-headless==5.0.0
+pillow==12.3.0
+numpy==2.3.5

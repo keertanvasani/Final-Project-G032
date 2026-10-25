@@ -496,6 +496,44 @@ def run_agentic_pipeline(
     detections = ensemble.fuse_detections(res_a, res_b, enhanced_image.shape[:2])
     wbf_ms = (time.perf_counter() - t_wbf) * 1000.0
 
+<<<<<<< Updated upstream
+=======
+    # Reject boxes drawn on the burned-in telemetry overlay.
+    #
+    # Submersible video stamps a timestamp, depth and copyright watermark into
+    # the pixels. Glyph strokes are small, bright and high-contrast, which is
+    # the signature the detector learned to fire on, and the CLAHE step above
+    # makes it worse: raising contrast on a washed-out frame amplifies the
+    # overlay along with everything else. On frame 03 of the demo set the raw
+    # detector scores a digit group at 0.26, the classifier calls it fish at
+    # 0.99, and the agreement boost carries it out at 61% — a species record
+    # with a timestamp inside the box.
+    #
+    # This runs before the statistics and the refusal gate below, so a text box
+    # can never be the detection that makes an image look worth analysing.
+    t_txt = time.perf_counter()
+    detections, text_boxes = text_overlay.filter_text_detections(
+        enhanced_image, detections)
+    text_filter_ms = (time.perf_counter() - t_txt) * 1000.0
+    if text_boxes:
+        # Two routes reject a box, and the trace says which. Quoting a glyph
+        # percentage for the second would be false: that route fires on a box too
+        # small to contain a measurable run of text.
+        by_glyphs = [d for d in text_boxes if not d.get("text_reason")]
+        by_block = [d for d in text_boxes if d.get("text_reason")]
+        parts = []
+        if by_glyphs:
+            worst = max(d["text_coverage"] for d in by_glyphs)
+            parts.append(f"{len(by_glyphs)} on glyphs (up to {worst:.0%} of the box)")
+        if by_block:
+            parts.append(f"{len(by_block)} character-sized and inside an overlay block")
+        trace.append(
+            f"Action: Rejected {len(text_boxes)} detection(s) drawn on burned-in "
+            f"overlay text — {'; '.join(parts)}. These are video telemetry, "
+            f"not organisms"
+        )
+
+>>>>>>> Stashed changes
     # Detector confidence statistics
     if detections:
         confidences = [d["confidence"] for d in detections]
