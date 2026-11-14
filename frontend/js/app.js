@@ -308,6 +308,8 @@
     renderStats(summary, needsReview);
     renderDetections(dets);
     renderTrace(trace);
+    // Threshold slider and Known/Unknown badge live in interactive.js.
+    if (window.DeepSeaInteractive) window.DeepSeaInteractive.render(data, previewUrl);
 
     el.results.hidden = false;
 
@@ -378,19 +380,22 @@
       return;
     }
 
-    el.detList.innerHTML = dets.map((d) => {
+    const X = window.DeepSeaInteractive;
+    el.detList.innerHTML = dets.map((d, idx) => {
       const c = d.combined_confidence;
       const label = d.agreement ? d.detector_class : `${d.detector_class} / ${d.classifier_class}`;
       const bar = (v) =>
         `<div class="det__bar"><i style="width:${(v * 100).toFixed(1)}%;background:${confColor(v)}"></i></div>`;
 
       return `
-        <article class="det" style="border-left-color:${confColor(c)}">
+        <article class="det" data-idx="${idx}" style="border-left-color:${confColor(c)}">
           <div class="det__top">
             <span class="det__id">${d.id}</span>
             <span class="det__name">${escapeHtml(label)}</span>
+            ${X ? X.badge(d) : ''}
             <span class="det__conf" style="color:${confColor(c)}">${pct(c)}</span>
           </div>
+          ${X ? X.truthChip(d) : ''}
           <div class="det__models">
             <div class="det__model">
               <span class="who">Detector</span>

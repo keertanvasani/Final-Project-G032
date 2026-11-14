@@ -6,7 +6,7 @@
 <title>Deep-Sea Creature Detection &amp; Classification</title>
 <meta name="description" content="A multi-model ensemble that detects and classifies deep-sea creatures using dual YOLOv8 detectors, Weighted Boxes Fusion and a ResNet18 species classifier.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="css/styles.css?v=2">
+<link rel="stylesheet" href="css/styles.css?v=3">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐟</text></svg>">
 </head>
 <body>
@@ -486,13 +486,17 @@
     <div class="compare">
       <div class="compare__head">
         <div class="toggle" role="tablist" aria-label="Image view">
-          <button role="tab" class="toggle__btn is-active" data-view="annotated">Annotated</button>
+          <button role="tab" class="toggle__btn is-active" data-view="live">Interactive</button>
+          <button role="tab" class="toggle__btn" data-view="annotated">Annotated</button>
           <button role="tab" class="toggle__btn" data-view="original">Original</button>
           <button role="tab" class="toggle__btn" data-view="split">Side by side</button>
         </div>
         <a class="btn btn--sm" id="downloadBtn" download="annotated.png">Download PNG</a>
       </div>
-      <div class="compare__stage" id="compareStage" data-view="annotated">
+      <div class="compare__stage" id="compareStage" data-view="live">
+        <figure class="compare__pane compare__pane--live">
+          <canvas id="liveCanvas" role="img" aria-label="Result with a confidence threshold you can adjust"></canvas>
+        </figure>
         <figure class="compare__pane compare__pane--orig">
           <img id="origImg" alt="Original uploaded image">
           <figcaption>Original</figcaption>
@@ -507,6 +511,38 @@
         <span class="legend__item"><i style="background:rgb(255,191,0)"></i>Medium ≥ 0.50</span>
         <span class="legend__item"><i style="background:rgb(255,100,0)"></i>Low &lt; 0.50</span>
         <span class="legend__note">Box colour matches the model's combined confidence.</span>
+      </div>
+
+      <!-- Confidence threshold -->
+      <div class="thr" id="thrControls" hidden>
+        <div class="thr__row">
+          <label for="thrSlider" class="thr__label">Confidence threshold <output id="thrValue" for="thrSlider">0.00</output></label>
+          <div class="thr__quick" role="group" aria-label="Threshold presets">
+            <button type="button" class="chipbtn" data-thr="0">Show all</button>
+            <button type="button" class="chipbtn" data-thr="40">System gate 0.40</button>
+            <button type="button" class="chipbtn" data-thr="75">High 0.75</button>
+          </div>
+        </div>
+        <input type="range" id="thrSlider" class="thr__slider" min="0" max="100" step="1" value="0"
+               aria-describedby="thrCount thrQuality">
+        <div class="thr__read">
+          <span id="thrCount" class="thr__count" aria-live="polite"></span>
+          <span id="thrQuality" class="thr__quality" aria-live="polite" hidden></span>
+        </div>
+        <div class="thr__opts">
+          <label id="colorByTruthWrap" class="thr__opt" hidden>
+            <input type="checkbox" id="colorByTruth"> Colour by correctness
+          </label>
+          <label id="hideUnknownWrap" class="thr__opt" hidden>
+            <input type="checkbox" id="hideUnknown"> Hide unknown
+          </label>
+        </div>
+        <p class="thr__note" id="thrNote" hidden>
+          Correct or wrong comes from the dataset's own labels for this frame. Try dragging the
+          slider up: across 8,151 deep-sea frames the error rate stays near 89% at every
+          threshold, because the confidence score does not tell right from wrong.
+          <a href="#research">See the findings</a>.
+        </p>
       </div>
     </div>
 
@@ -814,6 +850,7 @@
 </footer>
 
 <script src="js/api.js"></script>
-<script src="js/app.js"></script>
+<script src="js/interactive.js?v=1"></script>
+<script src="js/app.js?v=3"></script>
 </body>
 </html>
