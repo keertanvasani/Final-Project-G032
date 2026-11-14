@@ -69,6 +69,7 @@ class InferenceBreakdown(BaseModel):
     detector_small_ms: float = Field(..., description="YOLOv8s forward pass (initial detection)")
     detection_ms: float = Field(..., description="Both detector arms combined")
     wbf_ms: float = Field(..., description="Weighted Boxes Fusion (initial)")
+    text_filter_ms: float = Field(0.0, description="Rejecting boxes drawn on burned-in overlay text")
     zoom_ms: float = Field(..., description="Zoom-and-recheck action, including nested detection")
     classification_ms: float = Field(..., description="First classification pass over all crops")
     reclassification_ms: float = Field(..., description="Disagreement tie-break passes")

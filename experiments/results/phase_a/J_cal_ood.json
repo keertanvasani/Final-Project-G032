@@ -1,0 +1,43 @@
+{
+  "J_cal": {
+    "role": "OOD_dev",
+    "role_classes": [
+      "coral/sea-anemone",
+      "ray",
+      "sea-cucumber",
+      "squat-lobster",
+      "squid"
+    ],
+    "counts": {
+      "ood_role": 74,
+      "id": 158,
+      "excluded_other_role": 81,
+      "excluded_far": 65,
+      "unmatched": 2881
+    },
+    "n": 232,
+    "ood_base_rate": 0.31896551724137934,
+    "scores": {
+      "msp (classifier conf)": {
+        "auroc": 0.4692524803284297,
+        "fpr_at_95tpr": 0.9810126582278481,
+        "aupr_out": 0.3208383609425046
+      },
+      "detector conf": {
+        "auroc": 0.43559698939445773,
+        "fpr_at_95tpr": 0.9683544303797469,
+        "aupr_out": 0.28742334592888275
+      },
+      "combined conf (deployed)": {
+        "auroc": 0.43833390352377694,
+        "fpr_at_95tpr": 0.9683544303797469,
+        "aupr_out": 0.30509669385835425
+      },
+      "disagreement-weighted": {
+        "auroc": 0.4917892576120424,
+        "fpr_at_95tpr": 0.9620253164556962,
+        "aupr_out": 0.3260398495650631
+      }
+    }
+  }
+}

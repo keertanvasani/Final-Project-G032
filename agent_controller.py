@@ -20,6 +20,7 @@ from ultralytics import YOLO
 
 import config
 import ensemble
+import text_overlay
 from pipeline import EnsemblePipeline
 
 logger = logging.getLogger("deep_sea_agent")
@@ -408,6 +409,7 @@ def run_perception(
     res_a, res_b = ensemble.run_dual_detection(
         enhanced_image, pipeline.model_a, pipeline.model_b, timings=det_timings)
     detections = ensemble.fuse_detections(res_a, res_b, enhanced_image.shape[:2])
+    detections, _ = text_overlay.filter_text_detections(enhanced_image, detections)
 
     if not detections:
         return {"detections": [], "status": "empty", "quality": quality_state,
@@ -496,8 +498,6 @@ def run_agentic_pipeline(
     detections = ensemble.fuse_detections(res_a, res_b, enhanced_image.shape[:2])
     wbf_ms = (time.perf_counter() - t_wbf) * 1000.0
 
-<<<<<<< Updated upstream
-=======
     # Reject boxes drawn on the burned-in telemetry overlay.
     #
     # Submersible video stamps a timestamp, depth and copyright watermark into
@@ -533,7 +533,6 @@ def run_agentic_pipeline(
             f"not organisms"
         )
 
->>>>>>> Stashed changes
     # Detector confidence statistics
     if detections:
         confidences = [d["confidence"] for d in detections]
@@ -642,7 +641,7 @@ def run_agentic_pipeline(
     # components always reconcile against the measured total. A large residual
     # is itself a signal that something is unaccounted for.
     measured_ms = (
-        preprocessing_ms + detection_ms + wbf_ms + zoom_ms
+        preprocessing_ms + detection_ms + wbf_ms + text_filter_ms + zoom_ms
         + classification_ms + reclassification_ms + annotation_ms
     )
     agent_decision_ms = max(0.0, total_ms - measured_ms)
@@ -670,6 +669,7 @@ def run_agentic_pipeline(
             "detector_small_ms": round(detector_small_ms, 2),
             "detection_ms": round(detection_ms, 2),
             "wbf_ms": round(wbf_ms, 2),
+            "text_filter_ms": round(text_filter_ms, 2),
             "zoom_ms": round(zoom_ms, 2),
             "classification_ms": round(classification_ms, 2),
             "reclassification_ms": round(reclassification_ms, 2),

@@ -503,3 +503,174 @@ defensible statement is:
 
 > Evaluated on aquarium-domain imagery, under an abstention gate calibrated
 > on held-out data.
+
+---
+
+## 11. Phase B label space (on-domain retraining)
+
+Added 2026-09-04. §2.4 mapped the *aquarium* model's 7 classes onto Jedi.
+The retrained detector learns a Jedi-native label space instead, so that
+mapping does not apply to it and the §5 OOD partition — built for the
+aquarium model's 4 known classes — has to be rebuilt. Phase A results
+remain valid under §2.4; this section governs Phase B only.
+
+### 11.1 Known vs held-out taxa
+
+The 20 Jedi classes are severely long-tailed (27 to 4,074 annotations). The
+split is made on trainability: a class needs enough annotations to survive
+J_fit taking its share.
+
+| | classes | J_fit train annotations |
+|---|---|---|
+| **KNOWN** (8) | coral/sea-anemone, crab, crinoid, fish, sea-cucumber, shrimp, sponge, starfish | **2,926** |
+| **HELD-OUT UNSEEN** (11) | comb-jelly, jellyfish, octopus, ragworm, ray, sea-spider, shark, squat-lobster, squid, tunicate, urchin | — |
+| **FAR-OOD** (1) | machine | — |
+
+`jellyfish` and `shark` were KNOWN in Phase A and are held out in Phase B.
+This is deliberate — both are too rare in Jedi (451 and 78 annotations) to
+train a detector head on — but it means Phase A and Phase B known-class
+numbers are **not directly comparable**. Comparisons must be made within a
+phase.
+
+### 11.2 OOD role partition — maximin, not round-robin
+
+§5 partitioned OOD classes round-robin by descending total frequency. That
+was sound when the host splits were 30/30/40. Phase B carves J_fit out of
+J_cal and J_policy while J_test stays frozen, so the host splits are now
+roughly 12.5/12.5/40 and a class's *usable* annotations are only those
+falling inside its host split. Ranking on global totals starves dev and val.
+
+Greedy assignment on hosted counts fails worse: `jellyfish` alone carries 253
+J_test annotations, absorbs the entire OOD_test budget in one step, and
+leaves a **single-taxon OOD_test** — which measures whether the scorer
+rejects jellyfish, not whether it rejects taxa it has never seen.
+
+The partition is therefore chosen by exhaustive search over all 3^11
+assignments, maximising the **minimum** hosted annotation count across the
+three roles, subject to every role holding **at least 3 taxa**. Maximin
+protects the scarcest role; the class floor protects the novelty claim.
+
+| Role | Hosted by | Classes | Usable annotations |
+|---|---|---|---|
+| `OOD_dev` | `J_cal` | jellyfish, octopus, shark, squid, urchin | 118 |
+| `OOD_val` | `J_policy` | ray, sea-spider, squat-lobster | 117 |
+| `OOD_test` | `J_test` | comb-jelly, ragworm, tunicate | 144 |
+
+**Pre-registered limitation.** These budgets are small — Phase A had 487
+usable OOD annotations at test, Phase B has 144. AUROC and FPR@95TPR will
+carry wide confidence intervals, and they must be reported with those
+intervals rather than as point estimates. This is a measured consequence of
+choosing an 8-class known space: a 6-class space was quantified at 207
+usable test annotations for 9% fewer training annotations, and the 8-class
+space was chosen anyway, prioritising detector strength. Recording the
+trade-off here rather than discovering it at write-up time.
+
+### 11.3 J_fit excludes images containing held-out taxa
+
+An unlabelled organism in a training image teaches the detector that that
+taxon is background. If held-out taxa are present-but-unlabelled in J_fit,
+then rejecting them at test is *learned suppression*, not novelty handling —
+H3 would be false while every split remained nominally class-disjoint.
+
+18.0% of J_fit images contain at least one held-out taxon. They are dropped
+(2,445 → 2,005 images), which retains **97.0%** of known annotations. The
+claim is preserved at almost no cost, so this is the default in
+`coco_to_yolo.py`.
+
+### 11.4 Far-OOD is partly trained — known limitation
+
+24.0% of the retained J_fit images still contain unlabelled `machine`
+annotations. Excluding those too would cost a quarter of the training set,
+so they are kept. The consequence is that the detector learns ROV hardware
+as background, and far-OOD rejection is therefore **partly trained rather
+than purely novel**. Unlike §11.3 this is not cost-free to fix, so it is
+declared rather than corrected: the far-OOD number is a lower bound on
+difficulty and must not be reported as unseen-novelty performance.
+
+### 11.5 Early stopping uses a J_fit slice, never J_cal
+
+Model selection needs a validation set. Using `J_cal` would burn it — a
+calibration set that chose the checkpoint is no longer naive to the model,
+and temperature scaling fitted on it would be optimistically biased. `J_fit`
+is therefore split by dive into train (1,786 images) and val (219 images,
+76 of 757 dives). `J_cal` is untouched during training.
+
+### 11.6 Split provenance
+
+`J_test` is carried across **byte-identical** from the Phase A manifest, so
+the single-use discipline of §8 and the §8.1 read already logged against the
+aquarium baseline both remain valid. `J_fit` is carved from the Phase A
+J_cal ∪ J_policy dives; dives stay indivisible throughout.
+
+| Split | Images | Dives | Provenance |
+|---|---|---|---|
+| `J_fit` | 2,445 (2,005 after §11.3) | 810 | carved from Phase A cal+policy |
+| `J_cal` | 1,223 | 624 | re-carved |
+| `J_policy` | 1,222 | 624 | re-carved |
+| `J_test` | 3,261 | 1,094 | **frozen from Phase A** |
+
+Built by `make_splits_phase_b.py` → `splits/phase_b_splits.json`.
+
+### 11.7 Detector baselines
+
+YOLOv8n and YOLOv8s (3 seeds each) plus **RT-DETR** (3 seeds), so the
+comparison is not confined to one architecture family and a reviewer cannot
+dismiss the baseline as a 2023-era benchmark. RT-DETR is transformer-based
+and trains under a different recipe; on 8 GB of VRAM it is expected to need
+a reduced batch size, which is a compute-budget note, not a protocol change.
+
+### 11.8 Split proportions — deviation from §4.2, and the S_test re-partition
+
+Added 2026-09-05. Supersedes both §4.2's stated proportions for Phase B and
+the earlier frozen-`J_test` carve described in §11.6.
+
+**What changed and why.** The first Phase B split held `J_test` frozen from
+Phase A and carved `J_fit` out of the remaining cal+policy dives. That
+preserved the §8.1 read, but left `S_fit` at 25.7% of dives — roughly a third
+of §4.2's ~70%. The long tail starved: `crinoid` reached AP50 **0.036** across
+three seeds on 127 training annotations, while `sea-cucumber` reached 0.914 on
+170. A detector that cannot see one of its own classes is a poor substrate for
+every later phase, so the split was rebuilt.
+
+**Why not §4.2 literally.** §4.2's 70/10/7/7/6 assumes `S_test` only has to
+support detection metrics. Here it must *also* host `OOD_test` under the
+class-disjoint × dive-disjoint constraint of §5. Measured at 6% of dives,
+`OOD_test` holds **48 usable annotations across 4 taxa**, two of them with 4
+and 5. An AUROC on 48 samples cannot support H3, and H3 is one of only three
+pre-registered confirmatory hypotheses (§7.4).
+
+**Adopted proportions** (over dives, per §4.2's convention):
+
+| Split | §4.2 | Adopted | Realised images |
+|---|---|---|---|
+| `S_fit` | 70% | **55%** | 4,506 (3,740 after §11.3) |
+| `S_modelsel` | 10% | 10% | 742 (625 after §11.3) |
+| `S_cal` | 7% | **10%** | 889 |
+| `S_policy` | 7% | **10%** | 844 |
+| `S_test` | 6% | **15%** | 1,170 |
+
+Measured consequences of the three candidates:
+
+| Split | S_fit known anns | crinoid train anns | OOD_test anns |
+|---|---|---|---|
+| frozen-`J_test` carve | 3,209 | 127 | 144 |
+| §4.2 literal | 6,847 | 292 | **48** |
+| **adopted** | 5,411 | **226** | **114** |
+
+`crinoid` at 226 now exceeds `sea-cucumber`'s 170, which trained successfully,
+so the class should become learnable; `OOD_test` at 114 stays in the range
+Phase A operated in.
+
+**Test-set discipline — `S_test` is a new partition.** It is no longer Phase
+A's `J_test`, so the read logged in §8.1 does not cover it. That read was made
+against the *aquarium* baseline, a different model, and those images are
+excluded from all Phase B weight fitting, so the exposure is to experimenter
+knowledge rather than to weights. It is recorded here rather than left
+implicit. Phase B's `S_test` remains single-use and untouched until Phase 3.
+
+**Residual limitation.** `OOD_test`'s 114 annotations are dominated by
+`squat-lobster` (104); `ragworm` and `sea-spider` contribute 5 each. The role
+holds three taxa nominally but is effectively one. No split fixes this — all
+11 held-out taxa are rare, and spreading them across three small hosts leaves
+every role thin. It must be reported as a limitation on the novelty claim, not
+smoothed over.

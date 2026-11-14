@@ -1,0 +1,17 @@
+{
+  "fit": "J_cal",
+  "eval": "J_policy",
+  "n_actions": 3253,
+  "candidate_found": 1047,
+  "rule_kept": 305,
+  "rule_fired": 641,
+  "correct_no_zoom": 0.1085152167230249,
+  "correct_rule": 0.10913003381494006,
+  "rule_net_effect": 0.0006355569344851602,
+  "rule_net_ci95": [
+    -0.0012376621026414908,
+    0.0025142806237843777
+  ],
+  "mean_cost_ms": 29.529056255763912,
+  "value_model_fitted": false
+}

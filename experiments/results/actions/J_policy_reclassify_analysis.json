@@ -1,0 +1,47 @@
+{
+  "split": "J_policy",
+  "n": 3253,
+  "n_disagreements": 1370,
+  "rates_all": {
+    "rule": 0.11128189363664309,
+    "detector_only": 0.08976329541961267,
+    "classifier_only": 0.1085152167230249
+  },
+  "rates_disagreements": {
+    "rule": 0.10656934306569343,
+    "detector_only": 0.05547445255474453,
+    "classifier_only": 0.1
+  },
+  "bootstrap": {
+    "detector_only|disagreements": {
+      "delta": 0.05141754390327561,
+      "ci95": [
+        0.03138257026372989,
+        0.07221887296129245
+      ]
+    },
+    "detector_only|all detections": {
+      "delta": 0.021724953466483867,
+      "ci95": [
+        0.01371890895869484,
+        0.031115285174273366
+      ]
+    },
+    "classifier_only|disagreements": {
+      "delta": 0.006556489572287903,
+      "ci95": [
+        -0.002182137394427072,
+        0.015211829504705014
+      ]
+    },
+    "classifier_only|all detections": {
+      "delta": 0.002710674236622092,
+      "ci95": [
+        -0.0006178991057165454,
+        0.006511105814134486
+      ]
+    }
+  },
+  "mean_cost_ms": 5.187124087591242,
+  "total_cost_s": 7.1063600000000005
+}

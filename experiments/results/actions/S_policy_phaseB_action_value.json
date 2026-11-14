@@ -1,0 +1,35 @@
+{
+  "fit": "S_cal_phaseB",
+  "eval": "S_policy_phaseB",
+  "features": [
+    "conf_before",
+    "cls_conf_before",
+    "agreement_before",
+    "log_area",
+    "aspect_ratio",
+    "log_blur",
+    "log_n_dets"
+  ],
+  "weights": [
+    -0.004304160688665868,
+    0.00568697452450512,
+    0.002321450538066097,
+    -0.009470104839332626,
+    0.0074627202476981866,
+    0.0006415704060831419,
+    0.0065056416802184375,
+    0.004349143402938704
+  ],
+  "n_actions": 1343,
+  "candidate_found": 976,
+  "rule_kept": 316,
+  "rule_fired": 335,
+  "correct_no_zoom": 0.5137751303052867,
+  "correct_rule": 0.5100521221146687,
+  "rule_net_effect": -0.0037615060411506766,
+  "rule_net_ci95": [
+    -0.010072669137417337,
+    0.0022128002998067033
+  ],
+  "mean_cost_ms": 28.92723752792256
+}

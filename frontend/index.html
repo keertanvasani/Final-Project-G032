@@ -22,6 +22,7 @@
       <a href="#how">How it works</a>
       <a href="#unique">What's different</a>
       <a href="#try">Try it</a>
+      <a href="#research">Findings</a>
       <a href="#performance">Performance</a>
     </nav>
     <div class="nav__status" id="healthPill" data-state="checking">
@@ -48,22 +49,19 @@
       An agentic ensemble pipeline that finds and identifies underwater species.
       Two YOLOv8 detectors are fused with Weighted Boxes Fusion, then every region
       is re-checked by a ResNet18 classifier — and the system explains every decision it made.
+      It scores 0.78&nbsp;mAP in the aquarium it was trained for. The research is about what
+      it does <em>outside</em> that aquarium, and whether it knows when it doesn't know.
     </p>
     <div class="hero__cta">
-<<<<<<< Updated upstream
-      <a href="#try" class="btn btn--primary">Try it with your photo</a>
-      <a href="#how" class="btn btn--ghost">See how it works</a>
-=======
       <a href="#try" class="btn btn--primary">Try it with an image</a>
       <a href="#research" class="btn btn--ghost">See what we measured</a>
->>>>>>> Stashed changes
     </div>
 
     <ul class="hero__stats">
       <li><b>3</b><span>neural models</span></li>
-      <li><b>7</b><span>species classes</span></li>
-      <li><b>0.78</b><span>mAP@50</span></li>
-      <li><b>638</b><span>training images</span></li>
+      <li><b>8,151</b><span>deep-sea frames evaluated</span></li>
+      <li><b>88.8%</b><span>wrong, out of domain</span></li>
+      <li><b>0.806</b><span>novelty AUROC recovered</span></li>
     </ul>
   </div>
   <div class="hero__scroll" aria-hidden="true"><span></span></div>
@@ -79,6 +77,9 @@
         A single detector produces confident-looking mistakes. This pipeline makes two
         independent detectors argue, fuses what they agree on, and then asks a dedicated
         classifier to confirm the species before anything is shown to you.
+        Each of the four decision points below was built so its effect could be
+        <em>measured</em> rather than assumed — and
+        <a href="#research">measuring them</a> is where the research findings come from.
       </p>
     </div>
 
@@ -229,7 +230,8 @@
       <p class="lede">
         Wrapping a pretrained detector in an API is a solved problem. The work here is in what
         happens <em>around</em> the detector — a second opinion on every object, guard conditions
-        on every refinement, and the willingness to return nothing at all.
+        on every refinement, and the willingness to return nothing at all. And then the part
+        most pipelines skip: checking whether any of it actually earns its place.
       </p>
     </div>
 
@@ -273,6 +275,16 @@
             <th scope="row">Explainability</th>
             <td>Bounding boxes only</td>
             <td class="vstable__mine">Every branch taken is emitted as a readable trace</td>
+          </tr>
+          <tr>
+            <th scope="row">Adaptive actions</th>
+            <td>Assumed to help, never checked</td>
+            <td class="vstable__mine">Forced on every detection and scored against <em>not</em> doing them</td>
+          </tr>
+          <tr>
+            <th scope="row">Evaluation</th>
+            <td>Random train/test split</td>
+            <td class="vstable__mine">Dive-disjoint splits after auditing 57.3% leakage out of the supplied ones</td>
           </tr>
         </tbody>
       </table>
@@ -508,15 +520,163 @@
   </div>
 </section>
 
+<!-- ══════════════════ RESEARCH FINDINGS ══════════════════ -->
+<section id="research" class="section section--divide">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">Research</span>
+      <h2>What happens when this system leaves the aquarium</h2>
+      <p class="lede">
+        The metrics below this section are in-domain: bright tanks, seven familiar species.
+        The research question is what happens on real deep-sea footage, where two-thirds of the
+        organisms belong to taxa the model has no label for. Every figure here is measured on
+        dive-disjoint splits with bootstrap confidence intervals — and each one identifies a
+        specific, addressable weakness rather than a general shortfall.
+      </p>
+    </div>
+
+    <div class="metrics">
+      <table class="mtable">
+        <caption class="sr-only">What the frozen pipeline does on deep-sea footage</caption>
+        <thead>
+          <tr>
+            <th scope="col">Running the frozen pipeline on 3,261 deep-sea frames</th>
+            <th scope="col">Measured</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Organisms outside its seven-class vocabulary</th><td>66.1%</td></tr>
+          <tr><th scope="row">Answers it gives that are wrong</th><td>88.8%</td></tr>
+          <tr><th scope="row">Accepted detections that are confident labels on unknown taxa</th><td>21.3%</td></tr>
+          <tr><th scope="row">Detections that are correct</th><td>10.7%</td></tr>
+          <tr><th scope="row">Boxes drawn on empty water</th><td>41.9%</td></tr>
+        </tbody>
+      </table>
+
+      <div class="metrics__note">
+        <h4>Why the threshold cannot be tuned to fix it</h4>
+        <p>
+          Selective risk stays near <b>0.89</b> across the whole useful range, and even at the
+          very lowest coverage the floor is about <b>0.65</b>. The out-of-distribution error rate
+          <em>rises</em> as the confidence bar is raised — the system's most confident deep-sea
+          detections are among its most likely to be confident misidentifications. Confidence
+          carries almost no information about correctness here, so no threshold makes it reliable.
+        </p>
+      </div>
+    </div>
+
+    <div class="charts">
+      <figure class="chart">
+        <img src="assets/metrics/research-risk-coverage.png" alt="Risk and out-of-distribution error against coverage on deep-sea imagery" loading="lazy">
+        <figcaption>Risk stays flat as coverage falls — the gap this work exists to close</figcaption>
+      </figure>
+      <figure class="chart">
+        <img src="assets/metrics/research-ood-comparison.png" alt="Novelty detection AUROC using aquarium features versus retrained features" loading="lazy">
+        <figcaption>Novelty detection: confidence is at chance, the representation is not</figcaption>
+      </figure>
+      <figure class="chart">
+        <img src="assets/metrics/research-feature-weights.png" alt="Standardised feature weights learned by the accept/abstain policy" loading="lazy">
+        <figcaption>The learned gate weights novelty ~5&times; over confidence</figcaption>
+      </figure>
+    </div>
+
+    <div class="metrics">
+      <table class="mtable">
+        <caption class="sr-only">Results of the uncertainty layer</caption>
+        <thead>
+          <tr><th scope="col">What was added</th><th scope="col">Before</th><th scope="col">After</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Calibration error (ECE)</th><td>0.467</td><td class="best">0.016</td></tr>
+          <tr><th scope="row">Novelty detection (AUROC)</th><td>0.553</td><td class="best">0.806</td></tr>
+          <tr><th scope="row">Wrong answers at 30% coverage</th><td>0.846</td><td class="best">0.776</td></tr>
+          <tr><th scope="row">Confident errors on unknown taxa</th><td>0.373</td><td class="best">0.182</td></tr>
+          <tr><th scope="row">Detector mAP@50 on deep-sea imagery</th><td>0.652</td><td class="best">0.688</td></tr>
+        </tbody>
+      </table>
+
+      <div class="metrics__note">
+        <h4>The finding the numbers point at</h4>
+        <p>
+          Raw confidence said <b>0.558</b> while the system was right <b>9%</b> of the time.
+          After calibration the score means what it says — though the honest reading is that
+          calibration mostly restores <em>honesty</em>, not skill, since it keeps the ranking a
+          constant predictor could not. The larger result is that the information needed to
+          recognise <em>“this is something new”</em> survives inside the network and is destroyed
+          by the layer that turns it into a species name. A policy trained on the data found
+          this on its own, weighting that novelty signal about five times more heavily than
+          confidence. Recovering signal the architecture was discarding is a design fix, and it
+          is the direction the next phase builds on.
+        </p>
+      </div>
+    </div>
+
+    <div class="charts">
+      <figure class="chart">
+        <img src="assets/metrics/research-action-effects.png" alt="Effect of each discretionary action on correctness, with confidence intervals" loading="lazy">
+        <figcaption>Every adaptive action, measured against not doing it — none is above zero</figcaption>
+      </figure>
+      <figure class="chart">
+        <img src="assets/metrics/research-degradation.png" alt="Selective risk and abstention rate against degradation severity" loading="lazy">
+        <figcaption>Only blur is noticed. Colour shift and compression are not</figcaption>
+      </figure>
+      <figure class="chart">
+        <img src="assets/metrics/research-learned-gate.png" alt="Risk-coverage curves for the baseline, calibrated and learned gates" loading="lazy">
+        <figcaption>The learned gate, across the full coverage range</figcaption>
+      </figure>
+    </div>
+
+    <div class="metrics__note">
+      <h4>The result that sets up the next phase</h4>
+      <p>
+        Each of the four adaptive actions — enhance, zoom, reclassify, re-detect — was forced on
+        every detection and scored against ground truth, on both the frozen and the retrained
+        model. <b>None of them earns its compute.</b> Enhancement does most damage on precisely
+        the images its own trigger selects; zoom changes almost nothing; the majority vote is no
+        better than simply trusting the classifier.
+      </p>
+      <p>
+        Nobody had checked. These rules were written on intuition and have been firing on faith
+        since the system was built, and this is the first time any of them has been held to a
+        counterfactual. Removing the layer makes the system <em>more</em> accurate and cheaper —
+        an immediate win — but the durable result is the method: an action that cannot beat not
+        doing it has no business in the pipeline, and the learned policy now has a measured
+        baseline to beat instead of a set of assumptions to imitate.
+      </p>
+    </div>
+
+    <div class="metrics__note">
+      <h4>Where this goes next</h4>
+      <p>
+        Three things follow directly. The novelty signal is strongest in the classifier's
+        <em>logits</em> once it is trained on the right domain, so an explicit open-set training
+        objective is the obvious next step rather than a post-hoc score. The learned gate
+        currently decides only accept-or-abstain; extending it to choose <em>which</em> evidence
+        to acquire, under a per-image compute budget, is the remaining contribution. And the
+        same framework carries to video unchanged — a track is just an observation with more
+        evidence attached, which is where the temporal work begins.
+      </p>
+    </div>
+
+    <p class="species__note">
+      Full numbers, confidence intervals and caveats: <code>experiments/RESULTS.md</code>.
+      Every result here is on a development split; the held-out test set has been read once, to
+      establish the baseline above, and not since — so none of these numbers has been tuned
+      against the data they will finally be judged on.
+    </p>
+  </div>
+</section>
+
 <!-- ══════════════════ PERFORMANCE ══════════════════ -->
 <section id="performance" class="section section--alt">
   <div class="wrap">
     <div class="section__head">
       <span class="eyebrow">Evaluation</span>
-      <h2>Measured performance</h2>
+      <h2>Measured performance — in the aquarium</h2>
       <p class="lede">
         Both detectors were trained for 50 epochs on the Aquarium Combined dataset
-        with early-stopping patience of 15. Metrics are on the held-out validation split.
+        with early-stopping patience of 15. Metrics are on the held-out validation split,
+        and describe the domain the model was built for — not the deep-sea results above.
       </p>
     </div>
 

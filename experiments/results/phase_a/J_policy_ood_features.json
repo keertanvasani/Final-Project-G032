@@ -1,0 +1,31 @@
+{
+  "split": "J_policy",
+  "mode": "ground-truth crops (feasibility probe)",
+  "n_id": 1200,
+  "results": {
+    "far:mahalanobis": {
+      "auroc": 0.9440694444444444,
+      "fpr_at_95tpr": 0.2791666666666667,
+      "n_id": 1200,
+      "n_ood": 1200
+    },
+    "far:energy": {
+      "auroc": 0.6024875,
+      "fpr_at_95tpr": 0.9458333333333333,
+      "n_id": 1200,
+      "n_ood": 1200
+    },
+    "near:mahalanobis": {
+      "auroc": 0.7967004504504505,
+      "fpr_at_95tpr": 0.6975,
+      "n_id": 1200,
+      "n_ood": 592
+    },
+    "near:energy": {
+      "auroc": 0.47057995495495497,
+      "fpr_at_95tpr": 0.9416666666666667,
+      "n_id": 1200,
+      "n_ood": 592
+    }
+  }
+}

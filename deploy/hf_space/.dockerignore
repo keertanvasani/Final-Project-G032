@@ -1,6 +1,0 @@
-.git
-.gitattributes
-__pycache__
-*.pyc
-outputs
-README.md

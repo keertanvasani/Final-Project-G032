@@ -1,0 +1,84 @@
+{
+  "J_cal": {
+    "role": "OOD_dev",
+    "role_classes": [
+      "coral/sea-anemone",
+      "ray",
+      "sea-cucumber",
+      "squat-lobster",
+      "squid"
+    ],
+    "counts": {
+      "ood_role": 74,
+      "id": 158,
+      "excluded_other_role": 81,
+      "excluded_far": 65,
+      "unmatched": 2881
+    },
+    "n": 232,
+    "ood_base_rate": 0.31896551724137934,
+    "scores": {
+      "msp (classifier conf)": {
+        "auroc": 0.4692524803284297,
+        "fpr_at_95tpr": 0.9810126582278481,
+        "aupr_out": 0.3208383609425046
+      },
+      "detector conf": {
+        "auroc": 0.43559698939445773,
+        "fpr_at_95tpr": 0.9683544303797469,
+        "aupr_out": 0.28742334592888275
+      },
+      "combined conf (deployed)": {
+        "auroc": 0.43833390352377694,
+        "fpr_at_95tpr": 0.9683544303797469,
+        "aupr_out": 0.30509669385835425
+      },
+      "disagreement-weighted": {
+        "auroc": 0.4917892576120424,
+        "fpr_at_95tpr": 0.9620253164556962,
+        "aupr_out": 0.3260398495650631
+      }
+    }
+  },
+  "J_policy": {
+    "role": "OOD_val",
+    "role_classes": [
+      "crab",
+      "crinoid",
+      "octopus",
+      "tunicate",
+      "urchin"
+    ],
+    "counts": {
+      "ood_role": 44,
+      "id": 178,
+      "excluded_other_role": 145,
+      "excluded_far": 85,
+      "unmatched": 2803
+    },
+    "n": 222,
+    "ood_base_rate": 0.1981981981981982,
+    "scores": {
+      "msp (classifier conf)": {
+        "auroc": 0.5326864147088867,
+        "fpr_at_95tpr": 0.9662921348314607,
+        "aupr_out": 0.28428559820992694
+      },
+      "detector conf": {
+        "auroc": 0.633682328907048,
+        "fpr_at_95tpr": 0.8764044943820225,
+        "aupr_out": 0.3050032781103009
+      },
+      "combined conf (deployed)": {
+        "auroc": 0.6186159346271706,
+        "fpr_at_95tpr": 0.9213483146067416,
+        "aupr_out": 0.33667429692787226
+      },
+      "disagreement-weighted": {
+        "auroc": 0.5028089887640449,
+        "fpr_at_95tpr": 0.9662921348314607,
+        "aupr_out": 0.2778250739975153
+      }
+    }
+  }
+}
