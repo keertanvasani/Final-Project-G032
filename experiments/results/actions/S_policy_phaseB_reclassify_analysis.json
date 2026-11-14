@@ -1,0 +1,47 @@
+{
+  "split": "S_policy_phaseB",
+  "n": 1343,
+  "n_disagreements": 416,
+  "rates_all": {
+    "rule": 0.5189873417721519,
+    "detector_only": 0.49888309754281457,
+    "classifier_only": 0.5137751303052867
+  },
+  "rates_disagreements": {
+    "rule": 0.2403846153846154,
+    "detector_only": 0.17548076923076922,
+    "classifier_only": 0.22355769230769232
+  },
+  "bootstrap": {
+    "detector_only|disagreements": {
+      "delta": 0.06610881462831633,
+      "ci95": [
+        0.006837581575711708,
+        0.12647637078569862
+      ]
+    },
+    "detector_only|all detections": {
+      "delta": 0.020331647595906246,
+      "ci95": [
+        0.0024015868745952225,
+        0.038405406275140774
+      ]
+    },
+    "classifier_only|disagreements": {
+      "delta": 0.016538778200079,
+      "ci95": [
+        -0.01602294156284431,
+        0.05149898373983739
+      ]
+    },
+    "classifier_only|all detections": {
+      "delta": 0.005172892554387589,
+      "ci95": [
+        -0.006209154868409614,
+        0.016087849831274755
+      ]
+    }
+  },
+  "mean_cost_ms": 5.724903846153846,
+  "total_cost_s": 2.38156
+}

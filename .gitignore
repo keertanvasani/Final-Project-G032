@@ -10,6 +10,14 @@ share/
 __pycache__/
 *.py[cod]
 *$py.class
+*.pyo
+
+# --- Distribution / Packaging ---
+dist/
+build/
+*.egg-info/
+*.egg
+.eggs/
 
 # --- IDEs / Editors ---
 .vscode/
@@ -20,21 +28,72 @@ __pycache__/
 *.njsproj
 *.sln
 *.swp
+*.sublime-project
+*.sublime-workspace
 
 # --- Large Datasets & Cropped Data ---
 data/
 classifier_data/
+JediOrganismDetectionDataset/
 
-# --- Trained Weights / Local Models ---
+# --- Trained Weights / Model Files ---
 models/
-yolov8*.pt
-best_classifier.pth
+weights/
+*.pt
+*.pth
+*.onnx
+*.tflite
 class_names.json
 
 # --- Log Files ---
 *.log
 logs/
 
-# --- System-specific files ---
+# --- Environment / Secrets ---
 .env
+.env.*
 .roboflow/
+
+# --- Training & Experiment Outputs ---
+runs/
+outputs/
+experiments/yolo_phase_b/
+experiments/presentation_figures/
+experiments/RESULTS_GUIDE.pdf
+
+# --- Large Binary / Transfer Artefacts ---
+fyp-assets.tar
+fyp-assets.tar.sha256
+__MACOSX/
+*.heic
+*.tar
+*.tar.gz
+*.zip
+
+# --- Presentation / Report generated files ---
+paper/Team_32_Tag_4_Phase_2_FILLED.pptx
+
+# --- Local AI/editor configuration ---
+.claude/
+
+# --- Demo images (large) ---
+demo_images/
+
+# --- Jupyter Notebook checkpoints ---
+.ipynb_checkpoints/
+
+# --- pytest / coverage ---
+.pytest_cache/
+.coverage
+htmlcov/
+
+# --- Derived training data (regenerable from the datasets) ---
+experiments/classifier_crops_phase_b/
+
+# --- Deployment: replay recordings are produced by tools/record_demo.py ---
+deploy/static_space/recorded/
+deploy/hf_space/
+
+# --- Local drafts and presentation material ---
+paper/
+*.pptx

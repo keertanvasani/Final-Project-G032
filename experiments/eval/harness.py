@@ -110,6 +110,10 @@ def match_and_classify(
 
         rec = {
             "det_index": di,
+            # Kept so a downstream analysis can re-crop the region without
+            # re-running detection — feature-space OOD scoring needs the pixels,
+            # and re-detecting a split to recover boxes costs ~10 minutes.
+            "bbox": [round(float(v), 2) for v in dbox],
             "combined_confidence": det["combined_confidence"],
             "predicted_class": det["classifier_class"],
             "detector_confidence": det.get("detector_confidence"),

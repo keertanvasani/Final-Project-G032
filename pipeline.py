@@ -29,6 +29,7 @@ from ultralytics import YOLO
 
 import config
 import ensemble
+import text_overlay
 from classifier import SpeciesClassifier, _DummyClassifier, build_classifier
 
 logger = logging.getLogger(__name__)
@@ -188,6 +189,16 @@ class EnsemblePipeline:
         fused: list[dict[str, Any]] = ensemble.fuse_detections(
             results_a, results_b, img_shape
         )
+        # Burned-in video overlay — timestamp, depth, watermark — reads to the
+        # detector as a cluster of small bright objects. Drop those boxes before
+        # anything downstream treats them as organisms. Applied here as well as
+        # in the agentic controller so the guarantee does not depend on which
+        # entry point a caller uses.
+        # Its cost falls inside fusion_ms here; the agentic controller, which is
+        # what the web app runs, reports it separately as text_filter_ms.
+        fused, text_boxes = text_overlay.filter_text_detections(image, fused)
+        if text_boxes:
+            logger.info("Suppressed %d detection(s) on overlay text.", len(text_boxes))
         fusion_ms: float = (time.perf_counter() - t0) * 1000.0
 
         # 3. Crop & classify ─────────────────────────────────────────

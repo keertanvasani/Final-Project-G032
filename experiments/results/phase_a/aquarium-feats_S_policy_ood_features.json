@@ -1,0 +1,65 @@
+{
+  "manifest": "phase_b_splits.json",
+  "classifier": "D:\\Final-Project-Phase-1\\models\\classifier\\best_classifier.pth",
+  "fit_split": "S_cal",
+  "eval_split": "S_policy",
+  "mode": "ground-truth crops",
+  "results": {
+    "S_cal:far:mahalanobis": {
+      "auroc": 0.8330778951896964,
+      "fpr_at_95tpr": 0.5848861283643892,
+      "in_sample": true,
+      "n_id": 966,
+      "n_ood": 385
+    },
+    "S_cal:far:energy": {
+      "auroc": 0.5890538033395176,
+      "fpr_at_95tpr": 0.9213250517598344,
+      "in_sample": true,
+      "n_id": 966,
+      "n_ood": 385
+    },
+    "S_cal:near:mahalanobis": {
+      "auroc": 0.6688588478869809,
+      "fpr_at_95tpr": 0.9130434782608695,
+      "in_sample": true,
+      "n_id": 966,
+      "n_ood": 102
+    },
+    "S_cal:near:energy": {
+      "auroc": 0.491210977144481,
+      "fpr_at_95tpr": 0.9596273291925466,
+      "in_sample": true,
+      "n_id": 966,
+      "n_ood": 102
+    },
+    "S_policy:far:mahalanobis": {
+      "auroc": 0.8163421047538205,
+      "fpr_at_95tpr": 0.5532381997804611,
+      "in_sample": false,
+      "n_id": 911,
+      "n_ood": 397
+    },
+    "S_policy:far:energy": {
+      "auroc": 0.6414215286437523,
+      "fpr_at_95tpr": 0.9330406147091108,
+      "in_sample": false,
+      "n_id": 911,
+      "n_ood": 397
+    },
+    "S_policy:near:mahalanobis": {
+      "auroc": 0.6504395814660772,
+      "fpr_at_95tpr": 0.7848518111964874,
+      "in_sample": false,
+      "n_id": 911,
+      "n_ood": 109
+    },
+    "S_policy:near:energy": {
+      "auroc": 0.5532986233496813,
+      "fpr_at_95tpr": 0.9187705817782656,
+      "in_sample": false,
+      "n_id": 911,
+      "n_ood": 109
+    }
+  }
+}

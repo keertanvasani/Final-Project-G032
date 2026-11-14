@@ -1,0 +1,41 @@
+{
+  "split": "S_policy_phaseB",
+  "n_images": 844,
+  "rule_fire_rate": 0.5308056872037915,
+  "total_tp": {
+    "raw": 656,
+    "enhanced": 608,
+    "hires": 637
+  },
+  "mean_ms": {
+    "raw": 34.95793838862559,
+    "enhanced": 32.0196682464455,
+    "hires": 45.04691943127962
+  },
+  "bootstrap": {
+    "ENHANCE|all images": {
+      "delta_tp_per_image": -0.057212152474370344,
+      "ci95": [
+        -0.09091408043109463,
+        -0.029069415507629984
+      ],
+      "n": 844
+    },
+    "ENHANCE|images the rule fires on": {
+      "delta_tp_per_image": -0.10692880554691686,
+      "ci95": [
+        -0.16973335205641887,
+        -0.057213788039209006
+      ],
+      "n": 448
+    },
+    "FULL_IMAGE_REDETECT|all images": {
+      "delta_tp_per_image": -0.02271189871516475,
+      "ci95": [
+        -0.04244143877413821,
+        -0.0013611462736096076
+      ],
+      "n": 844
+    }
+  }
+}
