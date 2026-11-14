@@ -30,7 +30,12 @@ Remove-Item $srvLog, $tunLog -ErrorAction SilentlyContinue
 
 # Keep the machine awake while this runs: a sleeping laptop drops the tunnel.
 Add-Type -Namespace Win32 -Name Power -MemberDefinition '[DllImport("kernel32.dll")] public static extern uint SetThreadExecutionState(uint f);'
-[void][Win32.Power]::SetThreadExecutionState(0x80000001)   # ES_CONTINUOUS | ES_SYSTEM_REQUIRED
+# The flags are [uint32] casts of decimal values on purpose: PowerShell reads the hex
+# literal 0x80000001 as a negative Int32, which the API rejects, and with
+# $ErrorActionPreference = "Stop" that would abort the whole script.
+[uint32]$ES_CONTINUOUS = 2147483648                                    # 0x80000000
+[uint32]$ES_HOLD       = $ES_CONTINUOUS -bor 1                         # | ES_SYSTEM_REQUIRED
+[void][Win32.Power]::SetThreadExecutionState($ES_HOLD)
 
 $server = $null; $tunnel = $null
 try {
@@ -87,7 +92,7 @@ try {
   Wait-Process -Id $tunnel.Id
 }
 finally {
-  [void][Win32.Power]::SetThreadExecutionState(0x80000000)   # ES_CONTINUOUS: release the awake request
+  [void][Win32.Power]::SetThreadExecutionState($ES_CONTINUOUS)   # release the awake request
   foreach ($proc in @($tunnel, $server)) {
     if ($proc -and -not $proc.HasExited) { Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue }
   }
