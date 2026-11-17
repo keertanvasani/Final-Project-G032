@@ -22,7 +22,7 @@ from typing import Any, Optional
 
 import cv2
 import numpy as np
-from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi import FastAPI, File, HTTPException, Query, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
@@ -53,6 +53,10 @@ class DetectionResult(BaseModel):
     classifier_confidence: float = Field(..., description="Species classifier confidence score")
     combined_confidence: float = Field(..., description="Weighted combined confidence score")
     agreement: bool = Field(..., description="Whether detector and classifier agree on class")
+    novelty: Optional[dict[str, Any]] = Field(
+        None, description="Known/Unknown verdict from the classifier energy score (deep-sea profile)")
+    gt: Optional[dict[str, Any]] = Field(
+        None, description="Outcome against the dataset labels, when the upload is a JEDI frame")
 
 
 class InferenceBreakdown(BaseModel):
@@ -96,6 +100,10 @@ class PredictionSummary(BaseModel):
 
 class PredictionResponse(BaseModel):
     """Full prediction response with annotated image, detections, and summary."""
+    profile: str = Field("aquarium", description="Model profile that produced this result")
+    enhanced: bool = Field(True, description="Whether conditional enhancement (D1) was allowed")
+    ground_truth: Optional[dict[str, Any]] = Field(
+        None, description="Dataset labels for this image, when it is a JEDI frame")
     annotated_image: str = Field(..., description="Base64-encoded annotated PNG image")
     detections: list[DetectionResult]
     summary: PredictionSummary
@@ -108,12 +116,16 @@ class HealthResponse(BaseModel):
     models_loaded: bool
     device: str
     model_details: dict[str, bool]
+    profiles: dict[str, Any] = Field(default_factory=dict,
+                                     description="Loaded model profiles and their status")
+    default_profile: str = ""
 
 
 # ──────────────────────────────────────────────
-# Global pipeline reference
+# Loaded pipelines, one per model profile
 # ──────────────────────────────────────────────
-pipeline = None
+pipelines: dict[str, Any] = {}
+pipeline = None   # the default profile's pipeline, kept for older callers
 
 
 # ──────────────────────────────────────────────
@@ -132,15 +144,19 @@ async def lifespan(app: FastAPI):
 
     load_start = time.perf_counter()
 
-    try:
-        from pipeline import EnsemblePipeline
-        pipeline = EnsemblePipeline()
-        load_time = (time.perf_counter() - load_start) * 1000
-        logger.info(f"  All models loaded in {load_time:.0f}ms")
-        logger.info(f"  Model status: {pipeline.get_models_status()}")
-    except Exception as e:
-        logger.error(f"  Failed to load models: {e}", exc_info=True)
-        logger.warning("  Server will start but /predict will return 503")
+    from pipeline import EnsemblePipeline
+    for name in config.MODEL_PROFILES:
+        try:
+            pipelines[name] = EnsemblePipeline(profile=name)
+            logger.info(f"  Profile '{name}': {pipelines[name].get_models_status()}")
+        except Exception as e:
+            logger.error(f"  Failed to load profile '{name}': {e}", exc_info=True)
+    pipeline = pipelines.get(config.DEFAULT_PROFILE) or next(iter(pipelines.values()), None)
+    load_time = (time.perf_counter() - load_start) * 1000
+    if pipeline is None:
+        logger.warning("  No profile loaded — /predict will return 503")
+    else:
+        logger.info(f"  Models loaded in {load_time:.0f}ms; profiles: {list(pipelines)}")
 
     logger.info("=" * 60)
     logger.info("  Server ready — accepting requests")
@@ -151,6 +167,7 @@ async def lifespan(app: FastAPI):
     # Cleanup
     logger.info("Shutting down — releasing model resources")
     pipeline = None
+    pipelines.clear()
 
 
 # ──────────────────────────────────────────────
@@ -254,18 +271,29 @@ async def health_check():
 
     status = pipeline.get_models_status()
     all_loaded = all(status.values())
+    profiles = {
+        name: {"label": p.profile_label, "models_loaded": all(p.get_models_status().values()),
+               "known_unknown": p.novelty is not None}
+        for name, p in pipelines.items()
+    }
 
     return HealthResponse(
         status="healthy" if all_loaded else "partial",
         models_loaded=all_loaded,
         device=config.DEVICE,
         model_details=status,
+        profiles=profiles,
+        default_profile=pipeline.profile,
     )
 
 
 @app.post("/predict", response_model=PredictionResponse, tags=["Detection"])
 async def predict(
     file: UploadFile = File(..., description="Image file to analyze (JPEG, PNG, or WebP)"),
+    profile: Optional[str] = Query(
+        None, description="Model profile: 'deepsea' (9 classes incl. machine) or 'aquarium'"),
+    enhance: bool = Query(
+        True, description="Allow conditional enhancement (D1); false analyses the original image"),
 ):
     """
     Run the full ensemble detection + classification pipeline on an uploaded image.
@@ -289,6 +317,16 @@ async def predict(
                 "Models are not loaded. The server may still be starting up, "
                 "or model loading failed. Check server logs for details."
             ),
+        )
+
+    if profile is None:
+        active = pipeline
+    elif profile in pipelines:
+        active = pipelines[profile]
+    else:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unknown profile '{profile}'. Available: {', '.join(pipelines)}",
         )
 
     # Validate file type
@@ -319,7 +357,8 @@ async def predict(
     # Run full agentic pipeline
     try:
         from agent_controller import run_agentic_pipeline
-        annotated_image, detections, summary, decision_trace = run_agentic_pipeline(image, pipeline)
+        annotated_image, detections, summary, decision_trace = run_agentic_pipeline(
+            image, active, enhance=enhance)
     except Exception as e:
         logger.error(f"Agentic pipeline inference failed: {e}", exc_info=True)
         raise HTTPException(
@@ -333,6 +372,15 @@ async def predict(
         logger.info(f"Annotated output saved to {output_path}")
     except Exception as e:
         logger.warning(f"Failed to save annotated output: {e}")
+
+    # Grade against the dataset labels when the upload is a JEDI frame.
+    ground_truth = None
+    try:
+        import ground_truth as gtmod
+        known = (set(active.class_names) if active.class_names else gtmod.AQUARIUM_KNOWN)
+        ground_truth = gtmod.grade(contents, detections, known)
+    except Exception as e:
+        logger.warning(f"Ground-truth lookup failed: {e}")
 
     # Encode annotated image to base64
     annotated_b64 = encode_image_base64(annotated_image)
@@ -348,6 +396,8 @@ async def predict(
             classifier_confidence=round(det["classifier_confidence"], 4),
             combined_confidence=round(det["combined_confidence"], 4),
             agreement=det["agreement"],
+            novelty=det.get("novelty"),
+            gt=det.get("gt"),
         )
         for det in detections
     ]
@@ -369,6 +419,9 @@ async def predict(
     )
 
     return PredictionResponse(
+        profile=active.profile,
+        enhanced=enhance,
+        ground_truth=ground_truth,
         annotated_image=annotated_b64,
         detections=detection_results,
         summary=prediction_summary,

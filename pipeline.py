@@ -58,8 +58,13 @@ class EnsemblePipeline:
         Health flags for each sub-model.
     """
 
-    def __init__(self) -> None:
-        logger.info("Initialising EnsemblePipeline …")
+    def __init__(self, profile: str = "aquarium") -> None:
+        if profile not in config.MODEL_PROFILES:
+            raise ValueError(f"Unknown model profile {profile!r}")
+        spec = config.MODEL_PROFILES[profile]
+        self.profile = profile
+        self.profile_label = spec["label"]
+        logger.info("Initialising EnsemblePipeline (profile=%s) …", profile)
 
         self.models_status: dict[str, bool] = {
             "yolo_n": False,
@@ -67,28 +72,61 @@ class EnsemblePipeline:
             "classifier": False,
         }
 
-        # ── YOLO-Nano ──────────────────────────────────────────────
+        # ── Detector A (YOLO-Nano) ─────────────────────────────────
         self.model_a: YOLO = self._load_yolo(
-            weights_path=config.YOLO_N_WEIGHTS,
+            weights_path=spec["detector_a"],
             fallback="yolov8n.pt",
             name="YOLOv8-nano",
             status_key="yolo_n",
         )
 
-        # ── YOLO-Small ─────────────────────────────────────────────
-        self.model_b: YOLO = self._load_yolo(
-            weights_path=config.YOLO_S_WEIGHTS,
-            fallback="yolov8s.pt",
-            name="YOLOv8-small",
-            status_key="yolo_s",
-        )
+        # ── Detector B (YOLO-Small), optional per profile ──────────
+        if spec["detector_b"] is None:
+            self.model_b = None
+            self.models_status.pop("yolo_s")
+        else:
+            self.model_b = self._load_yolo(
+                weights_path=spec["detector_b"],
+                fallback="yolov8s.pt",
+                name="YOLOv8-small",
+                status_key="yolo_s",
+            )
+
+        # WBF model weights for this profile; None falls back to config.WBF_WEIGHTS.
+        self.wbf_weights = spec.get("wbf_weights")
+
+        # Detector label space. The aquarium profile keeps the module-level
+        # config.CLASS_NAMES (the experiments rebind it); the deep-sea profile
+        # reads the names stored inside its own weights.
+        if spec["class_names"] == "from_detector":
+            names = self.model_a.names
+            self.class_names = [names[i] for i in sorted(names)]
+        else:
+            self.class_names = None
 
         # ── Species classifier ─────────────────────────────────────
         self.classifier: SpeciesClassifier | _DummyClassifier = build_classifier(
-            weights_path=config.CLASSIFIER_WEIGHTS,
-            class_names_path=config.CLASSIFIER_CLASS_NAMES,
+            weights_path=spec["classifier_weights"],
+            class_names_path=spec["classifier_names"],
             device=config.DEVICE,
         )
+        # Folder-trained classifiers turn "/" into "_" ("coral_sea-anemone");
+        # restore the detector's spelling so the two can agree on that class.
+        if self.class_names and isinstance(self.classifier, SpeciesClassifier):
+            back = {c.replace("/", "_"): c for c in self.class_names}
+            self.classifier.class_names = [back.get(c, c) for c in self.classifier.class_names]
+
+        # ── Known/Unknown threshold (deep-sea profile only) ────────
+        self.novelty: dict[str, Any] | None = None
+        if spec["novelty"] is not None:
+            p = Path(spec["novelty"])
+            if p.is_file():
+                import json
+                self.novelty = json.loads(p.read_text())
+                logger.info("Novelty threshold loaded: energy > %.3f is Unknown.",
+                            self.novelty["threshold"])
+            else:
+                logger.warning("No novelty threshold at %s — Known/Unknown disabled.", p)
         self.models_status["classifier"] = not isinstance(
             self.classifier, _DummyClassifier
         )
@@ -187,7 +225,8 @@ class EnsemblePipeline:
         # 2. Weighted Boxes Fusion ───────────────────────────────────
         t0 = time.perf_counter()
         fused: list[dict[str, Any]] = ensemble.fuse_detections(
-            results_a, results_b, img_shape
+            results_a, results_b, img_shape, class_names=self.class_names,
+            weights=self.wbf_weights,
         )
         # Burned-in video overlay — timestamp, depth, watermark — reads to the
         # detector as a cluster of small bright objects. Drop those boxes before
@@ -357,7 +396,9 @@ class EnsemblePipeline:
             cv2.rectangle(annotated, (x1, y1), (x2, y2), color,
                           config.ANNOTATION_THICKNESS)
 
-            # Compose label text
+            # Compose label text; an Unknown crop shows its nearest class with "?"
+            if (det.get("novelty") or {}).get("unknown"):
+                species = f"unknown (~{species})"
             label: str = f"{species} {combined_conf:.0%}"
             font = cv2.FONT_HERSHEY_SIMPLEX
             (tw, th), baseline = cv2.getTextSize(
@@ -462,6 +503,23 @@ class EnsemblePipeline:
     # ------------------------------------------------------------------ #
     # Health check
     # ------------------------------------------------------------------ #
+
+    def models_used(self) -> dict[str, str]:
+        """Names of the models this profile runs, for the API summary."""
+        return {
+            "detector_1": "YOLOv8n",
+            "detector_2": "YOLOv8s" if self.model_b is not None else "none (single detector)",
+            "classifier": "ResNet18",
+            "fusion": "Weighted Boxes Fusion",
+        }
+
+    def novelty_for(self, energy: float | None) -> dict[str, Any] | None:
+        """Known/Unknown verdict for one crop's energy, or None if not configured."""
+        if self.novelty is None or energy is None:
+            return None
+        thr = float(self.novelty["threshold"])
+        return {"score": round(float(energy), 4), "threshold": round(thr, 4),
+                "unknown": bool(energy > thr), "method": "energy"}
 
     def get_models_status(self) -> dict[str, bool]:
         """Return the load status of every sub-model.

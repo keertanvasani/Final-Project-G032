@@ -76,7 +76,9 @@ def run_dual_detection(
         verbose=False,
     )
     t1 = time.perf_counter()
-    results_b = model_b.predict(
+    # A profile with a single trained detector passes model_b=None; fusion then
+    # runs over one model's boxes, which merges its own overlapping duplicates.
+    results_b = None if model_b is None else model_b.predict(
         source=image,
         conf=config.YOLO_CONF_THRESHOLD,
         iou=config.YOLO_IOU_THRESHOLD,
@@ -94,6 +96,15 @@ def run_dual_detection(
         len(results_b[0].boxes) if results_b else 0,
     )
     return results_a, results_b
+
+
+def run_detection(image: np.ndarray, pipeline: Any,
+                  timings: dict[str, float] | None = None) -> list[dict[str, Any]]:
+    """Detect and fuse with whatever detectors and label space *pipeline* carries."""
+    res_a, res_b = run_dual_detection(image, pipeline.model_a, pipeline.model_b, timings=timings)
+    return fuse_detections(res_a, res_b, image.shape[:2],
+                           class_names=getattr(pipeline, "class_names", None),
+                           weights=getattr(pipeline, "wbf_weights", None))
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -150,8 +161,14 @@ def fuse_detections(
     results_a: Any,
     results_b: Any,
     img_shape: tuple[int, int],
+    class_names: list[str] | None = None,
+    weights: list[float] | None = None,
 ) -> list[dict[str, Any]]:
     """Fuse detections from two YOLO models using Weighted Boxes Fusion.
+
+    ``class_names`` names the detectors' label indices; when omitted the
+    module-level ``config.CLASS_NAMES`` is used, as before. ``results_b`` may
+    be ``None`` for a single-detector profile.
 
     The function extracts normalised predictions from each model,
     passes them through the ``weighted_boxes_fusion`` algorithm, and
@@ -180,7 +197,9 @@ def fuse_detections(
     h, w = img_shape[:2]
 
     boxes_a, scores_a, labels_a = extract_predictions(results_a, img_shape)
-    boxes_b, scores_b, labels_b = extract_predictions(results_b, img_shape)
+    names = class_names if class_names is not None else config.CLASS_NAMES
+    single = results_b is None
+    boxes_b, scores_b, labels_b = ([], [], []) if single else extract_predictions(results_b, img_shape)
 
     # Edge case: both models returned zero detections.
     if len(scores_a) == 0 and len(scores_b) == 0:
@@ -193,10 +212,10 @@ def fuse_detections(
     )
 
     fused_boxes, fused_scores, fused_labels = weighted_boxes_fusion(
-        [boxes_a, boxes_b],
-        [scores_a, scores_b],
-        [labels_a, labels_b],
-        weights=config.WBF_WEIGHTS,
+        [boxes_a] if single else [boxes_a, boxes_b],
+        [scores_a] if single else [scores_a, scores_b],
+        [labels_a] if single else [labels_a, labels_b],
+        weights=[1] if single else (weights or config.WBF_WEIGHTS),
         iou_thr=config.WBF_IOU_THRESHOLD,
         skip_box_thr=config.WBF_SKIP_BOX_THRESHOLD,
         conf_type=config.WBF_CONF_TYPE,
@@ -206,11 +225,7 @@ def fuse_detections(
     for box, score, label in zip(fused_boxes, fused_scores, fused_labels):
         x1, y1, x2, y2 = box
         class_id = int(label)
-        class_name = (
-            config.CLASS_NAMES[class_id]
-            if 0 <= class_id < len(config.CLASS_NAMES)
-            else f"class_{class_id}"
-        )
+        class_name = names[class_id] if 0 <= class_id < len(names) else f"class_{class_id}"
         detections.append(
             {
                 "bbox": [
