@@ -1,0 +1,78 @@
+{
+  "split": "S_cal",
+  "n_images": 889,
+  "n_machine_gt": 385,
+  "conf": 0.25,
+  "iou_match": 0.5,
+  "models": {
+    "v1_n0": {
+      "weights": "models/phase_b/yolov8n_seed0/weights/best.pt",
+      "can_predict_machine": false,
+      "machine_outcome": {
+        "machine": 0,
+        "organism": 10,
+        "missed": 375
+      },
+      "machine_outcome_rate": {
+        "machine": 0.0,
+        "organism": 0.026,
+        "missed": 0.974
+      },
+      "organism_labels_on_hardware": {
+        "fish": 4,
+        "coral/sea-anemone": 3,
+        "sea-cucumber": 2,
+        "sponge": 1
+      },
+      "organism_predictions_total": 1118,
+      "organism_predictions_on_hardware": 10,
+      "organism_mAP50": 0.6183,
+      "machine_AP50": null,
+      "per_class_AP50": {
+        "coral/sea-anemone": 0.5747,
+        "crab": 0.8444,
+        "crinoid": 0.3525,
+        "fish": 0.7246,
+        "sea-cucumber": 0.6164,
+        "shrimp": 0.6407,
+        "sponge": 0.5625,
+        "starfish": 0.6311
+      }
+    },
+    "v2_n0": {
+      "weights": "models/phase_b_machine/yolov8n_seed0/weights/best.pt",
+      "can_predict_machine": true,
+      "machine_outcome": {
+        "machine": 253,
+        "organism": 7,
+        "missed": 125
+      },
+      "machine_outcome_rate": {
+        "machine": 0.6571,
+        "organism": 0.0182,
+        "missed": 0.3247
+      },
+      "organism_labels_on_hardware": {
+        "coral/sea-anemone": 4,
+        "crab": 1,
+        "sponge": 1,
+        "fish": 1
+      },
+      "organism_predictions_total": 1178,
+      "organism_predictions_on_hardware": 8,
+      "organism_mAP50": 0.6128,
+      "machine_AP50": 0.7232,
+      "per_class_AP50": {
+        "coral/sea-anemone": 0.5688,
+        "crab": 0.7857,
+        "crinoid": 0.3013,
+        "fish": 0.7164,
+        "machine": 0.7232,
+        "sea-cucumber": 0.5592,
+        "shrimp": 0.6245,
+        "sponge": 0.6205,
+        "starfish": 0.7256
+      }
+    }
+  }
+}

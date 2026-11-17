@@ -1,0 +1,186 @@
+{
+  "split": "S_policy",
+  "profile": "deepsea",
+  "known_classes": [
+    "coral/sea-anemone",
+    "crab",
+    "crinoid",
+    "fish",
+    "machine",
+    "sea-cucumber",
+    "shrimp",
+    "sponge",
+    "starfish"
+  ],
+  "known_gt": 1308,
+  "dives": 315,
+  "novelty_threshold": -3.1401658058166504,
+  "configs": {
+    "A": {
+      "label": "Detector + classifier",
+      "flags": {},
+      "images": 844,
+      "refused_images": 0,
+      "detections": 1516,
+      "outcomes": {
+        "TP": 852,
+        "LOC_ERR": 250,
+        "CLS_ERR": 113,
+        "BG_FP": 149,
+        "OOD_ERR": 152
+      },
+      "precision": 0.5620052770448549,
+      "precision_ci": [
+        0.5242778119237861,
+        0.5989430416911333
+      ],
+      "recall": 0.6513761467889908,
+      "recall_ci": [
+        0.606544901065449,
+        0.6959114139693356
+      ]
+    },
+    "B": {
+      "label": "+ enhancement (D1)",
+      "flags": {
+        "enh": true
+      },
+      "images": 844,
+      "refused_images": 0,
+      "detections": 1513,
+      "outcomes": {
+        "TP": 823,
+        "LOC_ERR": 263,
+        "CLS_ERR": 111,
+        "BG_FP": 158,
+        "OOD_ERR": 158
+      },
+      "precision": 0.5439524124256444,
+      "precision_ci": [
+        0.506979695431472,
+        0.5766574585635359
+      ],
+      "recall": 0.6292048929663608,
+      "recall_ci": [
+        0.5865650969529086,
+        0.669664758789861
+      ]
+    },
+    "C": {
+      "label": "+ text filter",
+      "flags": {
+        "enh": true,
+        "text": true
+      },
+      "images": 844,
+      "refused_images": 0,
+      "detections": 1509,
+      "outcomes": {
+        "TP": 821,
+        "LOC_ERR": 262,
+        "CLS_ERR": 111,
+        "BG_FP": 157,
+        "OOD_ERR": 158
+      },
+      "precision": 0.5440689198144466,
+      "precision_ci": [
+        0.5069974554707379,
+        0.5769487008660893
+      ],
+      "recall": 0.6276758409785933,
+      "recall_ci": [
+        0.5845942228335625,
+        0.6682847896440129
+      ]
+    },
+    "D": {
+      "label": "+ refuse gate (D2)",
+      "flags": {
+        "enh": true,
+        "text": true,
+        "gate": true
+      },
+      "images": 844,
+      "refused_images": 166,
+      "detections": 1459,
+      "outcomes": {
+        "TP": 808,
+        "LOC_ERR": 253,
+        "CLS_ERR": 100,
+        "BG_FP": 145,
+        "OOD_ERR": 153
+      },
+      "precision": 0.5538039753255655,
+      "precision_ci": [
+        0.5171299288946348,
+        0.5898583146905294
+      ],
+      "recall": 0.617737003058104,
+      "recall_ci": [
+        0.5740402193784278,
+        0.6605128205128206
+      ]
+    },
+    "E": {
+      "label": "+ zoom and vote (D3, D4)",
+      "flags": {
+        "enh": true,
+        "text": true,
+        "gate": true,
+        "zoom": true,
+        "vote": true
+      },
+      "images": 844,
+      "refused_images": 166,
+      "detections": 1459,
+      "outcomes": {
+        "TP": 822,
+        "LOC_ERR": 251,
+        "CLS_ERR": 89,
+        "BG_FP": 145,
+        "OOD_ERR": 152
+      },
+      "precision": 0.5633995887594243,
+      "precision_ci": [
+        0.5292186474064347,
+        0.5983870967741935
+      ],
+      "recall": 0.6284403669724771,
+      "recall_ci": [
+        0.5877513711151737,
+        0.6682027649769585
+      ]
+    },
+    "F": {
+      "label": "+ Known/Unknown flag",
+      "flags": {
+        "enh": true,
+        "text": true,
+        "gate": true,
+        "zoom": true,
+        "vote": true,
+        "novelty": true
+      },
+      "images": 844,
+      "refused_images": 166,
+      "detections": 1379,
+      "outcomes": {
+        "TP": 811,
+        "LOC_ERR": 222,
+        "CLS_ERR": 77,
+        "BG_FP": 129,
+        "OOD_ERR": 140
+      },
+      "precision": 0.5881073241479333,
+      "precision_ci": [
+        0.5530846484935438,
+        0.6226259289843105
+      ],
+      "recall": 0.6200305810397554,
+      "recall_ci": [
+        0.5810306198655714,
+        0.6611062335381914
+      ]
+    }
+  }
+}
