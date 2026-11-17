@@ -6,7 +6,7 @@
 <title>Deep-Sea Creature Detection &amp; Classification</title>
 <meta name="description" content="A multi-model ensemble that detects and classifies deep-sea creatures using dual YOLOv8 detectors, Weighted Boxes Fusion and a ResNet18 species classifier.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="css/styles.css?v=3">
+<link rel="stylesheet" href="css/styles.css?v=8">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐟</text></svg>">
 </head>
 <body>
@@ -360,11 +360,21 @@
       <span class="eyebrow">Try it</span>
       <h2>Test the model</h2>
       <p class="lede">
-        Pick a sample and see exactly what the full pipeline returned for it — detection, fusion,
-        classification and annotation. The samples include real deep-sea frames the system gets
-        wrong, because those are the cases worth studying. This page replays recorded pipeline
-        output; analysing your own photo needs the live-demo link.
+        Upload your own underwater image and the full pipeline analyses it: detection, fusion, classification and a decision trace. Or pick a sample; the tags show which ones the system gets right and which it gets wrong on purpose.
       </p>
+    </div>
+
+    <div class="backend" id="backendPanel">
+      <div class="backend__text">
+        <strong id="backendTitle">Testing your own image needs a live backend</strong>
+        <p id="backendMsg">This hosted page replays recorded results for its samples. To analyse your own
+          images, paste the live-demo link here.</p>
+      </div>
+      <form class="backend__form" id="backendForm" novalidate>
+        <input type="url" id="backendUrl" placeholder="https://your-live-link.trycloudflare.com"
+               aria-label="Live backend URL" autocomplete="off" spellcheck="false">
+        <button class="btn btn--primary" type="submit" id="backendBtn">Connect</button>
+      </form>
     </div>
 
     <div class="try">
@@ -396,38 +406,26 @@
 
       <!-- Samples -->
       <div class="samples">
-        <p class="samples__label">No photo handy? Try a sample:</p>
+        <p class="samples__label">No image handy? Try a sample.</p>
         <div class="samples__row" id="sampleRow">
-          <button class="sample" data-src="assets/samples/fish.jpg" data-name="fish.jpg">
-            <img src="assets/samples/fish.jpg" alt=""><span>Fish</span></button>
-          <button class="sample" data-src="assets/samples/jellyfish.jpg" data-name="jellyfish.jpg">
-            <img src="assets/samples/jellyfish.jpg" alt=""><span>Jellyfish</span></button>
-          <button class="sample" data-src="assets/samples/penguins.jpg" data-name="penguins.jpg">
-            <img src="assets/samples/penguins.jpg" alt=""><span>Penguins</span></button>
-          <button class="sample" data-src="assets/samples/shark.jpg" data-name="shark.jpg">
-            <img src="assets/samples/shark.jpg" alt=""><span>Shark</span></button>
-          <button class="sample" data-src="assets/samples/starfish.jpg" data-name="starfish.jpg">
-            <img src="assets/samples/starfish.jpg" alt=""><span>Starfish</span></button>
-          <button class="sample sample--warn" data-src="assets/samples/blurry.jpg" data-name="blurry.jpg">
-            <img src="assets/samples/blurry.jpg" alt=""><span>Blurry ⚠</span></button>
-          <!-- Real deep-sea frames: the failure cases and the overlay-text filter. -->
-          <button class="sample" data-src="assets/samples/ds_01_hardware_as_puffin.jpg" data-name="ds_01_hardware_as_puffin.jpg">
-            <img src="assets/samples/ds_01_hardware_as_puffin.jpg" alt=""><span>Deep: hardware</span></button>
-          <button class="sample" data-src="assets/samples/ds_02_hardware_as_fish.jpg" data-name="ds_02_hardware_as_fish.jpg">
-            <img src="assets/samples/ds_02_hardware_as_fish.jpg" alt=""><span>Deep: timestamp</span></button>
-          <button class="sample" data-src="assets/samples/ds_03_timestamp_filtered.jpg" data-name="ds_03_timestamp_filtered.jpg">
-            <img src="assets/samples/ds_03_timestamp_filtered.jpg" alt=""><span>Deep: text filtered</span></button>
-          <button class="sample" data-src="assets/samples/ds_06_dark_telemetry_filtered.jpg" data-name="ds_06_dark_telemetry_filtered.jpg">
-            <img src="assets/samples/ds_06_dark_telemetry_filtered.jpg" alt=""><span>Deep: dark text</span></button>
-          <button class="sample" data-src="assets/samples/ds_04_seacucumber.jpg" data-name="ds_04_seacucumber.jpg">
-            <img src="assets/samples/ds_04_seacucumber.jpg" alt=""><span>Deep: sea cucumber</span></button>
-          <button class="sample" data-src="assets/samples/ds_05_urchin.jpg" data-name="ds_05_urchin.jpg">
-            <img src="assets/samples/ds_05_urchin.jpg" alt=""><span>Deep: urchin</span></button>
-          <button class="sample" data-src="assets/samples/ds_07_crowded.jpg" data-name="ds_07_crowded.jpg">
-            <img src="assets/samples/ds_07_crowded.jpg" alt=""><span>Deep: crowded</span></button>
-          <button class="sample sample--warn" data-src="assets/samples/ds_09_blurry_enhanced.jpg" data-name="ds_09_blurry_enhanced.jpg">
-            <img src="assets/samples/ds_09_blurry_enhanced.jpg" alt=""><span>Deep: blurry ⚠</span></button>
+          <button class="sample" data-src="assets/samples/fish.jpg" data-name="fish.jpg" title="All four fish are found and named correctly.">
+            <img src="assets/samples/fish.jpg" alt=""><span>Fish</span><em class="stag stag--pass">Pass</em></button>
+          <button class="sample" data-src="assets/samples/penguins.jpg" data-name="penguins.jpg" title="Penguins are found, including the small distant ones.">
+            <img src="assets/samples/penguins.jpg" alt=""><span>Penguins</span><em class="stag stag--pass">Pass</em></button>
+          <button class="sample" data-src="assets/samples/shark.jpg" data-name="shark.jpg" title="The shark is found and named correctly.">
+            <img src="assets/samples/shark.jpg" alt=""><span>Shark</span><em class="stag stag--pass">Pass</em></button>
+          <button class="sample" data-src="assets/samples/starfish.jpg" data-name="starfish.jpg" title="The starfish is found and named correctly.">
+            <img src="assets/samples/starfish.jpg" alt=""><span>Starfish</span><em class="stag stag--pass">Pass</em></button>
+          <button class="sample" data-src="assets/samples/ds_06_dark_telemetry_filtered.jpg" data-name="ds_06_dark_telemetry_filtered.jpg" title="Deep-sea model: the fish is correct against the dataset's labels and the timestamp is rejected. Untick enhancement to find the second fish.">
+            <img src="assets/samples/ds_06_dark_telemetry_filtered.jpg" alt=""><span>Deep-sea fish</span><em class="stag stag--pass">Pass</em></button>
+          <button class="sample" data-src="assets/samples/blurry.jpg" data-name="blurry.jpg" title="Too blurry to trust, so the system declines instead of guessing.">
+            <img src="assets/samples/blurry.jpg" alt=""><span>Blurry</span><em class="stag stag--refuse">Refuses</em></button>
+          <button class="sample" data-src="assets/samples/ds_01_hardware_as_puffin.jpg" data-name="ds_01_hardware_as_puffin.jpg" title="Deep-sea model: the ROV is correctly named machine, but the animal beside it is not one of its 9 classes and gets a wrong name. Switch to Aquarium: the hardware becomes a puffin at 100%.">
+            <img src="assets/samples/ds_01_hardware_as_puffin.jpg" alt=""><span>Hardware</span><em class="stag stag--refuse">Partly</em></button>
+          <button class="sample" data-src="assets/samples/ds_07_crowded.jpg" data-name="ds_07_crowded.jpg" title="Deep-sea model: 4 boxes, all correct. Switch to Aquarium: 30 boxes and none is correct.">
+            <img src="assets/samples/ds_07_crowded.jpg" alt=""><span>Crowded</span><em class="stag stag--pass">Pass</em></button>
         </div>
+        <p class="samples__legend">Tags say what happened. <b>Pass</b>: the result is right (aquarium samples checked by eye, deep-sea frames against the dataset's labels). <b>Partly</b>: some boxes are wrong, kept on purpose to show where the system fails. <b>Refuses</b>: the system declined to answer. To see the original failure, pick a deep-sea frame and switch the model to Aquarium.</p>
       </div>
 
       <!-- Action -->
@@ -849,8 +847,10 @@
   </div>
 </footer>
 
-<script src="js/api.js"></script>
+<script src="js/api.js?v=4"></script>
 <script src="js/interactive.js?v=1"></script>
-<script src="js/app.js?v=3"></script>
+<script src="js/backend.js?v=1"></script>
+<script src="js/app.js?v=4"></script>
+<script src="js/profile.js?v=4"></script>
 </body>
 </html>

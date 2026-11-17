@@ -46,12 +46,14 @@
 
   let liveBase = normalise(store('get') || '') || null;
   window.DEEPSEA_MODE = liveBase ? 'live' : 'recorded';
+  window.DEEPSEA_API_BASE = liveBase || '';
 
   const json = (obj, status = 200) =>
     new Response(JSON.stringify(obj), { status, headers: { 'Content-Type': 'application/json' } });
 
   let manifestPromise = null;
-  const manifest = () => (manifestPromise ||= nativeFetch('recorded/manifest.json')
+  // no-cache: revalidate, so a re-recorded manifest is never shadowed by a stale copy.
+  const manifest = () => (manifestPromise ||= nativeFetch('recorded/manifest.json', { cache: 'no-cache' })
     .then((r) => { if (!r.ok) throw new Error('manifest'); return r.json(); }));
 
   async function sha256(file) {
@@ -64,26 +66,37 @@
   function fallToRecorded() {
     liveBase = null;
     window.DEEPSEA_MODE = 'recorded';
+    window.DEEPSEA_API_BASE = '';
+    window.dispatchEvent(new Event('deepsea:mode'));
   }
 
   async function recordedHealth() {
-    try { await manifest(); } catch { return json({ status: 'down', models_loaded: false }, 503); }
+    let m;
+    try { m = await manifest(); } catch { return json({ status: 'down', models_loaded: false }, 503); }
     return json({ status: 'healthy', models_loaded: true, device: 'recorded',
-                  model_details: { yolo_n: true, yolo_s: true, classifier: true } });
+                  model_details: { yolo_n: true, yolo_s: true, classifier: true },
+                  profiles: m.profiles || {}, default_profile: m.default_profile || '' });
   }
 
-  async function recordedPredict(body) {
+  // Each sample was recorded under both models, with enhancement on and off;
+  // the query string the page sends picks which recording to replay.
+  async function recordedPredict(body, path) {
     const file = body && body.get && body.get('file');
     const m = await manifest();
     const sha = file ? await sha256(file) : null;
-    if (!sha || !m.images[sha]) {
+    const entry = sha && m.images[sha];
+    if (!entry) {
       return json({
         detail: 'Live inference is not available on this link, so only the built-in samples ' +
                 'can be analysed. Pick one of the sample images below, or open the live-demo ' +
                 'link to analyse your own photo.',
       }, 501);
     }
-    const r = await nativeFetch(`recorded/${sha}.json`);
+    const q = new URLSearchParams((path.split('?')[1]) || '');
+    const prof = q.get('profile') || entry.default_profile;
+    const enh = q.get('enhance') === 'false' ? 0 : 1;
+    const v = entry.variants && entry.variants[`${prof}|${enh}`];
+    const r = await nativeFetch(v ? `recorded/${v.file}` : `recorded/${sha}.json`);
     if (!r.ok) return json({ detail: 'The recorded result for this sample is missing.' }, 500);
     return json(await r.json());
   }
@@ -91,8 +104,9 @@
   window.fetch = async function (input, init) {
     const url = typeof input === 'string' ? input : (input && input.url) || '';
     const path = url.replace(location.origin, '');
-    const isHealth = path === '/health';
-    const isPredict = path === '/predict';
+    const route = path.split('?')[0];          // /predict may carry ?profile=
+    const isHealth = route === '/health';
+    const isPredict = route === '/predict';
     if (!isHealth && !isPredict) return nativeFetch(input, init);
 
     if (liveBase) {
@@ -108,6 +122,6 @@
         fallToRecorded();
       }
     }
-    return isHealth ? recordedHealth() : recordedPredict(init && init.body);
+    return isHealth ? recordedHealth() : recordedPredict(init && init.body, path);
   };
 })();

@@ -41,13 +41,8 @@ RECORDED = HERE / "recorded"
 # Sample -> its file in the JEDI dataset (verified byte-for-byte below).
 SOURCE = {
     "ds_01_hardware_as_puffin.jpg": "2K1317CCDDB1023_360.jpg",
-    "ds_02_hardware_as_fish.jpg": "6K0762C1DV214_828.jpg",
-    "ds_03_timestamp_filtered.jpg": "6K0717C1DV1212_120.jpg",
-    "ds_04_seacucumber.jpg": "6K1150C2DV304_480.jpg",
-    "ds_05_urchin.jpg": "6K0717C1DV2160_360.jpg",
     "ds_06_dark_telemetry_filtered.jpg": "3K0380CCDSV1011_480.jpg",
     "ds_07_crowded.jpg": "6K1562C2HDF107_100.jpg",
-    "ds_09_blurry_enhanced.jpg": "KAIKO0227BCSV1020_480.jpg",
 }
 
 
