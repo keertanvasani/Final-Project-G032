@@ -44,11 +44,16 @@ def check(name: str, ok: bool, detail: str = "", warn_only: bool = False) -> boo
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--strict", action="store_true")
+    ap.add_argument("--manifest", type=Path, default=EXP / "splits" / "phase_b_splits.json",
+                    help="split manifest (use phase_b_machine_splits.json for Phase B+M)")
+    ap.add_argument("--yolo-dir", type=Path, default=EXP / "yolo_phase_b")
+    ap.add_argument("--models-dir", type=Path, default=ROOT / "models" / "phase_b")
     args = ap.parse_args()
 
-    pb_path = EXP / "splits" / "phase_b_splits.json"
+    pb_path = args.manifest
     if not pb_path.is_file():
-        raise SystemExit("Missing phase_b_splits.json — run make_splits_phase_b.py")
+        raise SystemExit(f"Missing {pb_path.name} — run make_splits_phase_b.py "
+                         "(or make_machine_manifest.py)")
     pb = json.loads(pb_path.read_text())
 
     files = pb["files"]
@@ -121,7 +126,7 @@ def main() -> None:
     check("every OOD role has >=3 taxa", not thin, str(thin) or "3/3/3+")
 
     # ---- 6. YOLO dataset ------------------------------------------------
-    ydir = EXP / "yolo_phase_b"
+    ydir = args.yolo_dir
     yaml_txt = (ydir / "data.yaml").read_text() if (ydir / "data.yaml").is_file() else ""
     names = [l.split(": ", 1)[1].strip()
              for l in yaml_txt.splitlines() if l.strip() and l.startswith("  ")]
@@ -167,8 +172,10 @@ def main() -> None:
     sample = sorted((set(lists.get("train", [])) | set(lists.get("test", []))))
     for fn in sample:
         lp = None
-        for sp in SOURCE_SPLITS:
-            cand = DATASET / sp / "labels" / (Path(fn).stem + ".txt")
+        # A self-contained tree keeps labels/<split>/ beside its own images;
+        # the original layout keeps them beside the source JEDI images.
+        cands = list((ydir / "labels").glob(f"*/{Path(fn).stem}.txt"))             if (ydir / "labels").is_dir() else             [DATASET / sp / "labels" / (Path(fn).stem + ".txt") for sp in SOURCE_SPLITS]
+        for cand in cands:
             if cand.is_file():
                 lp = cand
                 break
@@ -190,7 +197,7 @@ def main() -> None:
           not mismatch, f"{len(mismatch)} mismatched of {n_lbl} checked")
 
     # ---- 8. trained runs -------------------------------------------------
-    mdir = ROOT / "models" / "phase_b"
+    mdir = args.models_dir
     runs = sorted(p for p in mdir.glob("*_seed*") if p.is_dir()) if mdir.is_dir() else []
     seeds_seen: dict[str, set[int]] = defaultdict(set)
     weight_missing, wrong_data = [], []
@@ -201,14 +208,14 @@ def main() -> None:
         cfg = r / "args.yaml"
         if cfg.is_file():
             txt = cfg.read_text()
-            if "yolo_phase_b" not in txt.replace("\\", "/"):
+            if ydir.name not in txt.replace("\\", "/"):
                 wrong_data.append(r.name)
             for line in txt.splitlines():
                 if line.startswith("seed:"):
                     seeds_seen[r.name.rsplit("_seed", 1)[0]].add(int(line.split(":")[1]))
     check("every finished run has best.pt", not weight_missing,
           ", ".join(weight_missing) or f"{len(runs)} runs")
-    check("every run trained on the Phase B data.yaml", not wrong_data,
+    check(f"every run trained on {ydir.name}/data.yaml", not wrong_data,
           ", ".join(wrong_data) or "ok")
     for arch, sd in sorted(seeds_seen.items()):
         check(f"{arch}: seeds distinct", len(sd) == len(runs and sd), str(sorted(sd)))

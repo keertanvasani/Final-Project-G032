@@ -91,7 +91,14 @@ def main() -> None:
                     default=True)
     ap.add_argument("--no-exclude-heldout-images", dest="exclude",
                     action="store_false")
+    ap.add_argument("--self-contained", action="store_true",
+                    help="write images (hard links) and labels under --out instead of "
+                         "beside the source images; required when a second label "
+                         "space must coexist with Phase B's")
     args = ap.parse_args()
+    # Absolute, so the list files hold absolute image paths whatever the cwd.
+    args.out = args.out.resolve()
+    args.manifest = args.manifest.resolve()
 
     man = json.loads(args.manifest.read_text())
     known = sorted(man["label_space"]["known"])
@@ -130,11 +137,9 @@ def main() -> None:
     written = 0
     skipped_degenerate = 0
     label_counts: Counter = Counter()
-    all_files = sorted({f for v in splits.values() for f in v})
-    for fname in all_files:
-        img = image_path(fname)
-        lbl_dir = img.parent.parent / "labels"
-        lbl_dir.mkdir(exist_ok=True)
+
+    def label_lines(fname: str) -> list[str]:
+        nonlocal skipped_degenerate
         W, H = dims[fname]
         lines = []
         for cname, x, y, w, h in boxes.get(fname, []):
@@ -150,14 +155,46 @@ def main() -> None:
             nw, nh = min(nw, 1.0), min(nh, 1.0)
             lines.append(f"{cls_id[cname]} {xc:.6f} {yc:.6f} {nw:.6f} {nh:.6f}")
             label_counts[cname] += 1
-        (lbl_dir / (Path(fname).stem + ".txt")).write_text("\n".join(lines) + "\n")
-        written += 1
+        return lines
+
+    placed: dict[tuple[str, str], Path] = {}   # (split, fname) -> path in the list file
+    if args.self_contained:
+        # Own tree: images/<split>/ (hard links, so no copy) and labels/<split>/.
+        # Ultralytics finds a label by swapping "/images/" for "/labels/" in the
+        # image path, so this layout is what lets two label spaces coexist over
+        # the same JEDI images without one overwriting the other's labels.
+        import os
+        import shutil
+        for split, files in splits.items():
+            img_dir = args.out / "images" / split
+            lbl_dir = args.out / "labels" / split
+            img_dir.mkdir(parents=True, exist_ok=True)
+            lbl_dir.mkdir(parents=True, exist_ok=True)
+            for fname in files:
+                dst = img_dir / fname
+                if not dst.exists():
+                    try:
+                        os.link(image_path(fname), dst)
+                    except OSError:
+                        shutil.copy2(image_path(fname), dst)
+                (lbl_dir / (Path(fname).stem + ".txt")).write_text(
+                    "\n".join(label_lines(fname)) + "\n")
+                placed[(split, fname)] = dst
+                written += 1
+    else:
+        for fname in sorted({f for v in splits.values() for f in v}):
+            img = image_path(fname)
+            lbl_dir = img.parent.parent / "labels"
+            lbl_dir.mkdir(exist_ok=True)
+            (lbl_dir / (Path(fname).stem + ".txt")).write_text(
+                "\n".join(label_lines(fname)) + "\n")
+            written += 1
 
     # ---- split list files + data.yaml -----------------------------------
     args.out.mkdir(parents=True, exist_ok=True)
     for name, files in splits.items():
         (args.out / f"{name}.txt").write_text(
-            "\n".join(str(image_path(f)) for f in files) + "\n"
+            "\n".join(str(placed.get((name, f)) or image_path(f)) for f in files) + "\n"
         )
 
     yaml = [
@@ -199,11 +236,15 @@ def main() -> None:
     print(f"\nLabel files written: {written}")
     if skipped_degenerate:
         print(f"Degenerate boxes skipped (w or h <= 0): {skipped_degenerate}")
-    print(f"J_fit images still containing far-OOD 'machine': {fit_machine} "
-          f"({100*fit_machine/max(len(fit),1):.1f}%)")
-    print("  These are unlabelled, so the detector learns ROV hardware as")
-    print("  background. Far-OOD rejection is therefore partly trained, not")
-    print("  purely novel — see PROTOCOL.md §11.4.")
+    if far:
+        print(f"J_fit images still containing far-OOD {sorted(far)}: {fit_machine} "
+              f"({100*fit_machine/max(len(fit),1):.1f}%)")
+        print("  These are unlabelled, so the detector learns them as background.")
+        print("  Far-OOD rejection is therefore partly trained, not purely novel;")
+        print("  see PROTOCOL.md §11.4.")
+    else:
+        print("No far-OOD class in this label space: every annotated non-held-out")
+        print("object, hardware included, is labelled.")
     print(f"\nWrote {(args.out / 'data.yaml').relative_to(ROOT)}")
 
 

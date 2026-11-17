@@ -56,11 +56,14 @@ def image_path(fname: str) -> Path | None:
     return None
 
 
-def build_crops(known: set[str], force: bool = False) -> dict[str, int]:
+def build_crops(known: set[str], force: bool = False,
+                manifest: Path = MANIFEST, crops: Path = CROPS) -> dict[str, int]:
     """Extract GT crops of the KNOWN taxa into an ImageFolder tree."""
     import cv2
 
-    man = json.loads(MANIFEST.read_text())
+    global CROPS
+    CROPS = crops
+    man = json.loads(manifest.read_text())
     clean = set(man["contamination"]["s_fit_images_clean"])
     clean_sel = set(man["contamination"]["s_modelsel_images_clean"])
     want = {"train": clean, "val": clean_sel}
@@ -123,17 +126,27 @@ def main() -> None:
     ap.add_argument("--device", default="cuda")
     ap.add_argument("--rebuild-crops", action="store_true")
     ap.add_argument("--smoke", action="store_true")
+    ap.add_argument("--manifest", type=Path, default=MANIFEST,
+                    help="split manifest (default: the 8-taxa Phase B one)")
+    ap.add_argument("--crops", type=Path, default=CROPS,
+                    help="ImageFolder tree of crops; built if missing")
+    ap.add_argument("--outdir", type=Path, default=OUTDIR,
+                    help="where classifier_seed*/ and classifier_runs.json go")
+    ap.add_argument("--workers", type=int, default=0)
     args = ap.parse_args()
+    args.manifest, args.crops, args.outdir = (
+        args.manifest.resolve(), args.crops.resolve(), args.outdir.resolve())
 
     import torch
     import torch.nn as nn
     from torch.utils.data import DataLoader
     from torchvision import datasets, models, transforms
 
-    man = json.loads(MANIFEST.read_text())
+    man = json.loads(args.manifest.read_text())
     known = set(man["label_space"]["known"])
     print(f"Phase B classifier — {len(known)} known taxa\n")
-    build_crops(known, force=args.rebuild_crops)
+    build_crops(known, force=args.rebuild_crops, manifest=args.manifest,
+                crops=args.crops)
 
     mean = [0.485, 0.456, 0.406]
     std = [0.229, 0.224, 0.225]
@@ -150,8 +163,8 @@ def main() -> None:
         transforms.Normalize(mean, std),
     ])
 
-    ds_tr = datasets.ImageFolder(CROPS / "train", tf_train)
-    ds_va = datasets.ImageFolder(CROPS / "val", tf_val)
+    ds_tr = datasets.ImageFolder(args.crops / "train", tf_train)
+    ds_va = datasets.ImageFolder(args.crops / "val", tf_val)
     print(f"\ntrain {len(ds_tr)} crops · val {len(ds_va)} crops · "
           f"{len(ds_tr.classes)} classes")
     print("per-class train counts:")
@@ -167,8 +180,8 @@ def main() -> None:
     for seed in seeds:
         torch.manual_seed(seed)
         random.seed(seed)
-        dl_tr = DataLoader(ds_tr, batch_size=args.batch, shuffle=True, num_workers=0)
-        dl_va = DataLoader(ds_va, batch_size=args.batch, shuffle=False, num_workers=0)
+        dl_tr = DataLoader(ds_tr, batch_size=args.batch, shuffle=True, num_workers=args.workers, persistent_workers=args.workers > 0)
+        dl_va = DataLoader(ds_va, batch_size=args.batch, shuffle=False, num_workers=args.workers, persistent_workers=args.workers > 0)
 
         model = models.resnet18(weights=models.ResNet18_Weights.IMAGENET1K_V1)
         model.fc = nn.Linear(model.fc.in_features, len(ds_tr.classes))
@@ -184,7 +197,7 @@ def main() -> None:
         crit = nn.CrossEntropyLoss()
         best = 0.0
         name = f"classifier_seed{seed}" + ("_smoke" if args.smoke else "")
-        dest = OUTDIR / name
+        dest = args.outdir / name
         dest.mkdir(parents=True, exist_ok=True)
         t0 = time.time()
 
@@ -235,7 +248,7 @@ def main() -> None:
         runs.append(rec)
         print(f"  seed {seed}: best val {best:.4f}  macro-recall {macro:.4f}  "
               f"({rec['minutes']} min)\n")
-        (OUTDIR / ("classifier_runs_smoke.json" if args.smoke
+        (args.outdir / ("classifier_runs_smoke.json" if args.smoke
                    else "classifier_runs.json")).write_text(
             json.dumps(runs, indent=2) + "\n")
 
