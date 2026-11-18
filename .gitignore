@@ -99,3 +99,5 @@ paper/
 *.pptx
 experiments/yolo_phase_b_machine/
 experiments/classifier_crops_phase_b_machine/
+experiments/results/phase_b_machine/step1/*_detections.jsonl
+experiments/results/phase_b_machine/step1/*_features.npz

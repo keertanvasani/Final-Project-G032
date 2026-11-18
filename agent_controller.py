@@ -617,6 +617,11 @@ def run_agentic_pipeline(
                 idx, det, cls_res, pipeline, enhanced_image)
             reclassification_ms += res_ms
             trace.extend(res_trace)
+            # Calibrated confidence: the shown % becomes P(correct) on held-out
+            # dives. Monotone, so ranking and the threshold slider's order are kept.
+            if getattr(pipeline, "calibration", None):
+                resolved["raw_combined_confidence"] = resolved["combined_confidence"]
+                resolved["combined_confidence"] = pipeline.calibrate(resolved["combined_confidence"])
             # Known/Unknown: is this crop like anything the classifier was
             # trained on? Only profiles with a fitted threshold report it.
             nov = pipeline.novelty_for(cls_res.get("energy")) if hasattr(pipeline, "novelty_for") else None

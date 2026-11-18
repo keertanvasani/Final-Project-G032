@@ -67,6 +67,9 @@ MODEL_PROFILES = {
         "classifier_names": _DS / "classifier_seed0" / "class_names.json",
         "class_names": "from_detector",
         "novelty": _DS / "novelty.json",
+        # Isotonic map from the agent's combined confidence to P(correct),
+        # fitted by experiments/fit_deepsea_calibration.py.
+        "calibration": _DS / "calibration.json",
     },
 }
 DEFAULT_PROFILE = "deepsea"

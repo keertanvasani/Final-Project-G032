@@ -1,0 +1,144 @@
+{
+  "n_detections": {
+    "S_cal": 1487,
+    "S_policy": 1459
+  },
+  "1_deployed_confidence_S_policy": {
+    "aurc": 0.18777711972610492,
+    "ece": 0.2692006642692821,
+    "mce": 0.43487907879460946,
+    "brier": 0.25308365198125826,
+    "auroc_correct": 0.8324261765346228,
+    "accuracy": 0.5633995887594243
+  },
+  "1_outcomes_S_policy": {
+    "BG_FP": 145,
+    "CLS_ERR": 89,
+    "LOC_ERR": 251,
+    "OOD_ERR": 152,
+    "TP": 822
+  },
+  "4_calibration_S_policy": {
+    "temperature_T": 5.927899527034017,
+    "per_class_fitted": {
+      "coral/sea-anemone": 235,
+      "crab": 111,
+      "fish": 369,
+      "machine": 402,
+      "sea-cucumber": 75,
+      "shrimp": 59,
+      "sponge": 86,
+      "starfish": 128
+    },
+    "raw": {
+      "aurc": 0.18777711972610492,
+      "ece": 0.2692006642692821,
+      "mce": 0.43487907879460946,
+      "brier": 0.25308365198125826,
+      "auroc_correct": 0.8324261765346228,
+      "accuracy": 0.5633995887594243
+    },
+    "temperature": {
+      "aurc": 0.18807335821195592,
+      "ece": 0.14206209405826242,
+      "mce": 0.459292326120891,
+      "brier": 0.20001776220531983,
+      "auroc_correct": 0.8324261765346228,
+      "accuracy": 0.5633995887594243
+    },
+    "isotonic": {
+      "aurc": 0.1868231917047342,
+      "ece": 0.03273866770156662,
+      "mce": 0.2619844400037741,
+      "brier": 0.1658076447573263,
+      "auroc_correct": 0.8308076178253446,
+      "accuracy": 0.5633995887594243
+    },
+    "isotonic_per_class": {
+      "aurc": 0.20338029637006239,
+      "ece": 0.04282131766106154,
+      "mce": 0.17144316305465623,
+      "brier": 0.1653367539775969,
+      "auroc_correct": 0.8335873372369723,
+      "accuracy": 0.5633995887594243
+    },
+    "delta_aurc_per_class_vs_raw_ci": [
+      0.008388370772152973,
+      0.025211371253756484
+    ],
+    "delta_ece_isotonic_vs_raw_ci": [
+      -0.2514714321994007,
+      -0.19662814710380225
+    ]
+  },
+  "2_flip_tta_S_policy": {
+    "n_known_crops": 911,
+    "acc_single": 0.818880351262349,
+    "acc_flip": 0.823271130625686,
+    "delta": 0.004390779363336983,
+    "delta_ci": [
+      -0.0033598403782954117,
+      0.012422887215086725
+    ],
+    "changed_predictions": 23,
+    "maxprob_auroc_correct_single": 0.7605816881956292,
+    "maxprob_auroc_correct_flip": 0.7813954451345756
+  },
+  "3_novelty_S_policy": {
+    "n_known": 911,
+    "n_unseen": 152,
+    "unseen_taxa_S_policy": [
+      "comb-jelly",
+      "jellyfish",
+      "octopus",
+      "ragworm",
+      "ray",
+      "sea-spider",
+      "shark",
+      "squat-lobster",
+      "squid",
+      "tunicate",
+      "urchin"
+    ],
+    "energy": {
+      "auroc": 0.7837902247385753,
+      "fpr_at_95tpr": 0.7113062568605928,
+      "threshold": -3.651754856109619,
+      "unseen_flagged": 0.14473684210526316,
+      "known_flagged": 0.04939626783754116
+    },
+    "maha": {
+      "auroc": 0.7214743774914785,
+      "fpr_at_95tpr": 0.7914379802414928,
+      "threshold": 139.728271484375,
+      "unseen_flagged": 0.3223684210526316,
+      "known_flagged": 0.1350164654226125
+    },
+    "energy_flip": {
+      "auroc": 0.7884987578716275,
+      "fpr_at_95tpr": 0.6169045005488474,
+      "threshold": -3.701169729232788,
+      "unseen_flagged": 0.21052631578947367,
+      "known_flagged": 0.05378704720087816
+    },
+    "energy+maha": {
+      "auroc": 0.768639147264429,
+      "fpr_at_95tpr": 0.6487376509330406,
+      "threshold": 3.1190197467803955,
+      "unseen_flagged": 0.34210526315789475,
+      "known_flagged": 0.10757409440175632
+    },
+    "delta_auroc_maha_vs_energy_ci": [
+      -0.10731445350797383,
+      -0.014912690260410996
+    ],
+    "delta_auroc_energy_flip_vs_energy_ci": [
+      -0.00865010104703683,
+      0.018016866240166934
+    ],
+    "delta_auroc_energy+maha_vs_energy_ci": [
+      -0.044721630856527465,
+      0.01564662396014802
+    ]
+  }
+}

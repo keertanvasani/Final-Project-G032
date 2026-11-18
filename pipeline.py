@@ -127,6 +127,18 @@ class EnsemblePipeline:
                             self.novelty["threshold"])
             else:
                 logger.warning("No novelty threshold at %s — Known/Unknown disabled.", p)
+
+        # ── Confidence calibration (deep-sea profile only) ─────────
+        self.calibration: dict[str, Any] | None = None
+        if spec.get("calibration") is not None:
+            p = Path(spec["calibration"])
+            if p.is_file():
+                import json
+                self.calibration = json.loads(p.read_text())
+                logger.info("Confidence calibration loaded (%s, %d knots).",
+                            self.calibration["method"], len(self.calibration["x"]))
+            else:
+                logger.warning("No calibration at %s — raw confidence is shown.", p)
         self.models_status["classifier"] = not isinstance(
             self.classifier, _DummyClassifier
         )
@@ -512,6 +524,13 @@ class EnsemblePipeline:
             "classifier": "ResNet18",
             "fusion": "Weighted Boxes Fusion",
         }
+
+    def calibrate(self, combined: float) -> float:
+        """Map the agent's combined confidence to P(correct); identity if not fitted."""
+        cal = getattr(self, "calibration", None)
+        if not cal:
+            return combined
+        return float(np.interp(combined, cal["x"], cal["y"], left=cal["y"][0], right=cal["y"][-1]))
 
     def novelty_for(self, energy: float | None) -> dict[str, Any] | None:
         """Known/Unknown verdict for one crop's energy, or None if not configured."""
