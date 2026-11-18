@@ -1,0 +1,35 @@
+{
+  "score": "energy",
+  "definition": "-logsumexp(classifier logits) on the 5%-padded crop; higher = less familiar",
+  "threshold": -3.6517551183700574,
+  "fit": {
+    "split": "S_cal",
+    "on": "agent detections matched to known-class ground truth",
+    "n_known": 947,
+    "known_kept_target": 0.95
+  },
+  "eval": {
+    "split": "S_policy",
+    "unseen_taxa": [
+      "jellyfish",
+      "squid",
+      "tunicate"
+    ],
+    "n_known": 1308,
+    "n_unseen": 109,
+    "auroc": 0.8180848974553209,
+    "unseen_flagged": 0.1651376146788991,
+    "known_flagged": 0.052752293577981654
+  },
+  "classifier": "models\\phase_b_machine\\classifier_seed0",
+  "threshold_gt_crops": -3.1401658058166504,
+  "eval_detections": {
+    "split": "S_policy",
+    "n_known": 911,
+    "n_unseen": 152,
+    "unseen_flagged": 0.14473684210526316,
+    "known_flagged": 0.04939626783754116,
+    "unseen_flagged_old_threshold": 0.08552631578947369,
+    "known_flagged_old_threshold": 0.026344676180021953
+  }
+}

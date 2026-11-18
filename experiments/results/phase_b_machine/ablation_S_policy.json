@@ -14,7 +14,7 @@
   ],
   "known_gt": 1308,
   "dives": 315,
-  "novelty_threshold": -3.1401658058166504,
+  "novelty_threshold": -3.6517551183700574,
   "configs": {
     "A": {
       "label": "Detector + classifier",
@@ -163,23 +163,23 @@
       },
       "images": 844,
       "refused_images": 166,
-      "detections": 1379,
+      "detections": 1324,
       "outcomes": {
-        "TP": 811,
-        "LOC_ERR": 222,
-        "CLS_ERR": 77,
-        "BG_FP": 129,
-        "OOD_ERR": 140
+        "TP": 799,
+        "CLS_ERR": 69,
+        "LOC_ERR": 211,
+        "OOD_ERR": 131,
+        "BG_FP": 114
       },
-      "precision": 0.5881073241479333,
+      "precision": 0.6034743202416919,
       "precision_ci": [
-        0.5530846484935438,
-        0.6226259289843105
+        0.5677123182861515,
+        0.640174672489083
       ],
-      "recall": 0.6200305810397554,
+      "recall": 0.6108562691131498,
       "recall_ci": [
-        0.5810306198655714,
-        0.6611062335381914
+        0.5713218820014937,
+        0.6514056224899598
       ]
     }
   }
