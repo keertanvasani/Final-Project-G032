@@ -30,9 +30,14 @@ quality ──► enhance ──► detect+fuse ──► ✔ ──► zoom ─
 * **Time budget.** Once an image has used `AGENT_TIME_BUDGET_MS` (10 s), the
   remaining enhance / zoom / vote steps are skipped and the image finishes on the
   plain models. The trace records it as a `Guardrail:` line.
-* **Fallback chain.** `AGENT_POLICY_CHAIN = ("rules", "plain")`. If a policy raises
-  or returns an invalid decision, the next one answers and the trace says so.
-  Step 3 puts the learned policy first: `("learned", "rules", "plain")`.
+* **Fallback chain.** `AGENT_POLICY_CHAIN = ("learned", "rules", "plain")` since
+  2026-11-18 (step 3, confirmed on S_test). If a policy raises or returns an invalid
+  decision, the next one answers and the trace says so. The learned policy is read from
+  `models/phase_b_machine/bandit_policy.json`, or the identical committed copy in
+  `experiments/results/phase_b_machine/step3/`.
+* **Note for evaluation scripts:** `run_perception` follows the deployed chain too.
+  Results recorded before 2026-11-18 used the rules; `verify_agent_loop.py` pins the
+  rule chain on purpose.
 * **Safety steps are not choices.** The policy cannot switch off the text filter,
   the refuse gate, calibration or the Known/Unknown flag; the loop calls them
   directly.

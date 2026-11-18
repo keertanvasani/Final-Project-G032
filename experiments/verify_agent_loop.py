@@ -38,6 +38,12 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(Path(__file__).parent))
 
+import config  # noqa: E402
+
+# This script checks the refactor against the old rule controller, so it runs
+# the rule chain whatever the app's deployed chain is.
+config.AGENT_POLICY_CHAIN = ("rules", "plain")
+
 import agent_controller as new  # noqa: E402
 from ablation_deepsea import CONFIGS, MAN, image_path, run_config  # noqa: E402
 from agentic import loop, policy  # noqa: E402
