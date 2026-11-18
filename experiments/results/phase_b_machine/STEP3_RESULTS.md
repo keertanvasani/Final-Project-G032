@@ -68,3 +68,41 @@ discretionary cost −9.2 ms/img [−10.7, −8.1] (−81%); measured wall time 
   registered comparison, and must be reported as such.
 * Not yet done: the single confirmatory run on S_test, and deployment (the app's chain
   is still `("rules", "plain")`; deploying = `("learned", "rules", "plain")`).
+
+## Confirmatory test on S_test (2026-11-18, single run, PROTOCOL §12)
+
+Registered before the run in PROTOCOL §12 (commit `f9f0437`), including the H1 → H1′
+deviation. Frozen policy sha256 `03ff9e7d…bd37f32`, checked by the script.
+S_test: 1,170 images, 473 dives, 3,151 boxes logged. Scripts:
+`log_bandit_outcomes.py --split S_test --confirmatory`, `test_bandit_policy.py`;
+result file `step3/S_test_confirmatory.json`.
+
+| Policy | Reported | Precision | Recall | F1 | AURC ↓ | Discretionary ms/img |
+|---|---|---|---|---|---|---|
+| Never act (descriptive) | 2,121 | 0.663 | 0.647 | 0.655 | 0.111 | 0.0 |
+| **Rules (deployed)** | 2,075 | 0.656 | 0.627 | 0.641 | 0.137 | 11.2 |
+| **Learned (frozen)** | 2,121 | **0.668** | **0.652** | **0.660** | **0.111** | **1.7** |
+| Oracle (descriptive) | 2,031 | 0.712 | 0.666 | 0.688 | 0.111 | 0.6 |
+
+Learned − rules, paired dive bootstrap (2,000 resamples):
+
+| | Difference | 95% CI |
+|---|---|---|
+| AURC | −0.025 | [−0.038, −0.014] |
+| Discretionary ms/img | −9.5 (−85%) | [−10.5, −8.5] |
+| Precision | +0.012 | [−0.002, +0.025] |
+| Recall | +0.025 | [+0.015, +0.036] |
+| F1 | +0.019 | [+0.011, +0.027] |
+| Reward per image | +0.055 | [+0.020, +0.090] |
+
+**H1′ supported:** AURC lower (one-sided p < 0.0005, no resample ≥ 0; Holm-adjusted
+< 0.0015) while using less discretionary compute.
+**H2 supported:** discretionary cost lower (p < 0.0005; Holm < 0.0015) with selective
+risk non-inferior (upper 95% bound of the risk difference −0.0006 < +0.01 margin).
+
+H1 in its registered form (matched compute ±5%) was not tested; H1′ replaces it, as
+declared before the run. The S_policy findings replicate: almost all of the gain comes
+from not enhancing and not zooming — the never-act row has the same AURC — and the vote
+adds a small further gain in F1 (0.655 → 0.660). The policy is reliably better and far
+cheaper than the rules, but it is not a context-dependent policy; the oracle row shows
+the headroom a better state description could still reach.

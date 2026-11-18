@@ -674,3 +674,59 @@ holds three taxa nominally but is effectively one. No split fixes this — all
 11 held-out taxa are rare, and spreading them across three small hosts leaves
 every role thin. It must be reported as a limitation on the novelty claim, not
 smoothed over.
+
+---
+
+## 12. Confirmatory test of H1 / H2 on S_test (registered 2026-11-18, before the run)
+
+Added before `S_test` is read for the deep-sea (9-class) stack. Everything below is
+fixed now; nothing is tuned after the run.
+
+### 12.1 What is compared
+
+* **Rule agent (baseline)** — the deployed deep-sea agent: enhance when the quality
+  check flags the image, zoom boxes in 0.40–0.75, vote on every disagreement; text
+  filter, refuse gate, calibration and Known/Unknown fixed.
+* **Learned policy** — the frozen contextual bandit fitted on `S_cal` and evaluated on
+  `S_policy` (`experiments/results/phase_b_machine/STEP3_RESULTS.md`), file
+  `bandit_policy.json`, sha256
+  `03ff9e7d8f46abfe2bc53ee2a7a01bb469c2046688551e8ab67b5dec0bd37f32`.
+  The test script refuses to run if the hash differs.
+* Same frozen detector (YOLOv8-n seed 0), classifier, calibration map and novelty
+  threshold for both. Reported detections exclude boxes flagged Unknown (ablation
+  row F). Outcomes by the §2 harness, IoU 0.50, 9 known classes.
+* Evaluation by exact replay of full-information action logs on `S_test`
+  (`log_bandit_outcomes.py --split S_test --confirmatory`), the method validated on
+  `S_policy` against the live loop. Descriptive rows (never act, oracle) are reported
+  but are not tested.
+
+### 12.2 Deviation from §7.4 H1, declared before the run
+
+H1 as registered asks for lower AURC **at compute matched within ±5%**. The learned
+policy is not compute-matched: on `S_policy` it uses ~80% less discretionary compute
+than the rule agent. Building a separate compute-matched policy now would be a design
+change made for the test. H1 is therefore tested in this form:
+
+> **H1′** — the learned policy has lower AURC (GT-anchored: risk vs selective recall,
+> calibrated combined confidence) than the rule agent, **while using no more mean
+> discretionary compute**.
+
+This is a stronger requirement on the policy than matched compute (it must win on
+reliability without extra spend), but it is not the registered wording and is reported
+as a deviation.
+
+**H2** — at matched selective risk, the learned policy's mean per-image discretionary
+cost is lower than the rule agent's. Operationalised as: discretionary ms/image lower
+(one-sided), **and** risk not higher — the learned policy's selective risk at full
+coverage (1 − precision) is non-inferior with margin 0.01 (one-sided 95% upper bound of
+learned − rules < +0.01).
+
+Discretionary cost = measured ms of enhance, zoom and vote, from the same logs for
+both policies.
+
+### 12.3 Statistics
+
+Paired dive-cluster bootstrap over `S_test` dives, 2,000 resamples, seed 0, one-sided.
+Holm–Bonferroni over the §7.4 family of three (H3 is tested separately; it is counted
+in the family so the correction is not weakened). Secondary, exploratory: precision,
+recall, F1, reward per image, live wall time per image.

@@ -1,0 +1,158 @@
+{
+  "split": "S_test",
+  "images": 1170,
+  "dives": 473,
+  "policy_sha256": "03ff9e7d8f46abfe2bc53ee2a7a01bb469c2046688551e8ab67b5dec0bd37f32",
+  "results": {
+    "never": {
+      "reported": 2121,
+      "tp": 1406,
+      "precision": 0.6628948609146629,
+      "recall": 0.6470317533364013,
+      "f1": 0.654867256637168,
+      "reward_per_image": 0.5905982905982906,
+      "aurc": 0.11121814413074836,
+      "discretionary_ms_per_image": 0.0,
+      "actions_per_image": {
+        "enhance": 0.0,
+        "zoom": 0.0,
+        "vote": 0.0
+      },
+      "outcomes": {
+        "TP": 1406,
+        "LOC_ERR": 288,
+        "CLS_ERR": 124,
+        "OOD_ERR": 121,
+        "BG_FP": 182
+      }
+    },
+    "rules": {
+      "reported": 2075,
+      "tp": 1362,
+      "precision": 0.6563855421686747,
+      "recall": 0.6267832489645652,
+      "f1": 0.6412429378531074,
+      "reward_per_image": 0.5547008547008547,
+      "aurc": 0.13663942856593703,
+      "discretionary_ms_per_image": 11.225588888931885,
+      "actions_per_image": {
+        "enhance": 0.5111111111111111,
+        "zoom": 0.729059829059829,
+        "vote": 0.3717948717948718
+      },
+      "outcomes": {
+        "TP": 1362,
+        "CLS_ERR": 116,
+        "LOC_ERR": 307,
+        "OOD_ERR": 122,
+        "BG_FP": 168
+      }
+    },
+    "learned": {
+      "reported": 2121,
+      "tp": 1417,
+      "precision": 0.6680810938236681,
+      "recall": 0.6520938794293604,
+      "f1": 0.6599906846762924,
+      "reward_per_image": 0.6094017094017095,
+      "aurc": 0.11136294960696667,
+      "discretionary_ms_per_image": 1.696809657944394,
+      "actions_per_image": {
+        "enhance": 0.0,
+        "zoom": 0.0,
+        "vote": 0.3418803418803419
+      },
+      "outcomes": {
+        "TP": 1417,
+        "LOC_ERR": 288,
+        "CLS_ERR": 113,
+        "OOD_ERR": 121,
+        "BG_FP": 182
+      }
+    },
+    "oracle": {
+      "reported": 2031,
+      "tp": 1447,
+      "precision": 0.7124569177744953,
+      "recall": 0.6658996778647032,
+      "f1": 0.6883920076117982,
+      "reward_per_image": 0.7376068376068377,
+      "aurc": 0.11132609708099934,
+      "discretionary_ms_per_image": 0.5825540170637675,
+      "actions_per_image": {
+        "enhance": 0.05982905982905983,
+        "zoom": 0.03076923076923077,
+        "vote": 0.020512820512820513
+      },
+      "outcomes": {
+        "TP": 1447,
+        "LOC_ERR": 239,
+        "CLS_ERR": 87,
+        "OOD_ERR": 112,
+        "BG_FP": 146
+      }
+    }
+  },
+  "learned_minus_rules": {
+    "aurc": {
+      "mean": -0.025356426446050774,
+      "ci95": [
+        -0.03797570779840345,
+        -0.01388102791574991
+      ]
+    },
+    "discretionary_ms_per_image": {
+      "mean": -9.520762659344793,
+      "ci95": [
+        -10.489568525216304,
+        -8.51229674971449
+      ]
+    },
+    "precision": {
+      "mean": 0.011874654584686667,
+      "ci95": [
+        -0.0020337515077125667,
+        0.025227245897768813
+      ]
+    },
+    "recall": {
+      "mean": 0.025222681902935046,
+      "ci95": [
+        0.015123739688359339,
+        0.035475792988313826
+      ]
+    },
+    "f1": {
+      "mean": 0.01878628487601242,
+      "ci95": [
+        0.010775677755922475,
+        0.026805352375251723
+      ]
+    },
+    "reward_per_image": {
+      "mean": 0.054799194692033405,
+      "ci95": [
+        0.019776440240756754,
+        0.09030100334448155
+      ]
+    }
+  },
+  "H1_prime": {
+    "aurc_rules": 0.13663942856593703,
+    "aurc_learned": 0.11136294960696667,
+    "p_one_sided": 0.0,
+    "p_holm": 0.0,
+    "cost_condition_met": true,
+    "supported": true
+  },
+  "H2": {
+    "ms_rules": 11.225588888931885,
+    "ms_learned": 1.696809657944394,
+    "p_one_sided": 0.0,
+    "p_holm": 0.0,
+    "risk_diff_upper95": -0.0005990133897111338,
+    "noninferiority_margin": 0.01,
+    "risk_noninferior": true,
+    "supported": true
+  }
+}
