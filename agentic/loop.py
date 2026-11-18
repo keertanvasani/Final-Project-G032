@@ -220,8 +220,9 @@ def run_loop(
             return run
 
     # ── Decide + Act: D3 zoom ──────────────────────────────────────
+    enhanced = work is not image
     t_zoom = time.perf_counter()
-    obs = Observation(q, detections, guard.elapsed_ms(), budget_ms)
+    obs = Observation(q, detections, guard.elapsed_ms(), budget_ms, enhanced)
     chosen = decide("zoom", obs)
     if chosen and allowed("zoom"):
         detections, lines = tools.zoom_boxes(work, detections, pipeline, chosen)
@@ -239,7 +240,8 @@ def run_loop(
     for idx, (det, cls_res) in enumerate(zip(detections, cls_results)):
         disagree = det["class_name"] != cls_res["class_name"]
         do_vote = disagree and decide(
-            "vote", Observation(q, detections, guard.elapsed_ms(), budget_ms), idx, det, cls_res)
+            "vote", Observation(q, detections, guard.elapsed_ms(), budget_ms, enhanced),
+            idx, det, cls_res)
         if do_vote and allowed("vote", idx):
             resolved, lines, ms = tools.resolve_detection(idx, det, cls_res, pipeline, work)
             tm["reclassification_ms"] += ms

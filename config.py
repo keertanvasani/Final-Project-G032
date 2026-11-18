@@ -194,6 +194,8 @@ AGREEMENT_BOOST = 0.10           # Boost when detector & classifier agree
 # Policies asked in order; the first valid answer wins. Step 3 adds the
 # learned policy in front: ("learned", "rules", "plain").
 AGENT_POLICY_CHAIN = ("rules", "plain")
+# Fitted contextual-bandit policy used by the "learned" rung.
+AGENT_LEARNED_POLICY = MODELS_DIR / "phase_b_machine" / "bandit_policy.json"
 # Once an image has used this much wall time, the remaining discretionary
 # steps (enhance, zoom, vote) are skipped and it finishes on the plain models.
 # The safety checks still run. A GPU image takes ~50 ms and a CPU image a few
