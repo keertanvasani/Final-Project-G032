@@ -1,0 +1,235 @@
+{
+  "split": "S_cal",
+  "model": "hf-hub:imageomics/bioclip",
+  "templates": [
+    "a photo of {}.",
+    "an underwater photo of {}.",
+    "a deep-sea photo of {}."
+  ],
+  "class_prompts": {
+    "coral/sea-anemone": [
+      "coral",
+      "sea anemone",
+      "Anthozoa",
+      "Actiniaria"
+    ],
+    "crab": [
+      "crab",
+      "Brachyura"
+    ],
+    "crinoid": [
+      "crinoid",
+      "sea lily",
+      "feather star",
+      "Crinoidea"
+    ],
+    "fish": [
+      "fish",
+      "deep-sea fish",
+      "Actinopterygii"
+    ],
+    "machine": [
+      "underwater robot equipment",
+      "remotely operated vehicle",
+      "man-made metal object",
+      "rope or cable"
+    ],
+    "sea-cucumber": [
+      "sea cucumber",
+      "Holothuroidea"
+    ],
+    "shrimp": [
+      "shrimp",
+      "prawn",
+      "Caridea"
+    ],
+    "sponge": [
+      "sponge",
+      "glass sponge",
+      "Porifera"
+    ],
+    "starfish": [
+      "starfish",
+      "sea star",
+      "Asteroidea"
+    ]
+  },
+  "other_groups": [
+    "jellyfish",
+    "comb jelly",
+    "siphonophore",
+    "salp",
+    "squid",
+    "octopus",
+    "cuttlefish",
+    "sea urchin",
+    "sea spider",
+    "squat lobster",
+    "lobster",
+    "isopod",
+    "amphipod",
+    "barnacle",
+    "polychaete worm",
+    "sea pen",
+    "tunicate",
+    "sea squirt",
+    "nudibranch",
+    "sea snail",
+    "clam",
+    "ray",
+    "skate",
+    "shark",
+    "chimaera",
+    "eel",
+    "brachiopod",
+    "bryozoan"
+  ],
+  "A_closed_set": {
+    "n": 1351,
+    "resnet_acc": 0.8682457438934122,
+    "bioclip_acc": 0.3323464100666173,
+    "average_acc": 0.8275351591413768,
+    "both_right": 0.307920059215396,
+    "only_resnet": 0.5603256846780162,
+    "only_bioclip": 0.02442635085122132,
+    "both_wrong": 0.1073279052553664,
+    "per_class": {
+      "coral/sea-anemone": {
+        "n": 221,
+        "resnet": 0.8054298642533937,
+        "bioclip": 0.2850678733031674,
+        "average": 0.7058823529411765
+      },
+      "crab": {
+        "n": 91,
+        "resnet": 0.9560439560439561,
+        "bioclip": 0.31868131868131866,
+        "average": 0.8901098901098901
+      },
+      "crinoid": {
+        "n": 44,
+        "resnet": 0.5454545454545454,
+        "bioclip": 0.13636363636363635,
+        "average": 0.4318181818181818
+      },
+      "fish": {
+        "n": 287,
+        "resnet": 0.8885017421602788,
+        "bioclip": 0.5818815331010453,
+        "average": 0.8850174216027874
+      },
+      "machine": {
+        "n": 385,
+        "resnet": 0.9506493506493506,
+        "bioclip": 0.4,
+        "average": 0.9506493506493506
+      },
+      "sea-cucumber": {
+        "n": 59,
+        "resnet": 0.711864406779661,
+        "bioclip": 0.03389830508474576,
+        "average": 0.6101694915254238
+      },
+      "shrimp": {
+        "n": 64,
+        "resnet": 0.75,
+        "bioclip": 0.09375,
+        "average": 0.703125
+      },
+      "sponge": {
+        "n": 79,
+        "resnet": 0.7721518987341772,
+        "bioclip": 0.11392405063291139,
+        "average": 0.7215189873417721
+      },
+      "starfish": {
+        "n": 121,
+        "resnet": 0.9256198347107438,
+        "bioclip": 0.10743801652892562,
+        "average": 0.859504132231405
+      }
+    },
+    "bioclip_top_confusions": [
+      [
+        "machine",
+        "fish",
+        101
+      ],
+      [
+        "coral/sea-anemone",
+        "machine",
+        69
+      ],
+      [
+        "fish",
+        "machine",
+        62
+      ],
+      [
+        "machine",
+        "sponge",
+        56
+      ],
+      [
+        "coral/sea-anemone",
+        "fish",
+        50
+      ],
+      [
+        "starfish",
+        "machine",
+        50
+      ],
+      [
+        "machine",
+        "coral/sea-anemone",
+        48
+      ],
+      [
+        "starfish",
+        "fish",
+        38
+      ]
+    ]
+  },
+  "B_known_unknown": {
+    "n_known": 1351,
+    "n_unseen": 222,
+    "unseen_taxa": {
+      "shark": 12,
+      "squid": 19,
+      "squat-lobster": 28,
+      "octopus": 28,
+      "ray": 8,
+      "comb-jelly": 40,
+      "jellyfish": 64,
+      "urchin": 14,
+      "tunicate": 4,
+      "sea-spider": 5
+    },
+    "auroc_energy_resnet": 0.7690066083848467,
+    "auroc_bioclip_closed": 0.45024373003647616,
+    "auroc_bioclip_open_optimistic": 0.6171904695220758,
+    "auroc_energy_plus_closed": 0.6535499229799748,
+    "open_top_is_other_unseen": 0.4369369369369369,
+    "open_top_is_other_known": 0.27387120651369357
+  },
+  "C_agent_boxes": {
+    "boxes": 1527,
+    "outcomes": {
+      "TP": 902,
+      "LOC_ERR": 252,
+      "OOD_ERR": 162,
+      "BG_FP": 124,
+      "CLS_ERR": 87
+    },
+    "tp_bioclip_disagrees": 0.6286031042128604,
+    "cls_err_bioclip_right": 0.20689655172413793,
+    "cls_err_bioclip_disagrees": 0.8505747126436781,
+    "ood_err_open_says_other": 0.48148148148148145,
+    "tp_open_says_other": 0.2771618625277162,
+    "oracle_switch_gain_tp": 18,
+    "switch_when_disagree_net_tp": -549,
+    "bioclip_ms_per_crop": 9.967673553719075
+  }
+}
