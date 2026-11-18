@@ -206,8 +206,7 @@ def rerun_zoomed_detection(
                 continue
 
             # Run dual detection + WBF on crop
-            res_a, res_b = ensemble.run_dual_detection(crop, pipeline.model_a, pipeline.model_b)
-            crop_fused = ensemble.fuse_detections(res_a, res_b, crop.shape[:2])
+            crop_fused = ensemble.run_detection(crop, pipeline)
 
             best_crop_det = None
             best_iou = 0.0
@@ -406,9 +405,7 @@ def run_perception(
                 "timings": {}}
 
     det_timings: dict[str, float] = {}
-    res_a, res_b = ensemble.run_dual_detection(
-        enhanced_image, pipeline.model_a, pipeline.model_b, timings=det_timings)
-    detections = ensemble.fuse_detections(res_a, res_b, enhanced_image.shape[:2])
+    detections = ensemble.run_detection(enhanced_image, pipeline, timings=det_timings)
     detections, _ = text_overlay.filter_text_detections(enhanced_image, detections)
 
     if not detections:
@@ -437,6 +434,7 @@ def run_perception(
 def run_agentic_pipeline(
     image: np.ndarray,
     pipeline: EnsemblePipeline,
+    enhance: bool = True,
 ) -> tuple[np.ndarray, list[dict[str, Any]], dict[str, Any], list[str]]:
     """Run the multi-model pipeline with agentic decision-making logic.
 
@@ -475,7 +473,12 @@ def run_agentic_pipeline(
     )
 
     enhanced_image = image
-    if quality_state["needs_enhancement"] or quality_state["is_blurry"]:
+    wants = quality_state["needs_enhancement"] or quality_state["is_blurry"]
+    if wants and not enhance:
+        # Switched off by the caller, so the effect of D1 can be seen side by side.
+        trace.append("Action: Enhancement switched off by the user; analysing the original image "
+                     "(the quality check would have enhanced it)")
+    elif wants:
         enhanced_image, enhance_trace = enhance_image(image, quality_state)
         trace.extend(enhance_trace)
     else:
@@ -495,7 +498,9 @@ def run_agentic_pipeline(
     detection_ms = detector_nano_ms + detector_small_ms
 
     t_wbf = time.perf_counter()
-    detections = ensemble.fuse_detections(res_a, res_b, enhanced_image.shape[:2])
+    detections = ensemble.fuse_detections(res_a, res_b, enhanced_image.shape[:2],
+                                          class_names=getattr(pipeline, "class_names", None),
+                                          weights=getattr(pipeline, "wbf_weights", None))
     wbf_ms = (time.perf_counter() - t_wbf) * 1000.0
 
     # Reject boxes drawn on the burned-in telemetry overlay.
@@ -612,6 +617,17 @@ def run_agentic_pipeline(
                 idx, det, cls_res, pipeline, enhanced_image)
             reclassification_ms += res_ms
             trace.extend(res_trace)
+            # Known/Unknown: is this crop like anything the classifier was
+            # trained on? Only profiles with a fitted threshold report it.
+            nov = pipeline.novelty_for(cls_res.get("energy")) if hasattr(pipeline, "novelty_for") else None
+            if nov is not None:
+                resolved["novelty"] = nov
+                if nov["unknown"]:
+                    trace.append(
+                        f"Novelty: Object {idx+1} looks unlike the trained classes "
+                        f"(energy {nov['score']:.2f} > {nov['threshold']:.2f}); "
+                        f"marked Unknown — '{resolved['classifier_class']}' is the nearest "
+                        f"known class, not a confirmed identification")
             resolved_detections.append(resolved)
     else:
         # Fill in empty details for return
@@ -676,12 +692,13 @@ def run_agentic_pipeline(
             "annotation_ms": round(annotation_ms, 2),
             "agent_decision_ms": round(agent_decision_ms, 2),
         },
-        "models_used": {
+        "models_used": pipeline.models_used() if hasattr(pipeline, "models_used") else {
             "detector_1": "YOLOv8n",
             "detector_2": "YOLOv8s",
             "classifier": "ResNet18",
             "fusion": "Weighted Boxes Fusion",
         },
+        "profile": getattr(pipeline, "profile", "aquarium"),
     }
 
     return annotated, resolved_detections, summary, trace

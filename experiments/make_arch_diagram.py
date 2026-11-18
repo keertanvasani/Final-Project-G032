@@ -32,8 +32,8 @@ def arrow(x1, y1, x2, y2, color=INK, style="-|>", lw=1.5, ls="-"):
                                  linestyle=ls, shrinkA=0, shrinkB=0))
 
 # ---------------- band labels ----------------
-ax.text(1, 57.5, "PERCEPTION  (always executes)", fontsize=9.5, fontweight="bold",
-        color=MUTED)
+ax.text(1, 58.5, "PERCEPTION\n(always executes)", fontsize=9.5, fontweight="bold",
+        color=MUTED, va="top", linespacing=1.3)
 ax.text(1, 24.5, "DECISION LAYER  (governs the above)", fontsize=9.5, fontweight="bold",
         color=ACCENT)
 
@@ -44,7 +44,7 @@ box(20,  y, 18, 11, "D1  Quality", "blur · brightness\n· contrast", fc=SOFT, e
 box(42,  y, 19, 11, "Dual detection", "YOLOv8-n  +  YOLOv8-s", fc="#FFFFFF")
 box(65,  y, 15, 11, "WBF", "IoU 0.55 · [2,1]", fc="#FFFFFF")
 box(84,  y, 18, 11, "D2  Review gate", "any box ≥ 0.40 ?", fc=SOFT, ec=ACCENT, lw=2)
-box(106, y, 18, 11, "ResNet-18", "224 px · 8 classes", fc="#FFFFFF")
+box(106, y, 18, 11, "ResNet-18", "224 px · per-box species", fc="#FFFFFF")
 
 for x1, x2 in ((16,20), (38,42), (61,65), (80,84), (102,106)):
     arrow(x1, y+5.5, x2, y+5.5)
@@ -62,7 +62,7 @@ ax.text(94.5, 35.5, "no", fontsize=8, color=CRIT)
 # ---------------- decision layer ----------------
 yd = 8
 box(20, yd, 24, 12, "Uncertainty", "calibration  +  OOD score", fc=SOFT, ec=ACCENT, lw=2, fs=10)
-box(50, yd, 26, 12, "Agent", "max  Q(s,a) − λ·C(a)", fc=SOFT, ec=ACCENT, lw=2.4, fs=10)
+box(50, yd, 26, 12, "Policy", "learned accept / abstain", fc=SOFT, ec=ACCENT, lw=2.4, fs=10)
 box(82, yd, 20, 12, "D3 / D4", "zoom · re-classify", fc=SOFT, ec=ACCENT, lw=2, fs=10)
 box(108, yd, 20, 12, "Accept / Abstain", "+ decision trace", fc="#DDEBE3", ec=GOOD, lw=1.8, fs=9.5)
 
@@ -86,6 +86,6 @@ ax.text(1, 2.0, "D1–D4 are the four runtime decision points.  Every branch tak
         fontsize=8.6, color=MUTED)
 
 fig.tight_layout(pad=0.3)
-fig.savefig("experiments/presentation_figures/arch_diagram_slide.png",
+fig.savefig("experiments/presentation_figures/arch_diagram_slide_v2.png",
             bbox_inches="tight", facecolor="white")
-print("wrote experiments/presentation_figures/arch_diagram_slide.png")
+print("wrote experiments/presentation_figures/arch_diagram_slide_v2.png")

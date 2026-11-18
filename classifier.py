@@ -143,12 +143,16 @@ class SpeciesClassifier:
         with torch.no_grad():
             logits: torch.Tensor = self.model(tensor)
             probs: torch.Tensor = torch.softmax(logits, dim=1)[0]
+            energy = float(-torch.logsumexp(logits[0], dim=0).item())
 
         top3_vals, top3_idxs = probs.topk(min(3, len(self.class_names)))
 
         return {
             "class_name": self.class_names[top3_idxs[0].item()],
             "confidence": float(top3_vals[0].item()),
+            # -logsumexp(logits): low for a crop the network recognises, higher
+            # for an unfamiliar one. Used for the Known/Unknown flag.
+            "energy": energy,
             "top3": [
                 {
                     "class_name": self.class_names[idx.item()],
@@ -189,6 +193,7 @@ class SpeciesClassifier:
         with torch.no_grad():
             logits: torch.Tensor = self.model(batch)
             probs: torch.Tensor = torch.softmax(logits, dim=1)
+            energies = (-torch.logsumexp(logits, dim=1)).tolist()
 
         results: list[dict[str, Any]] = []
         for i in range(probs.size(0)):
@@ -197,6 +202,7 @@ class SpeciesClassifier:
                 {
                     "class_name": self.class_names[top3_idxs[0].item()],
                     "confidence": float(top3_vals[0].item()),
+                    "energy": float(energies[i]),
                     "top3": [
                         {
                             "class_name": self.class_names[idx.item()],

@@ -97,3 +97,5 @@ deploy/hf_space/
 # --- Local drafts and presentation material ---
 paper/
 *.pptx
+experiments/yolo_phase_b_machine/
+experiments/classifier_crops_phase_b_machine/

@@ -55,13 +55,22 @@ def main() -> None:
                     help="override the per-architecture default")
     ap.add_argument("--workers", type=int, default=0)
     ap.add_argument("--device", default="0")
+    ap.add_argument("--data", type=Path, default=DATA,
+                    help="data.yaml to train on (default: the 8-taxa Phase B set)")
+    ap.add_argument("--outdir", type=Path, default=OUTDIR,
+                    help="where runs and runs.json are written")
+    ap.add_argument("--cache", default="False", choices=["False", "ram", "disk"],
+                    help="cache decoded images; removes JPEG decoding from every epoch")
+    ap.add_argument("--fraction", type=float, default=1.0,
+                    help="share of the training set to use (benchmarking only)")
     ap.add_argument("--patience", type=int, default=25)
     ap.add_argument("--smoke", action="store_true",
                     help="2 epochs, seed 0 only — checks the plumbing")
     args = ap.parse_args()
 
-    if not DATA.is_file():
-        raise SystemExit(f"Missing {DATA}. Run experiments/coco_to_yolo.py first.")
+    data, outdir = args.data.resolve(), args.outdir.resolve()
+    if not data.is_file():
+        raise SystemExit(f"Missing {data}. Run experiments/coco_to_yolo.py first.")
 
     epochs = 2 if args.smoke else args.epochs
     seeds = [0] if args.smoke else args.seeds
@@ -70,7 +79,7 @@ def main() -> None:
     if unknown:
         raise SystemExit(f"Unknown architecture(s): {unknown}. Choose from {list(ARCHS)}")
 
-    OUTDIR.mkdir(parents=True, exist_ok=True)
+    outdir.mkdir(parents=True, exist_ok=True)
     runs: list[dict] = []
 
     for arch in args.arch:
@@ -81,15 +90,17 @@ def main() -> None:
             model = build(cfg["kind"], cfg["weights"])
             t0 = time.time()
             model.train(
-                data=str(DATA.resolve()),
+                data=str(data),
                 epochs=epochs,
                 imgsz=args.imgsz,
                 batch=args.batch or cfg["batch"],
                 seed=seed,
                 deterministic=True,
                 workers=args.workers,
+                cache=False if args.cache == "False" else args.cache,
+                fraction=args.fraction,
                 device=args.device,
-                project=str(OUTDIR),
+                project=str(outdir),
                 name=name,
                 exist_ok=True,
                 patience=args.patience,
@@ -105,14 +116,18 @@ def main() -> None:
                 "imgsz": args.imgsz,
                 "batch": args.batch or cfg["batch"],
                 "minutes": round(elapsed / 60, 1),
-                "weights": str((OUTDIR / name / "weights" / "best.pt").resolve()),
+                "weights": str((outdir / name / "weights" / "best.pt").resolve()),
                 "metrics": {k: float(v) for k, v in m.items()
                             if isinstance(v, (int, float))},
             }
             runs.append(rec)
             print(f"  done in {rec['minutes']} min -> {rec['weights']}")
 
-            out = OUTDIR / ("runs_smoke.json" if args.smoke else "runs.json")
+            # One file per invocation: several trainings may run at once (the
+            # only way to use more than one core on Windows, where dataloader
+            # workers are unusable), and a shared runs.json would be clobbered.
+            tag = "-".join(args.arch) + "_seed" + "-".join(map(str, seeds))
+            out = outdir / ("runs_smoke.json" if args.smoke else f"runs_{tag}.json")
             out.write_text(json.dumps(runs, indent=2) + "\n")
 
     print(f"\n{len(runs)} run(s) complete.")

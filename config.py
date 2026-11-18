@@ -40,6 +40,38 @@ CLASSIFIER_WEIGHTS = MODELS_DIR / "classifier" / "best_classifier.pth"
 CLASSIFIER_CLASS_NAMES = MODELS_DIR / "classifier" / "class_names.json"
 
 # ──────────────────────────────────────────────
+# Model profiles served by the app
+# ──────────────────────────────────────────────
+# "aquarium" is the original stack (7 aquarium classes, YOLOv8-n + YOLOv8-s).
+# "deepsea" is the Phase B+M stack trained on JEDI deep-sea footage: 9 classes
+# including `machine` (ROV hardware), one YOLOv8-n detector, and a Known/Unknown
+# flag from the classifier's energy score (threshold fitted by
+# experiments/fit_novelty.py). A second deep-sea detector can be added as
+# detector_b when it is trained.
+_DS = MODELS_DIR / "phase_b_machine"
+MODEL_PROFILES = {
+    "aquarium": {
+        "label": "Aquarium (7 classes)",
+        "detector_a": YOLO_N_WEIGHTS,
+        "detector_b": YOLO_S_WEIGHTS,
+        "classifier_weights": CLASSIFIER_WEIGHTS,
+        "classifier_names": CLASSIFIER_CLASS_NAMES,
+        "class_names": None,          # use CLASS_NAMES below
+        "novelty": None,
+    },
+    "deepsea": {
+        "label": "Deep sea (9 classes)",
+        "detector_a": _DS / "yolov8n_seed0" / "weights" / "best.pt",
+        "detector_b": None,
+        "classifier_weights": _DS / "classifier_seed0" / "best_classifier.pth",
+        "classifier_names": _DS / "classifier_seed0" / "class_names.json",
+        "class_names": "from_detector",
+        "novelty": _DS / "novelty.json",
+    },
+}
+DEFAULT_PROFILE = "deepsea"
+
+# ──────────────────────────────────────────────
 # Roboflow dataset settings
 # ──────────────────────────────────────────────
 ROBOFLOW_WORKSPACE = "brad-dwyer"

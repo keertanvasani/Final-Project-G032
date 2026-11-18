@@ -38,6 +38,9 @@ sys.path.insert(0, str(ROOT))
 PHASE_A_SPLITS = EXP / "splits" / "phase_a_splits.json"
 PHASE_B_SPLITS = EXP / "splits" / "phase_b_splits.json"
 MODELS_B = ROOT / "models" / "phase_b"
+# Phase B+M: the same splits with `machine` promoted to a trained class.
+PHASE_BM_SPLITS = EXP / "splits" / "phase_b_machine_splits.json"
+MODELS_BM = ROOT / "models" / "phase_b_machine"
 
 
 class PhaseBPipeline:
@@ -73,12 +76,14 @@ def build_platform(platform: str, seed_a: int = 0, seed_b: int = 1,
         man = json.loads(PHASE_A_SPLITS.read_text())
         return EnsemblePipeline(), man, set(man["label_space"]["known"])
 
-    if platform != "phase_b":
+    if platform not in ("phase_b", "phase_b_machine"):
         raise SystemExit(f"Unknown platform {platform!r}")
 
     import config
 
-    man = json.loads(PHASE_B_SPLITS.read_text())
+    machine = platform == "phase_b_machine"
+    man = json.loads((PHASE_BM_SPLITS if machine else PHASE_B_SPLITS).read_text())
+    models_dir = MODELS_BM if machine else MODELS_B
     known = set(man["label_space"]["known"])
     canonical = sorted(known)
 
@@ -94,11 +99,18 @@ def build_platform(platform: str, seed_a: int = 0, seed_b: int = 1,
     config.CLASS_NAMES = canonical
     config.NUM_CLASSES = len(canonical)
 
+    # Phase B+M uses the real n + s pairing the Phase A baseline had if a
+    # YOLOv8-s has been trained; otherwise it falls back to two nano seeds, as
+    # Phase B did. The choice is printed below so a result is never attributed
+    # to an ensemble it was not run with.
+    arch_b, seed_b2 = "yolov8n", seed_b
+    if machine and (models_dir / "yolov8s_seed0" / "weights" / "best.pt").is_file():
+        arch_b, seed_b2 = "yolov8s", 0
     pipe = PhaseBPipeline(
-        det_a=MODELS_B / f"yolov8n_seed{seed_a}" / "weights" / "best.pt",
-        det_b=MODELS_B / f"yolov8n_seed{seed_b}" / "weights" / "best.pt",
-        clf_w=MODELS_B / f"classifier_seed{clf_seed}" / "best_classifier.pth",
-        clf_names=MODELS_B / f"classifier_seed{clf_seed}" / "class_names.json",
+        det_a=models_dir / f"yolov8n_seed{seed_a}" / "weights" / "best.pt",
+        det_b=models_dir / f"{arch_b}_seed{seed_b2}" / "weights" / "best.pt",
+        clf_w=models_dir / f"classifier_seed{clf_seed}" / "best_classifier.pth",
+        clf_names=models_dir / f"classifier_seed{clf_seed}" / "class_names.json",
     )
 
     # The classifier was trained from an ImageFolder tree, so "/" became "_" in
@@ -115,7 +127,12 @@ def build_platform(platform: str, seed_a: int = 0, seed_b: int = 1,
             "Phase B classifier classes do not match the detector label space:\n"
             f"  classifier {sorted(remapped)}\n  detector   {canonical}")
 
-    print(f"  Phase B platform: yolov8n seed{seed_a} + seed{seed_b} "
-          f"(same architecture — YOLOv8-s was not trained), "
-          f"classifier seed{clf_seed}, {len(canonical)} known taxa")
+    if machine:
+        print(f"  Phase B+M platform: yolov8n seed{seed_a} + {arch_b} seed{seed_b2}, "
+              f"classifier seed{clf_seed}, {len(canonical)} known classes "
+              f"(incl. machine)")
+    else:
+        print(f"  Phase B platform: yolov8n seed{seed_a} + seed{seed_b} "
+              f"(same architecture — YOLOv8-s was not trained), "
+              f"classifier seed{clf_seed}, {len(canonical)} known taxa")
     return pipe, man, known
