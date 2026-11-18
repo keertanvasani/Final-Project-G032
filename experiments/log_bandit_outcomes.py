@@ -19,7 +19,8 @@ output and score it with the harness. Zoom acts on one box at a time and the
 vote on one box, so per-box variants compose exactly into a whole-image run
 (up to batch-vs-single float noise in the classifier). Costs are measured.
 
-Dev splits only; never S_test.
+Dev splits only, except the single registered confirmatory run on S_test
+(PROTOCOL §12, --confirmatory).
 
 Usage:
     python experiments/log_bandit_outcomes.py --split S_cal
@@ -95,9 +96,13 @@ def box_variants(work, dets, pipe):
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--split", required=True, choices=["S_cal", "S_policy"])
+    ap.add_argument("--split", required=True, choices=["S_cal", "S_policy", "S_test"])
     ap.add_argument("--limit", type=int, default=None)
+    ap.add_argument("--confirmatory", action="store_true",
+                    help="required for S_test: the single registered run (PROTOCOL §12)")
     args = ap.parse_args()
+    if args.split == "S_test" and not (args.confirmatory and args.limit is None):
+        raise SystemExit("S_test is single-use: only the full --confirmatory run (PROTOCOL §12)")
 
     man = json.loads(MAN.read_text())
     files = sorted(man["files"][args.split])[: args.limit]
