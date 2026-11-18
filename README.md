@@ -185,7 +185,12 @@ The request and response formats are in [`docs/API.md`](docs/API.md).
 ├── main.py                 FastAPI application (/health, /predict)
 ├── webapp.py               mounts the web UI on the same app
 ├── pipeline.py             detection, fusion, classification, annotation
-├── agent_controller.py     quality check, decision points D1-D4, decision trace
+├── agent_controller.py     entry points: run_agentic_pipeline (app), run_perception (evaluation)
+├── agentic/                the agent: Observe → Decide → Act → Verify, once per image
+│   ├── tools.py            enhance, zoom, classify, vote (D1, D3, D4)
+│   ├── policy.py           rule policy, plain-model policy, fallback chain
+│   ├── verifier.py         text filter, refuse gate (D2), calibration, Known/Unknown
+│   └── loop.py             the loop and its guardrails (time budget, call limit)
 ├── ensemble.py             Weighted Boxes Fusion
 ├── classifier.py           ResNet-18 species classifier
 ├── text_overlay.py         burned-in telemetry text filter

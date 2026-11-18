@@ -189,6 +189,21 @@ CLASSIFIER_WEIGHT = 0.4          # Weight for classifier confidence
 AGREEMENT_BOOST = 0.10           # Boost when detector & classifier agree
 
 # ──────────────────────────────────────────────
+# Agent loop guardrails (agentic/loop.py)
+# ──────────────────────────────────────────────
+# Policies asked in order; the first valid answer wins. Step 3 adds the
+# learned policy in front: ("learned", "rules", "plain").
+AGENT_POLICY_CHAIN = ("rules", "plain")
+# Once an image has used this much wall time, the remaining discretionary
+# steps (enhance, zoom, vote) are skipped and it finishes on the plain models.
+# The safety checks still run. A GPU image takes ~50 ms and a CPU image a few
+# hundred, so this binds only on a stalled or overloaded machine.
+AGENT_TIME_BUDGET_MS = 10_000
+# Each discretionary tool runs at most this many times per image (per box for
+# the vote). 1 = a single pass, no retries.
+AGENT_MAX_CALLS_PER_TOOL = 1
+
+# ──────────────────────────────────────────────
 # Annotation drawing parameters
 # ──────────────────────────────────────────────
 ANNOTATION_FONT_SCALE = 0.6
