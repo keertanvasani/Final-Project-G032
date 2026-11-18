@@ -30,6 +30,7 @@ class Observation:
     detections: list[dict[str, Any]] = field(default_factory=list)
     elapsed_ms: float = 0.0
     budget_ms: float | None = None
+    enhanced: bool = False
 
 
 class Policy:
@@ -75,7 +76,52 @@ class PlainPolicy(Policy):
         return False
 
 
-POLICIES: dict[str, type[Policy]] = {"rules": RulePolicy, "plain": PlainPolicy}
+class LearnedPolicy(Policy):
+    """Contextual bandit fitted on S_cal (experiments/fit_bandit_policy.py).
+
+    For each decision a ridge model predicts the change in reward from acting
+    (+1 per correct identification, −1 per reported error) given the state;
+    the policy acts iff the prediction clears a threshold chosen on S_cal.
+    Frozen: it never learns from uploads. If its file is missing it raises,
+    and the fallback chain hands over to the rules.
+    """
+    name = "learned"
+
+    def __init__(self, path=None) -> None:
+        import json
+        from pathlib import Path
+
+        import config
+        p = Path(path or getattr(config, "AGENT_LEARNED_POLICY", ""))
+        self.spec = json.loads(p.read_text()) if p.is_file() else None
+        self.classes = self.spec["classes"] if self.spec else []
+
+    def _act(self, decision, x):
+        import numpy as np
+        if self.spec is None:
+            raise FileNotFoundError("no fitted bandit policy")
+        m = self.spec["models"][decision]
+        z = (np.asarray(x, dtype=float) - np.asarray(m["mean"])) / np.asarray(m["std"])
+        return bool(float(z @ np.asarray(m["w"]) + m["b"]) > m["threshold"])
+
+    def enhance(self, obs):
+        from agentic.features import image_features
+        return self._act("enhance", image_features(obs.quality))
+
+    def zoom(self, obs):
+        from agentic.features import zoom_features
+        n = len(obs.detections)
+        return {i for i, d in enumerate(obs.detections)
+                if self._act("zoom", zoom_features(d, obs.quality, n, obs.enhanced, self.classes))}
+
+    def vote(self, obs, idx, det, cls_res):
+        from agentic.features import vote_features
+        return self._act("vote", vote_features(det, cls_res, obs.quality, len(obs.detections),
+                                               obs.enhanced, self.classes))
+
+
+POLICIES: dict[str, type[Policy]] = {"learned": LearnedPolicy, "rules": RulePolicy,
+                                     "plain": PlainPolicy}
 
 
 def _valid(decision: str, value: Any, obs: Observation) -> bool:

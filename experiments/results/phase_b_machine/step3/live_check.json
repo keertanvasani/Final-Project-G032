@@ -1,0 +1,30 @@
+{
+  "rules": {
+    "reported": 1324,
+    "precision": 0.6034743202416919,
+    "recall": 0.6108562691131498,
+    "ms_per_image": 46.84374869691241,
+    "fallbacks": 0,
+    "outcomes": {
+      "TP": 799,
+      "CLS_ERR": 69,
+      "LOC_ERR": 211,
+      "OOD_ERR": 131,
+      "BG_FP": 114
+    }
+  },
+  "learned": {
+    "reported": 1329,
+    "precision": 0.6215199398043642,
+    "recall": 0.6314984709480123,
+    "ms_per_image": 27.401940402945463,
+    "fallbacks": 0,
+    "outcomes": {
+      "TP": 826,
+      "CLS_ERR": 69,
+      "LOC_ERR": 195,
+      "OOD_ERR": 122,
+      "BG_FP": 117
+    }
+  }
+}
