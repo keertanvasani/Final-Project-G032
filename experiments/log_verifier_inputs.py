@@ -32,7 +32,7 @@ from log_image_agent import harness_fields  # noqa: E402
 from pipeline import EnsemblePipeline  # noqa: E402
 
 OUT = ROOT / "experiments" / "results" / "phase_b_machine" / "week3"
-ALLOWED = ("S_cal",)
+ALLOWED = ("S_cal", "S_policy")      # S_policy opened by PROTOCOL §15
 
 
 def main() -> None:

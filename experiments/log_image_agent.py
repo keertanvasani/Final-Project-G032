@@ -35,7 +35,7 @@ from agentic import loop, policy, probes  # noqa: E402
 from pipeline import EnsemblePipeline  # noqa: E402
 
 OUT = ROOT / "experiments" / "results" / "phase_b_machine" / "week1"
-ALLOWED = ("S_cal",)
+ALLOWED = ("S_cal", "S_policy")      # S_policy opened by PROTOCOL §15
 
 
 def harness_fields(d):
