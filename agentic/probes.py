@@ -142,25 +142,46 @@ def colour_stats(img: np.ndarray) -> dict[str, float]:
             "sat": float(hsv[:, 1].mean() / 255.0), "sat_std": float(hsv[:, 1].std() / 255.0)}
 
 
+def state_columns(keys: tuple[str, ...] | list[str], step: int, n_quality: int = 8) -> list[int]:
+    """Indices of the full-probe state that a state with only *keys* keeps.
+
+    pass_state(..., keys) returns exactly these columns of
+    pass_state(..., PROBE_KEYS), in the same order, so logs written with all
+    probes can be cut down offline (experiments/week2_cheap_state.py)."""
+    k = len(PROBE_KEYS)
+    blk = 5 + 3 * k + 6
+
+    def one(off):
+        c = list(range(off, off + 5))
+        for b in range(3):
+            c += [off + 5 + b * k + PROBE_KEYS.index(x) for x in keys]
+        return c + list(range(off + 5 + 3 * k, off + blk))
+    cols = list(range(n_quality)) + one(n_quality)
+    return cols + (one(n_quality + blk) if step == 2 else [])
+
+
 def pass_state(img: np.ndarray, finals: list[dict[str, Any]], pipeline: Any,
-               refused: bool) -> tuple[list[float], float]:
+               refused: bool, keys: tuple[str, ...] | list[str] = PROBE_KEYS) -> tuple[list[float], float]:
     """Image-level state of one finished pass (week-0 layout) and its cost in ms.
 
     *finals* are the pass's final boxes (after vote, calibration and
-    Known/Unknown); *img* is the image the pass ran on."""
+    Known/Unknown); *img* is the image the pass ran on. *keys* chooses the box
+    probes; with none, no extra crop is classified."""
     t = time.perf_counter()
     c = colour_stats(img)
     v = [c["lab_a"] / 20, c["lab_b"] / 20, c["sat"], c["sat_std"], math.log1p(len(finals))]
     ms = 0.0
+    keys = list(keys)
     if finals and not refused:
-        probes, ms = box_probes(img, finals, pipeline)
-        P = np.array([[pr[k] for k in PROBE_KEYS] for pr in probes])
+        if keys:
+            probes, ms = box_probes(img, finals, pipeline)
+            P = np.array([[pr[k] for k in keys] for pr in probes])
+            v += list(P.mean(0)) + list(P.min(0)) + list(P.max(0))
         conf = [d["combined_confidence"] for d in finals]
-        v += list(P.mean(0)) + list(P.min(0)) + list(P.max(0))
         v += [float(np.mean(conf)), float(np.min(conf)),
               float(np.mean([d["detector_class"] != d["classifier_class"] for d in finals])),
               float(np.mean([bool((d.get("novelty") or {}).get("unknown")) for d in finals])), 1.0]
     else:
-        v += [0.0] * (3 * len(PROBE_KEYS) + 4) + [0.0]
+        v += [0.0] * (3 * len(keys) + 4) + [0.0]
     v.append(float(refused))
     return v, (time.perf_counter() - t) * 1000.0

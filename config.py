@@ -207,7 +207,7 @@ if not AGENT_LEARNED_POLICY.is_file():
 AGENT_IMAGE_POLICY = MODELS_DIR / "phase_b_machine" / "image_agent_policy.json"
 if not AGENT_IMAGE_POLICY.is_file():
     AGENT_IMAGE_POLICY = (PROJECT_ROOT / "experiments" / "results" / "phase_b_machine"
-                          / "week1" / "image_agent_policy.json")
+                          / "week2" / "image_agent_policy.json")
 # Unit-norm ResNet-embedding centroid per class (S_fit training crops), read by
 # the image agent's probes (agentic/probes.py).
 AGENT_CENTROIDS = MODELS_DIR / "phase_b_machine" / "agent_centroids.npy"

@@ -72,3 +72,10 @@ probes.
   (idea 1), unchanged.
 * Box-level zoom, vote and flip stay as today's rules/bandit; tiling and 960 px are
   dropped.
+
+## Correction (Week 2)
+
+Week 2 split the "probes" state into its parts (`WEEK2_RESULTS.md`). The gain comes
+from the first pass's own outputs (box count, confidences, disagreement, Unknown share)
+and colour statistics. The mirror, shift and embedding crops add nothing measurable.
+"Probes credited" above should be read as "first-pass evidence credited".

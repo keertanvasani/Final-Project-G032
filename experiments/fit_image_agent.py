@@ -24,12 +24,18 @@ The final policy is refitted on all of S_cal (λ = 0 here; the λ used for an
 evaluation is registered before it) and written to
 models/phase_b_machine/image_agent_policy.json (+ a committed copy).
 
+Week 2: --probes none fits on the state without per-box probe crops
+(colour, box count, confidences, disagreement, Unknown share), cut from the
+same logs with agentic.probes.state_columns; --lam sets the λ written to the
+policy file. Week-2 outputs go to results/phase_b_machine/week2/.
+
 Usage:
-    python experiments/fit_image_agent.py
+    python experiments/fit_image_agent.py [--probes full|none] [--lam 0.0]
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import random
 import sys
@@ -43,6 +49,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(Path(__file__).parent))
 
 from ablation_deepsea import MAN  # noqa: E402
+from agentic.probes import PROBE_KEYS, state_columns  # noqa: E402
 from eval import harness  # noqa: E402
 from fit_bandit_policy import ridge_fit, ridge_predict  # noqa: E402
 
@@ -82,6 +89,12 @@ def inner_oof(X, y, dives, idx):
 
 
 def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--probes", choices=["full", "none"], default="full")
+    ap.add_argument("--lam", type=float, default=0.0)
+    args = ap.parse_args()
+    keys = list(PROBE_KEYS) if args.probes == "full" else []
+    out_dir = DIR if args.probes == "full" else DIR.parent / "week2"
     man = json.loads(MAN.read_text())
     harness.KNOWN_CLASSES = set(man["label_space"]["known"])
     gt_all = harness.load_ground_truth()
@@ -90,13 +103,16 @@ def main() -> None:
     recs = [r for r in recs if all(not r["arms"][a].get("skipped") for a in arms)]
     n = len(recs)
     dives = [r["dive"] for r in recs]
-    S1 = np.array([recs[i]["arms"][arms[0]]["s1"] for i in range(n)], float)
-    S2 = {a: np.array([r["arms"][a]["s2"] for r in recs], float) for a in arms}
+    c1, c2 = state_columns(keys, 1), state_columns(keys, 2)
+    S1 = np.array([recs[i]["arms"][arms[0]]["s1"] for i in range(n)], float)[:, c1]
+    S2 = {a: np.array([r["arms"][a]["s2"] for r in recs], float)[:, c2] for a in arms}
     D = {a: np.array([reward(r["arms"][a]["passes"][1]["finals"], gt_all.get(r["file"], []))
                       - reward(r["arms"][a]["passes"][0]["finals"], gt_all.get(r["file"], []))
                       for r in recs], float) for a in arms}
-    C = {a: np.array([r["arms"][a]["pass2_ms"] + r["arms"][a]["probe_ms"][1] for r in recs]) for a in arms}
-    probe0 = np.array([r["arms"][arms[0]]["probe_ms"][0] for r in recs])
+    on = 1.0 if keys else 0.0                     # without probes there is no probe cost
+    C = {a: np.array([r["arms"][a]["pass2_ms"] + on * r["arms"][a]["probe_ms"][1] for r in recs])
+         for a in arms}
+    probe0 = on * np.array([r["arms"][arms[0]]["probe_ms"][0] for r in recs])
     base_r = np.array([reward(r["arms"][arms[0]]["passes"][0]["finals"], gt_all.get(r["file"], []))
                        for r in recs], float)
     print(f"S_cal: {n} images, {len(set(dives))} dives, arms {arms}; first pass reward/img "
@@ -173,20 +189,22 @@ def main() -> None:
     # ── Final policy on all of S_cal ───────────────────────────────
     allidx = np.arange(n)
     spec = {"fitted_on": "S_cal", "method": "fitted Q-iteration, 2 steps, ridge alpha 10",
-            "arms_evaluated": arms, "lambda": 0.0, "cost_ms": {}, "q1": {}, "q2": {},
+            "arms_evaluated": arms, "lambda": args.lam, "probe_keys": keys, "cost_ms": {},
+            "q1": {}, "q2": {},
             "state": "s1 = image_features + probes.pass_state(pass 1); s2 = s1 + pass_state(pass 2)"}
     for a in [main_arm]:
         spec["q2"][a] = ridge_fit(S2[a], D[a], ALPHA)
         g = D[a] * (inner_oof(S2[a], D[a], dives, allidx) > 0)
         spec["q1"][a] = ridge_fit(S1, g, ALPHA)
         spec["cost_ms"][a] = float(C[a].mean())
-    res["deployed_arm"] = main_arm
+    res.update({"deployed_arm": main_arm, "probe_keys": keys, "lambda_written": args.lam})
     POLICY_OUT.parent.mkdir(parents=True, exist_ok=True)
+    out_dir.mkdir(parents=True, exist_ok=True)
     txt = json.dumps(spec, indent=2) + "\n"
     POLICY_OUT.write_text(txt)
-    (DIR / "image_agent_policy.json").write_text(txt)
-    (DIR / "fit_results.json").write_text(json.dumps(res, indent=2) + "\n")
-    print(f"\nwrote {POLICY_OUT.relative_to(ROOT)} (arm {main_arm}) and week1/fit_results.json")
+    (out_dir / "image_agent_policy.json").write_text(txt)
+    (out_dir / "fit_results.json").write_text(json.dumps(res, indent=2) + "\n")
+    print(f"\nwrote {POLICY_OUT.relative_to(ROOT)} (arm {main_arm}) and {out_dir.name}/fit_results.json")
 
 
 if __name__ == "__main__":

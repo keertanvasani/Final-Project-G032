@@ -21,6 +21,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from agentic import tools
+from agentic.probes import PROBE_KEYS
 
 
 @dataclass
@@ -146,12 +147,14 @@ def pass_states(obs: Observation) -> list[list[float]]:
 
     Cached in obs.extra["state"] so a probe is computed once per pass."""
     from agentic.features import image_features
-    from agentic.probes import pass_state
+    from agentic.probes import PROBE_KEYS, pass_state
     ex = obs.extra
     cache = ex["state"]
+    keys = ex.get("probe_keys", PROBE_KEYS)
     for k, p in enumerate(ex["passes"]):
         if k not in cache:
-            v, ms = pass_state(p["work"], p["detections"], ex["pipeline"], p["status"] == "needs_review")
+            v, ms = pass_state(p["work"], p["detections"], ex["pipeline"], p["status"] == "needs_review",
+                               keys)
             cache[k] = v
             cache[f"probe_ms_{k}"] = ms
     s1 = image_features(obs.quality) + cache[0]
@@ -193,6 +196,7 @@ class ImageAgentPolicy(Policy):
 
     def rerun(self, obs):
         sp = self._spec()
+        obs.extra["probe_keys"] = sp.get("probe_keys", PROBE_KEYS)
         s1 = pass_states(obs)[0]
         best, arm = 0.0, None
         for a, m in sp["q1"].items():
@@ -207,6 +211,7 @@ class ImageAgentPolicy(Policy):
         arm = obs.extra["state"].get("arm")
         if arm is None:
             raise ValueError("commit asked without a re-run arm")
+        obs.extra["probe_keys"] = sp.get("probe_keys", PROBE_KEYS)
         return "second" if _ridge(sp["q2"][arm], pass_states(obs)[1]) > 0 else "first"
 
 

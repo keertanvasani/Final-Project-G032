@@ -24,7 +24,8 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 import config  # noqa: E402
 from ablation_deepsea import image_path  # noqa: E402
-from agentic import loop, policy  # noqa: E402
+from agentic import loop, policy
+from agentic.probes import PROBE_KEYS, state_columns  # noqa: E402
 from log_image_agent import harness_fields  # noqa: E402
 from pipeline import EnsemblePipeline  # noqa: E402
 
@@ -32,16 +33,22 @@ DIR = ROOT / "experiments" / "results" / "phase_b_machine" / "week1"
 
 
 def replay(rec, spec):
+    keys = spec.get("probe_keys", list(PROBE_KEYS))
+    c1, c2 = state_columns(keys, 1), state_columns(keys, 2)
     best, arm = 0.0, None
     for a, m in spec["q1"].items():
-        v = policy._ridge(m, rec["arms"][a]["s1"]) - spec["lambda"] * spec["cost_ms"][a]
+        v = policy._ridge(m, [rec["arms"][a]["s1"][i] for i in c1]) - spec["lambda"] * spec["cost_ms"][a]
         if v > best:
             best, arm = v, a
     if arm is None:
         return None, "first", rec["arms"][next(iter(rec["arms"]))]["passes"][0]["finals"]
     r = rec["arms"][arm]
-    keep = "second" if policy._ridge(spec["q2"][arm], r["s2"]) > 0 else "first"
+    keep = "second" if policy._ridge(spec["q2"][arm], [r["s2"][i] for i in c2]) > 0 else "first"
     return arm, keep, r["passes"][1 if keep == "second" else 0]["finals"]
+
+
+def keys_full(spec):
+    return list(spec.get("probe_keys", PROBE_KEYS)) == list(PROBE_KEYS)
 
 
 def key(finals):
@@ -74,7 +81,9 @@ def main() -> None:
             stats["output_mismatch"].append(rec["file"])
     stats["identical"] = not stats["decision_mismatch"] and not stats["output_mismatch"]
     print(json.dumps({k: (v if not isinstance(v, list) else len(v)) for k, v in stats.items()}))
-    (DIR / "live_check.json").write_text(json.dumps(stats, indent=2) + "\n")
+    out = DIR if keys_full(spec) else DIR.parent / "week2"
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "live_check.json").write_text(json.dumps(stats, indent=2) + "\n")
     sys.exit(0 if stats["identical"] else 1)
 
 
