@@ -877,3 +877,82 @@ combiner on A, Learn-then-Test on B, measure on C. Reported per α:
 
 These numbers decide whether to register the S_policy test. They are not
 confirmatory claims.
+
+---
+
+## 15. S_policy test of the image agent and the risk-controlled verifier (registered 2026-11-23, before S_policy is read for these components)
+
+Registered before any S_policy log of these components is written. S_policy was used
+in Step 3 to evaluate the Step 3 bandit; this is the first and only evaluation of the image
+agent and the verifier on it. The test script refuses to run if a frozen file's hash
+differs.
+
+### 15.1 Frozen inputs (fitted on S_cal only)
+
+| Component | File | sha256 |
+|---|---|---|
+| Image agent (no-probe state, CLAHE 3.0, two-step fitted Q-iteration) | `week2/image_agent_policy.json` | `fe1f5439a27f0a76c6be93455835db079fd0dbbcb8a323028349d804484f61bb` |
+| One-step comparator (same state, single decision, ridge on s1) | `week5/one_step_policy.json` | `5a77c48ec0e1d371e23c1854e179ba90aeeb73174f9e47d8c144b1b482383fa2` |
+| Verifier combiner (4 per-level logistic models) | `week4/verifier.json` | `fed9559f23128b18c0b270bad5c5029670a8579d26ca6876233f0e040927dc9b` |
+
+Operating points, both chosen on S_cal:
+* **λ = 0.002**: the deploy candidate.
+* **λ_m = 0.00892128865561972**: the λ whose S_cal discretionary cost equals the rule
+  agent's, 11.0 ms/img (`week4/frontier.json`, bisection).
+* Policy rules exactly as in the files. Two-step: re-run iff q1(s1) − λ·cost_ms > 0, then
+  keep pass 2 iff q2(s2) > 0. One-step: re-run and keep pass 2 iff q(s1) − λ·cost_ms > 0.
+
+### 15.2 Part A — image agent (exact replay of full-information logs)
+
+Logs: `log_image_agent.py --split S_policy` (opened by this section) and the existing
+Step 3 S_policy logs (rules, deployed). Reward +1 TP / −1 reported error / 0 Unknown;
+F1, AURC (GT-anchored, deployed calibration) and discretionary ms as in Step 3.
+
+| | Claim | Test |
+|---|---|---|
+| **H1-R** (primary) | At λ_m, the agent has higher reward per image **and** higher F1 than the rule agent | one-sided paired dive bootstrap, both p < α after Holm |
+| H1-A | At λ_m, AURC is not worse than the rule agent's by more than 0.01 | one-sided 95% upper bound of agent − rules < +0.01 |
+| H7 | At λ = 0.002, two-step reward per image > one-step | one-sided paired bootstrap |
+| H8 | At λ = 0.002, the agent's reward per image > the deployed bandit's | one-sided paired bootstrap |
+
+**Declared deviation from §7.4 H1.** H1 was registered on AURC at matched compute. On S_cal
+the image agent raises reward, F1 and precision at matched compute but does not improve
+AURC: the enhanced pass's confidences sit on a different scale from the deployed
+calibration map (`WEEK4` frontier, isotonic recalibration attempt unstable, rejected). The
+agent optimises reward, so H1-R is primary and AURC becomes a non-inferiority check.
+
+### 15.3 Part B — risk-controlled verifier on the deployed agent's boxes
+
+* Boxes: final boxes of the deployed agent, logged by `log_verifier_inputs.py --split S_policy`.
+* S_policy dives are split once, seed 0, into a **calibration half** and an **evaluation
+  half**. Learn-then-Test (Hoeffding–Bentkus, δ = 0.10, fixed sequence t = 0.99 … 0) sets
+  t on the calibration half, with the frozen combiner. Everything is measured on the
+  evaluation half.
+* §5.1: calibration may use as unseen-animal signal only S_policy's role taxa (OOD_val:
+  jellyfish, squid, tunicate). Boxes matched to the other eight held-out taxa are
+  excluded from calibration. All boxes count in the error accounting on the evaluation
+  half.
+* α ∈ {0.10, 0.20}. H4–H6 are tested at α = 0.20; α = 0.10 is descriptive.
+* The dive split: sorted S_policy dives, `random.Random(0).shuffle`, first half (rounded down) = calibration.
+
+| | Claim | Test |
+|---|---|---|
+| **H-risk** (primary) | Dive-level risk on the evaluation half ≤ α, for hierarchical and flat | point estimate ≤ α (the guarantee is probabilistic; also reported: share of dive bootstrap resamples ≤ α) |
+| H4 | Hierarchical gives more correct answers per image than flat | one-sided paired dive bootstrap |
+| H5 | Hierarchical gives a correct coarse label to > 0 OOD_val boxes (flat: 0 by construction) | count with dive-bootstrap 95% CI; the lower bound must be > 0 |
+| H6 | Species-level correct answers per image, hierarchical vs flat: non-inferior, margin 0.05 | one-sided 95% lower bound of hier − flat > −0.05 |
+
+Expectations from S_cal, stated so they cannot be reinterpreted afterwards:
+* H-risk and H4 are expected to hold.
+* H5 is expected to hold mostly through "Animal" answers (squid is "Animal"; jellyfish
+  is Cnidaria; tunicate is Chordata).
+* H6 may fail at α = 0.10.
+
+### 15.4 Statistics and multiplicity
+
+2,000 dive-cluster bootstrap resamples, seed 0, paired (the same dives for both arms).
+One-sided p = share of resamples with difference ≤ 0 (for H6: ≤ −0.05; for H5: count ≤ 0).
+H1-R's p is the larger of the reward and F1 p-values. Holm–Bonferroni at family-wise
+α = 0.05 within Part A (H1-R, H7, H8) and within Part B (H4, H5, H6). H1-A and H-risk are reported, not corrected.
+S_test is not touched. A confirmatory S_test run would be the second use of S_test
+and would need its own registration.
