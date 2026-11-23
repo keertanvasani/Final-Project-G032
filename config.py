@@ -217,12 +217,13 @@ if not AGENT_CENTROIDS.is_file():
 # Taxonomy-aware, risk-controlled verifier (week 4, PROTOCOL §14). Off (None)
 # until it is evaluated; e.g. {"mode": "hierarchical", "alpha": 0.2} attaches a
 # "taxon" answer (deepest safe level, or abstain) to every final box. The
-# thresholds in the file are provisional (see the file's thresholds_status).
+# thresholds were calibrated on S_policy and confirmed on S_test (PROTOCOL §16);
+# only α 0.10 and 0.20 are available.
 AGENT_VERIFIER = None
 AGENT_VERIFIER_FILE = MODELS_DIR / "phase_b_machine" / "verifier.json"
 if not AGENT_VERIFIER_FILE.is_file():
     AGENT_VERIFIER_FILE = (PROJECT_ROOT / "experiments" / "results" / "phase_b_machine"
-                           / "week4" / "verifier.json")
+                           / "week6" / "verifier_deploy.json")
 # Once an image has used this much wall time, the remaining discretionary
 # steps (enhance, zoom, vote) are skipped and it finishes on the plain models.
 # The safety checks still run. A GPU image takes ~50 ms and a CPU image a few

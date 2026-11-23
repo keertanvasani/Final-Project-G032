@@ -203,7 +203,7 @@ def run_loop(
     alt = probes.ARMS[arm](image)
     t_arm = (time.perf_counter() - t_arm) * 1000.0
     trace.append(f"Action: Image agent re-runs the analysis on a {arm} image "
-                 f"(first pass: {len(one['detections'])} boxes, {one['status']})")
+                 f"(the lines above are the first pass: {len(one['detections'])} boxes, {one['status']})")
     trace2: list[str] = []
     # Pass 2 has its own call limits (one zoom, one vote per box), same budget.
     allowed2 = lambda tool, key=None: allowed(f"{tool} (pass 2)", key)
@@ -215,7 +215,7 @@ def run_loop(
     if keep == "second":
         trace.extend(trace2)
         trace.append(f"Action: Image agent keeps the {arm} pass "
-                     f"({len(two['detections'])} boxes, {two['status']})")
+                     f"({len(two['detections'])} boxes, {two['status']}; the lines above it are that pass)")
         _apply(run, two)
     else:
         trace.append(f"Action: Image agent keeps the first pass; the {arm} pass "
@@ -312,8 +312,16 @@ def _one_pass(work, image, q, pipeline, mode, trace, tm, decide, allowed, guard,
             spec = verifier.load_taxon_spec(pipeline)
             if spec is not None:
                 cfg = config.AGENT_VERIFIER
-                resolved["taxon"] = verifier.taxon_label(resolved, cls_res, work.shape, spec,
-                                                         cfg["mode"], cfg["alpha"])
+                tl = verifier.taxon_label(resolved, cls_res, work.shape, spec, cfg["mode"], cfg["alpha"])
+                resolved["taxon"] = tl
+                sp = resolved["classifier_class"]
+                if tl["level"] is None:
+                    trace.append(f"Verifier: object {idx + 1} — no level is safe at the {cfg['alpha']:.0%} "
+                                 f"error target (threshold {tl['threshold']}); needs review (nearest: '{sp}')")
+                elif tl["level"] != "species":
+                    trace.append(f"Verifier: object {idx + 1} reported as '{tl['node']}' "
+                                 f"(P correct {tl['p_correct']:.2f} ≥ {tl['threshold']}); species "
+                                 f"'{sp}' is not safe at the {cfg['alpha']:.0%} error target")
         resolved_all.append(resolved)
 
     out["detections"] = resolved_all

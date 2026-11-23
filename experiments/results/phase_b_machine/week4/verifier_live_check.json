@@ -1,17 +1,17 @@
 {
   "hierarchical \u03b1=0.2": {
-    "boxes": 312,
-    "answered": 250,
+    "boxes": 256,
+    "answered": 215,
     "mismatches": 0
   },
   "flat \u03b1=0.2": {
-    "boxes": 312,
-    "answered": 222,
+    "boxes": 256,
+    "answered": 202,
     "mismatches": 0
   },
   "hierarchical \u03b1=0.1": {
-    "boxes": 312,
-    "answered": 188,
+    "boxes": 256,
+    "answered": 173,
     "mismatches": 0
   },
   "identical": true

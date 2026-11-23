@@ -107,3 +107,4 @@ experiments/results/phase_b_machine/week0/centroids.npz
 experiments/results/phase_b_machine/week1/*.jsonl
 experiments/results/phase_b_machine/week3/*.jsonl
 experiments/results/phase_b_machine/week5/*.txt
+experiments/results/phase_b_machine/week6/*.jpg

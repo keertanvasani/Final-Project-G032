@@ -412,6 +412,19 @@ class EnsemblePipeline:
             if (det.get("novelty") or {}).get("unknown"):
                 species = f"unknown (~{species})"
             label: str = f"{species} {combined_conf:.0%}"
+            taxon = det.get("taxon")
+            if taxon is not None:
+                # Risk-controlled verifier (config.AGENT_VERIFIER): the deepest safe answer.
+                sp = det.get("classifier_class", "?")
+                if taxon["level"] is None:
+                    label = f"needs review (~{sp})"
+                    color = config.ANNOTATION_COLORS["low"]
+                else:
+                    pc = taxon["p_correct"]
+                    label = (f"{sp} {pc:.0%}" if taxon["level"] == "species"
+                             else f"{taxon['node']} {pc:.0%} (~{sp})")
+                    color = config.get_confidence_color(pc)
+                cv2.rectangle(annotated, (x1, y1), (x2, y2), color, config.ANNOTATION_THICKNESS)
             font = cv2.FONT_HERSHEY_SIMPLEX
             (tw, th), baseline = cv2.getTextSize(
                 label, font, config.ANNOTATION_FONT_SCALE,

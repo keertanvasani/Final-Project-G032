@@ -92,3 +92,14 @@ loop therefore has two more decisions, made by the image agent
   `experiments/check_image_agent_live.py` checks that the live loop reproduces the
   replay of the logs.
 * Perception mode (`run_perception`) does not run the second pass.
+
+## Risk-controlled verifier (weeks 3–6)
+
+`agentic/verifier.taxon_label`, switched on with `config.AGENT_VERIFIER`
+(`{"mode": "hierarchical" | "flat", "alpha": 0.1 | 0.2}`; off by default). For every
+final box it reports the deepest level of the tree in `agentic/taxonomy.py` whose
+combiner probability clears the Learn-then-Test threshold, or abstains (needs review).
+Thresholds were calibrated on S_policy and confirmed on S_test (PROTOCOL §16):
+realised dive-level risk 0.094 / 0.183 at α 0.10 / 0.20. It is a safety step: no policy
+can switch it off or change its threshold. Summary of all results:
+`experiments/results/phase_b_machine/AGENT_CONTROLLER_SUMMARY.md`.
