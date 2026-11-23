@@ -201,6 +201,19 @@ AGENT_LEARNED_POLICY = MODELS_DIR / "phase_b_machine" / "bandit_policy.json"
 if not AGENT_LEARNED_POLICY.is_file():
     AGENT_LEARNED_POLICY = (PROJECT_ROOT / "experiments" / "results" / "phase_b_machine"
                             / "step3" / "bandit_policy.json")
+# Image agent (week 1): after the first pass it may re-run the image on an
+# enhanced copy (D5) and keep the better pass (D6). Not in the deployed chain
+# until it is evaluated; add "image" in front of AGENT_POLICY_CHAIN to use it.
+AGENT_IMAGE_POLICY = MODELS_DIR / "phase_b_machine" / "image_agent_policy.json"
+if not AGENT_IMAGE_POLICY.is_file():
+    AGENT_IMAGE_POLICY = (PROJECT_ROOT / "experiments" / "results" / "phase_b_machine"
+                          / "week1" / "image_agent_policy.json")
+# Unit-norm ResNet-embedding centroid per class (S_fit training crops), read by
+# the image agent's probes (agentic/probes.py).
+AGENT_CENTROIDS = MODELS_DIR / "phase_b_machine" / "agent_centroids.npy"
+if not AGENT_CENTROIDS.is_file():
+    AGENT_CENTROIDS = (PROJECT_ROOT / "experiments" / "results" / "phase_b_machine"
+                       / "week1" / "agent_centroids.npy")
 # Once an image has used this much wall time, the remaining discretionary
 # steps (enhance, zoom, vote) are skipped and it finishes on the plain models.
 # The safety checks still run. A GPU image takes ~50 ms and a CPU image a few

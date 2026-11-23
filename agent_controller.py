@@ -136,11 +136,13 @@ def run_agentic_pipeline(
 
 def _action_counts(run) -> dict[str, int]:
     """How many times each discretionary tool was chosen on this image."""
-    out = {"enhance": 0, "zoom": 0, "vote": 0}
+    out = {"enhance": 0, "zoom": 0, "vote": 0, "rerun": 0, "rerun_kept": 0}
     for d in run.decisions:
         v = d["value"]
         if d["decision"] == "zoom":
             out["zoom"] += len(v)
+        elif d["decision"] == "commit":
+            out["rerun_kept"] += v == "second"
         elif v:
             out[d["decision"]] += 1
     return out
