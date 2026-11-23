@@ -105,3 +105,4 @@ experiments/results/phase_b_machine/step3/*_actions.jsonl
 experiments/results/phase_b_machine/week0/*.jsonl
 experiments/results/phase_b_machine/week0/centroids.npz
 experiments/results/phase_b_machine/week1/*.jsonl
+experiments/results/phase_b_machine/week3/*.jsonl
