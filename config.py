@@ -214,6 +214,15 @@ AGENT_CENTROIDS = MODELS_DIR / "phase_b_machine" / "agent_centroids.npy"
 if not AGENT_CENTROIDS.is_file():
     AGENT_CENTROIDS = (PROJECT_ROOT / "experiments" / "results" / "phase_b_machine"
                        / "week1" / "agent_centroids.npy")
+# Taxonomy-aware, risk-controlled verifier (week 4, PROTOCOL §14). Off (None)
+# until it is evaluated; e.g. {"mode": "hierarchical", "alpha": 0.2} attaches a
+# "taxon" answer (deepest safe level, or abstain) to every final box. The
+# thresholds in the file are provisional (see the file's thresholds_status).
+AGENT_VERIFIER = None
+AGENT_VERIFIER_FILE = MODELS_DIR / "phase_b_machine" / "verifier.json"
+if not AGENT_VERIFIER_FILE.is_file():
+    AGENT_VERIFIER_FILE = (PROJECT_ROOT / "experiments" / "results" / "phase_b_machine"
+                           / "week4" / "verifier.json")
 # Once an image has used this much wall time, the remaining discretionary
 # steps (enhance, zoom, vote) are skipped and it finishes on the plain models.
 # The safety checks still run. A GPU image takes ~50 ms and a CPU image a few

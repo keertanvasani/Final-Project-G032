@@ -98,3 +98,27 @@ def full_probs(crops: list[np.ndarray], clf: Any) -> np.ndarray:
                      for c in crops]).to(clf.device)
     with torch.no_grad():
         return torch.softmax(clf.model(t), 1).cpu().numpy()
+
+
+FEATURES = ("node_prob", "p_top", "entropy", "energy", "unknown", "detector_confidence",
+            "raw_combined_confidence", "agreement", "detector_under_node", "log_area")
+
+
+def level_features(probs, classes, final_class, energy, unknown, det_conf, raw_combined,
+                   agreement, det_class, area):
+    """Per level (species → kingdom): the candidate node and its combiner features.
+
+    Shared by the offline analysis (experiments/week3_verifier.py) and the live
+    verifier (agentic/verifier.taxon_label), so the two cannot drift apart."""
+    import math
+    p = np.asarray(probs, dtype=float)
+    ent = float(-(p * np.log(np.clip(p, 1e-12, 1))).sum())
+    cands = candidates(p, classes, final_class)
+    nodes, feats = [], []
+    for lv in LEVELS:
+        node, s = cands[lv]
+        nodes.append(node)
+        feats.append([s, float(p.max()), ent, energy if energy is not None else 0.0, float(unknown),
+                      det_conf, raw_combined, float(agreement), float(under(node, det_class)),
+                      math.log(max(area, 1e-6))])
+    return nodes, feats

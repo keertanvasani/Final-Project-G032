@@ -309,6 +309,11 @@ def _one_pass(work, image, q, pipeline, mode, trace, tm, decide, allowed, guard,
             resolved = tools.score_plain(idx, det, cls_res)
         if mode == "app":
             trace.extend(verifier.finalise(idx, resolved, cls_res, pipeline))
+            spec = verifier.load_taxon_spec(pipeline)
+            if spec is not None:
+                cfg = config.AGENT_VERIFIER
+                resolved["taxon"] = verifier.taxon_label(resolved, cls_res, work.shape, spec,
+                                                         cfg["mode"], cfg["alpha"])
         resolved_all.append(resolved)
 
     out["detections"] = resolved_all

@@ -42,18 +42,10 @@ N_BOOT = 2000
 
 # ── Features and labels ──────────────────────────────────────────────
 def box_rows(b, classes):
-    p = np.asarray(b["probs"])
-    ent = float(-(p * np.log(np.clip(p, 1e-12, 1))).sum())
-    cands = tx.candidates(p, classes, b["classifier_class"])
-    feats, ys, nodes = [], [], []
-    for lv in tx.LEVELS:
-        node, s = cands[lv]
-        feats.append([s, float(p.max()), ent, b["energy"] if b["energy"] is not None else 0.0,
-                      float(b["unknown"]), b["detector_confidence"], b["raw_combined_confidence"],
-                      float(b["agreement"]), float(tx.under(node, b["detector_class"])),
-                      math.log(max(b["area"], 1e-6))])
-        ys.append(tx.is_correct(node, b["gt_class"], b["matched"]))
-        nodes.append(node)
+    nodes, feats = tx.level_features(b["probs"], classes, b["classifier_class"], b["energy"], b["unknown"],
+                                     b["detector_confidence"], b["raw_combined_confidence"], b["agreement"],
+                                     b["detector_class"], b["area"])
+    ys = [tx.is_correct(nd, b["gt_class"], b["matched"]) for nd in nodes]
     return feats, ys, nodes
 
 
