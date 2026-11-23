@@ -730,3 +730,67 @@ Paired dive-cluster bootstrap over `S_test` dives, 2,000 resamples, seed 0, one-
 Holm–Bonferroni over the §7.4 family of three (H3 is tested separately; it is counted
 in the family so the correction is not weakened). Secondary, exploratory: precision,
 recall, F1, reward per image, live wall time per image.
+
+---
+
+## 13. Week 0 — probe-signal and headroom check on S_cal (registered 2026-11-23, before the run)
+
+Exploratory go/no-go gate for the multi-step agent controller (offline RL over a
+larger action menu). **`S_cal` only.** `S_policy` and `S_test` are not read. Nothing
+here is a confirmatory claim; it decides whether the controller is worth building.
+
+### 13.1 Base pipeline
+
+The deployed agent with its learned policy (§12): no enhancement, no zoom, vote on
+every detector–classifier disagreement. Text filter, refuse gate, calibration and
+Known/Unknown are fixed. Same frozen detector and classifier.
+
+### 13.2 Actions logged (every action on every image / box: full information)
+
+* **Image level** (outcome = the whole image re-run through the base pipeline):
+  CLAHE clip 1.5, CLAHE clip 2.0, CLAHE clip 3.0 (L channel, 8×8 tiles), gamma to
+  mid-grey (γ clipped to [0.5, 2]), grey-world white balance; re-detect at 960 px;
+  2×2 tiling with 25% overlap merged with the full-image boxes by WBF (IoU 0.55).
+  Applied to every image, not only those the quality check flags.
+* **Box level** (outcome = that box, other boxes unchanged): zoom re-check (existing
+  tool, vote downstream); vote (existing tool); flip TTA (classifier probabilities
+  averaged over the crop and its mirror image, then the base scoring and vote).
+
+### 13.3 Probes (cheap signals, measured before any action)
+
+Per box: label change and own-class probability under a horizontal mirror; label
+agreement and own-class probability over four ±10% shifted crops; top-1 − top-2
+margin and entropy of the full classifier distribution; energy; the classifier's
+probability of the detector's class; cosine distance of the ResNet embedding to the
+predicted class centroid and to the nearest other centroid (centroids from `S_fit`
+training crops only); box edge contact and overlap with the nearest other box.
+Per image: the mean / extreme of the box probes, number of boxes, and colour
+statistics (LAB a/b means, saturation mean).
+
+### 13.4 Rewards and analysis
+
+Reward as in Step 3: +1 TP, −1 reported error, 0 Unknown; Δ = reward(action) −
+reward(base) per unit (image or box). For each action, ridge regression of Δ on
+(a) the Step 3 features and (b) Step 3 features + probes, 5-fold dive-grouped
+out-of-fold (OOF) predictions, ridge strength 10 (fixed, no tuning). Policy: act iff
+OOF prediction > 0. Policy gain = Σ Δ over units where it acts. Uncertainty: dive-
+cluster bootstrap, 2,000 resamples, seed 0, 95% percentile intervals. Also reported:
+always-act gain and the oracle gain Σ max(Δ, 0) (headroom).
+
+Correctness signal (for the learned combiner): OOF AUROC for "box would be TP if
+reported" over all base boxes, calibrated combined confidence vs an L2 logistic
+model on confidences + probes (same folds), paired dive bootstrap of the difference.
+
+### 13.5 Decision rule (fixed now)
+
+* An action **passes** if the probe policy's gain over never-act has a 95% CI lower
+  bound > 0.
+* **GO** for the multi-step controller if at least one action passes. Probes are
+  credited only if (b) beats (a) for a passing action with paired CI lower bound > 0;
+  otherwise the controller is built without them.
+* **NO-GO** if no action passes: the multi-step controller is not built; work moves
+  to the taxonomy-aware, risk-controlled verifier with the Step 3 bandit as the
+  controller.
+* **Learned combiner** is adopted if its AUROC gain is ≥ 0.01 with CI lower bound > 0;
+  otherwise the verifier keeps the calibrated combined confidence.
+* Round-2 (action-pair) logs are not part of Week 0.
