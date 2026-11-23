@@ -1,0 +1,266 @@
+{
+  "protocol": "PROTOCOL \u00a715",
+  "part_a": {
+    "images": 844,
+    "skipped_arm_images": 0,
+    "policies": {
+      "rules": {
+        "reward_per_image": 0.3246445497630332,
+        "f1": 0.6071428571428572,
+        "precision": 0.6034743202416919,
+        "recall": 0.6108562691131498,
+        "aurc": 0.1379278031706961,
+        "discretionary_ms_per_image": 11.337557227419186,
+        "rerun_rate": 0.0
+      },
+      "deployed": {
+        "reward_per_image": 0.3803317535545024,
+        "f1": 0.6257110352673493,
+        "precision": 0.6207674943566591,
+        "recall": 0.6307339449541285,
+        "aurc": 0.12355120052080358,
+        "discretionary_ms_per_image": 2.0907882701058518,
+        "rerun_rate": 0.0
+      },
+      "agent_lam_m": {
+        "reward_per_image": 0.4609004739336493,
+        "f1": 0.6363276612584092,
+        "precision": 0.6595570139458573,
+        "recall": 0.6146788990825688,
+        "aurc": 0.12960782734159812,
+        "discretionary_ms_per_image": 10.051412796188544,
+        "rerun_rate": 0.17061611374407584
+      },
+      "agent_lam": {
+        "reward_per_image": 0.4822274881516588,
+        "f1": 0.6281469252992159,
+        "precision": 0.6825112107623318,
+        "recall": 0.5818042813455657,
+        "aurc": 0.12494986906249479,
+        "discretionary_ms_per_image": 23.951118364959118,
+        "rerun_rate": 0.48459715639810425
+      },
+      "one_step_lam": {
+        "reward_per_image": 0.40165876777251186,
+        "f1": 0.6113116726835137,
+        "precision": 0.6430379746835443,
+        "recall": 0.5825688073394495,
+        "aurc": 0.12713351071335507,
+        "discretionary_ms_per_image": 17.338586729815752,
+        "rerun_rate": 0.33886255924170616
+      }
+    },
+    "tests": {
+      "H1-R": {
+        "diff_reward": 0.1362559241706161,
+        "ci_reward": [
+          0.06888361045130642,
+          0.19544364508393286
+        ],
+        "p_reward": 0.0005,
+        "diff_f1": 0.02918480411555202,
+        "ci_f1": [
+          0.010904920600087076,
+          0.045232684392596534
+        ],
+        "p_f1": 0.001,
+        "p": 0.001,
+        "supported_holm": true
+      },
+      "H7": {
+        "diff_reward": 0.08056872037914692,
+        "ci_reward": [
+          0.03888888888888886,
+          0.12391573729863692
+        ],
+        "p": 0.0005,
+        "supported_holm": true
+      },
+      "H8": {
+        "diff_reward": 0.1018957345971564,
+        "ci_reward": [
+          0.04749679075738128,
+          0.1605231866825208
+        ],
+        "p": 0.0,
+        "supported_holm": true
+      },
+      "H1-A": {
+        "diff_aurc": -0.008319975829097992,
+        "upper95": 0.003154673028136379,
+        "supported": true
+      }
+    },
+    "descriptive": {
+      "agent_lam_m_minus_rules": {
+        "reward_per_image": [
+          0.06888361045130642,
+          0.19544364508393286
+        ],
+        "f1": [
+          0.010904920600087076,
+          0.045232684392596534
+        ],
+        "aurc": [
+          -0.022368018507996024,
+          0.005210882609165246
+        ],
+        "precision": [
+          0.029615108561421466,
+          0.07931693224425374
+        ],
+        "recall": [
+          -0.011609907120743057,
+          0.018749999999999933
+        ],
+        "discretionary_ms_per_image": [
+          -2.8286633369369625,
+          0.3017940823116554
+        ]
+      },
+      "agent_lam_minus_deployed": {
+        "reward_per_image": [
+          0.04749679075738128,
+          0.1605231866825208
+        ],
+        "f1": [
+          -0.013430570597058877,
+          0.018609808818978446
+        ],
+        "aurc": [
+          -0.008163253518740754,
+          0.012369225320534583
+        ],
+        "discretionary_ms_per_image": [
+          19.676509725574498,
+          24.100629438747216
+        ]
+      },
+      "agent_lam_minus_one_step": {
+        "reward_per_image": [
+          0.03888888888888886,
+          0.12391573729863692
+        ],
+        "f1": [
+          0.0017616899560516375,
+          0.031597967331826626
+        ],
+        "discretionary_ms_per_image": [
+          5.249108813218999,
+          8.157447641073045
+        ]
+      }
+    }
+  },
+  "part_b": {
+    "dives_total": 315,
+    "dives_calibration": 157,
+    "dives_evaluation": 158,
+    "boxes_calibration_eligible": 725,
+    "boxes_evaluation": 705,
+    "images_evaluation": 443,
+    "OOD_val_boxes_evaluation": 41,
+    "today_risk_evaluation": 0.2725304484419236,
+    "alphas": {
+      "0.1": {
+        "hierarchical": {
+          "threshold": 0.85,
+          "risk_evaluation": 0.05452222048442285,
+          "risk_le_alpha": true,
+          "share_resamples_le_alpha": 0.9985,
+          "reported_per_image": 0.835214446952596,
+          "correct_per_image": 0.7652370203160271,
+          "species_correct_per_image": 0.5349887133182845,
+          "error_among_reported": 0.08378378378378382,
+          "OOD_val_correct": 7,
+          "correct_by_level": {
+            "species": 237,
+            "group": 18,
+            "phylum": 0,
+            "kingdom": 84
+          }
+        },
+        "flat": {
+          "threshold": 0.77,
+          "risk_evaluation": 0.05728706242187099,
+          "risk_le_alpha": true,
+          "share_resamples_le_alpha": 0.998,
+          "reported_per_image": 0.7404063205417607,
+          "correct_per_image": 0.6568848758465011,
+          "species_correct_per_image": 0.6568848758465011,
+          "error_among_reported": 0.11280487804878048,
+          "OOD_val_correct": 0,
+          "correct_by_level": {
+            "species": 291,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "0.2": {
+        "hierarchical": {
+          "threshold": 0.57,
+          "risk_evaluation": 0.11312769457639936,
+          "risk_le_alpha": true,
+          "share_resamples_le_alpha": 1.0,
+          "reported_per_image": 1.1376975169300225,
+          "correct_per_image": 0.9300225733634312,
+          "species_correct_per_image": 0.7855530474040632,
+          "error_among_reported": 0.18253968253968256,
+          "OOD_val_correct": 13,
+          "correct_by_level": {
+            "species": 348,
+            "group": 3,
+            "phylum": 0,
+            "kingdom": 61
+          }
+        },
+        "flat": {
+          "threshold": 0.4,
+          "risk_evaluation": 0.1448970591467863,
+          "risk_le_alpha": true,
+          "share_resamples_le_alpha": 0.9975,
+          "reported_per_image": 1.0857787810383748,
+          "correct_per_image": 0.8216704288939052,
+          "species_correct_per_image": 0.8216704288939052,
+          "error_among_reported": 0.2432432432432432,
+          "OOD_val_correct": 0,
+          "correct_by_level": {
+            "species": 364,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      }
+    },
+    "tests": {
+      "H4": {
+        "diff_correct_per_image": 0.10835214446952596,
+        "ci95": [
+          0.06965174129353234,
+          0.1422680412371134
+        ],
+        "p": 0.0,
+        "supported_holm": true
+      },
+      "H5": {
+        "OOD_val_correct": 13,
+        "OOD_val_boxes": 41,
+        "ci95": [
+          4.0,
+          23.0
+        ],
+        "p": 0.001,
+        "supported_holm": true
+      },
+      "H6": {
+        "diff_species_correct_per_image": -0.03611738148984198,
+        "lower95": -0.05387931034482758,
+        "p": 0.0915,
+        "supported_holm": false
+      }
+    }
+  }
+}
