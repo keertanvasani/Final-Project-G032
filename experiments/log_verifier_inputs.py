@@ -39,8 +39,13 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--split", default="S_cal")
     ap.add_argument("--limit", type=int, default=None)
+    ap.add_argument("--confirmatory", action="store_true",
+                    help="required for S_test: the single registered run (PROTOCOL §16)")
     args = ap.parse_args()
-    if args.split not in ALLOWED:
+    if args.split == "S_test":
+        if not (args.confirmatory and args.limit is None):
+            raise SystemExit("S_test: only the full --confirmatory run registered in PROTOCOL §16")
+    elif args.split not in ALLOWED:
         raise SystemExit(f"{args.split} is not open yet (register the test in PROTOCOL.md first)")
     man = json.loads(MAN.read_text())
     harness.KNOWN_CLASSES = set(man["label_space"]["known"])
