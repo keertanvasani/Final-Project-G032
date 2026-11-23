@@ -956,3 +956,38 @@ H1-R's p is the larger of the reward and F1 p-values. Holm–Bonferroni at famil
 α = 0.05 within Part A (H1-R, H7, H8) and within Part B (H4, H5, H6). H1-A and H-risk are reported, not corrected.
 S_test is not touched. A confirmatory S_test run would be the second use of S_test
 and would need its own registration.
+
+---
+
+## 16. Confirmatory S_test run of §15 (registered 2026-11-23, before S_test is read for these components)
+
+**Second use of S_test.** The first was the Step 3 test, §12. This run repeats the §15
+tests once on S_test, with everything frozen. Nothing is tuned afterwards, and S_test is
+then closed for these components.
+
+### 16.1 Frozen inputs
+
+| Component | File | sha256 |
+|---|---|---|
+| Image agent | `week2/image_agent_policy.json` | `fe1f5439a27f0a76c6be93455835db079fd0dbbcb8a323028349d804484f61bb` |
+| One-step comparator | `week5/one_step_policy.json` | `5a77c48ec0e1d371e23c1854e179ba90aeeb73174f9e47d8c144b1b482383fa2` |
+| Verifier combiner | `week4/verifier.json` | `fed9559f23128b18c0b270bad5c5029670a8579d26ca6876233f0e040927dc9b` |
+| Verifier thresholds (Learn-then-Test on all of S_policy, δ = 0.10) | `week6/thresholds_S_policy.json` | `d583d9d2386e840fb9b08644dc7cabacf4f9d87d755219deaac040fc4fe2f749` |
+
+Thresholds:
+* hierarchical: **0.72** (α = 0.10), **0.38** (α = 0.20);
+* flat: **0.64** (α = 0.10), **0.27** (α = 0.20).
+
+Operating points as in §15: λ_m = 0.00892128865561972 and λ = 0.002.
+
+### 16.2 Tests
+
+* **Part A** is §15.2 unchanged on S_test: H1-R (primary), H1-A, H7, H8. Rules and
+  deployed are replayed from the Step 3 S_test logs. The agent is replayed from new
+  full-information logs (`log_image_agent.py --split S_test --confirmatory`).
+* **Part B** is §15.3 on **all** S_test dives, with the fixed thresholds above (no split,
+  no calibration on S_test): H-risk, H4, H5, H6 as in §15.3. H5 uses S_test's role taxa
+  (OOD_test: ragworm, sea-spider, squat-lobster). Boxes from
+  `log_verifier_inputs.py --split S_test --confirmatory`.
+* Statistics as §15.4: 2,000 paired dive-bootstrap resamples, seed 0; Holm at 0.05 within
+  each part. The script checks every hash above and refuses a second run.
