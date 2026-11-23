@@ -794,3 +794,86 @@ model on confidences + probes (same folds), paired dive bootstrap of the differe
 * **Learned combiner** is adopted if its AUROC gain is ≥ 0.01 with CI lower bound > 0;
   otherwise the verifier keeps the calibrated combined confidence.
 * Round-2 (action-pair) logs are not part of Week 0.
+
+---
+
+## 14. Week 3 — taxonomy-aware, risk-controlled verifier (registered 2026-11-23, before any fit)
+
+The verifier stops choosing only between "species" and "Unknown". It reports the most
+specific node of a fixed tree whose estimated chance of being right clears a threshold.
+The threshold is set by Learn-then-Test so that a target error rate holds per new dive.
+This section fixes the tree, the scoring, the data rules and the procedure. **Week 3 is
+development on S_cal only.** The S_policy / S_test tests of H4–H6 are registered
+separately, before those splits are read.
+
+### 14.1 Tree (fixed now)
+
+```
+Animal ─┬─ Chordata ........ fish
+        ├─ Arthropoda ─ Decapoda ─ crab, shrimp
+        ├─ Echinodermata ... starfish, sea-cucumber, crinoid
+        ├─ Cnidaria ........ coral/sea-anemone
+        └─ Porifera ........ sponge
+Man-made ................... machine
+```
+
+Levels per known leaf: species → group → phylum → kingdom. Group is Decapoda for crab
+and shrimp, and otherwise the phylum. Phylum and kingdom are Man-made for machine.
+
+Held-out taxa, deepest correct node: squat-lobster → Decapoda; sea-spider → Arthropoda;
+urchin → Echinodermata; jellyfish → Cnidaria; shark, ray, tunicate → Chordata;
+octopus, squid, ragworm, comb-jelly → Animal. (Comb jellies are Ctenophora, not
+Cnidaria.)
+
+### 14.2 Scoring
+
+* A reported node is **correct** iff the box matches a GT object (IoU ≥ 0.50, §2
+  harness) whose taxon has that node on its path. LOC_ERR and BG_FP boxes are wrong
+  at every node. Abstaining ("needs review") is never wrong.
+* **Specificity credit** per correct answer: species 1.0, Decapoda 0.75, phylum or
+  Man-made 0.5, Animal 0.25. Wrong answers and abstentions get 0.
+* Node probability = the sum of the classifier's 5%-crop probabilities over the
+  node's leaves. The candidate at each level is the node with the highest summed
+  probability. At species level the candidate is the agent's own final class
+  (after the vote), so species answers are those of today's agent.
+
+### 14.3 Data rules (§5.1 applied)
+
+* Boxes: the deployed agent's final boxes (learned → rules → plain chain), including
+  boxes flagged Unknown.
+* Fitting and calibration on S_cal may use, as unseen-animal signal, **only S_cal's role
+  taxa (OOD_dev: comb-jelly, octopus, ray, shark, urchin)**. Boxes matched to any other
+  held-out taxon (jellyfish, squid, tunicate, ragworm, sea-spider, squat-lobster) are
+  excluded from every fit and calibration on S_cal.
+
+### 14.4 Method
+
+* **Combiner:** one L2 logistic model per level for P(candidate at this level is
+  correct). Features:
+  * the candidate's summed probability, top-1 probability and entropy;
+  * energy and the Unknown flag;
+  * detector confidence, raw combined confidence and agreement;
+  * whether the detector's class lies under the candidate;
+  * log box area.
+* **Decision:** report the deepest level whose P ≥ t, otherwise abstain. One threshold
+  t for all levels.
+* **Risk:** per dive, the fraction of its boxes given a wrong answer, a bounded loss in
+  [0, 1]. Dives are the exchangeable unit.
+* **Learn-then-Test:** t on the grid 0.99, 0.98, …, 0.00, tested in that fixed order
+  with Hoeffding–Bentkus p-values for H0: risk(t) > α. Keep the lowest t reached
+  before the first non-rejection. δ = 0.10, α ∈ {0.10, 0.15, 0.20, 0.25}.
+* **Baseline ("flat"):** the same pipeline restricted to species-or-abstain (the
+  species-level model only), with t set by the same Learn-then-Test.
+
+### 14.5 Week-3 development check (S_cal only, descriptive)
+
+S_cal dives are split into three folds A / B / C, rotated three times:
+combiner on A, Learn-then-Test on B, measure on C. Reported per α:
+* the realised dive-level risk on C and whether it is ≤ α;
+* the count of correct answers and the specificity credit per image;
+* species answers given;
+* correct coarse answers on unseen-animal boxes;
+* hierarchical vs flat, with a dive bootstrap.
+
+These numbers decide whether to register the S_policy test. They are not
+confirmatory claims.
