@@ -730,3 +730,264 @@ Paired dive-cluster bootstrap over `S_test` dives, 2,000 resamples, seed 0, one-
 Holm–Bonferroni over the §7.4 family of three (H3 is tested separately; it is counted
 in the family so the correction is not weakened). Secondary, exploratory: precision,
 recall, F1, reward per image, live wall time per image.
+
+---
+
+## 13. Week 0 — probe-signal and headroom check on S_cal (registered 2026-11-23, before the run)
+
+Exploratory go/no-go gate for the multi-step agent controller (offline RL over a
+larger action menu). **`S_cal` only.** `S_policy` and `S_test` are not read. Nothing
+here is a confirmatory claim; it decides whether the controller is worth building.
+
+### 13.1 Base pipeline
+
+The deployed agent with its learned policy (§12): no enhancement, no zoom, vote on
+every detector–classifier disagreement. Text filter, refuse gate, calibration and
+Known/Unknown are fixed. Same frozen detector and classifier.
+
+### 13.2 Actions logged (every action on every image / box: full information)
+
+* **Image level** (outcome = the whole image re-run through the base pipeline):
+  CLAHE clip 1.5, CLAHE clip 2.0, CLAHE clip 3.0 (L channel, 8×8 tiles), gamma to
+  mid-grey (γ clipped to [0.5, 2]), grey-world white balance; re-detect at 960 px;
+  2×2 tiling with 25% overlap merged with the full-image boxes by WBF (IoU 0.55).
+  Applied to every image, not only those the quality check flags.
+* **Box level** (outcome = that box, other boxes unchanged): zoom re-check (existing
+  tool, vote downstream); vote (existing tool); flip TTA (classifier probabilities
+  averaged over the crop and its mirror image, then the base scoring and vote).
+
+### 13.3 Probes (cheap signals, measured before any action)
+
+Per box: label change and own-class probability under a horizontal mirror; label
+agreement and own-class probability over four ±10% shifted crops; top-1 − top-2
+margin and entropy of the full classifier distribution; energy; the classifier's
+probability of the detector's class; cosine distance of the ResNet embedding to the
+predicted class centroid and to the nearest other centroid (centroids from `S_fit`
+training crops only); box edge contact and overlap with the nearest other box.
+Per image: the mean / extreme of the box probes, number of boxes, and colour
+statistics (LAB a/b means, saturation mean).
+
+### 13.4 Rewards and analysis
+
+Reward as in Step 3: +1 TP, −1 reported error, 0 Unknown; Δ = reward(action) −
+reward(base) per unit (image or box). For each action, ridge regression of Δ on
+(a) the Step 3 features and (b) Step 3 features + probes, 5-fold dive-grouped
+out-of-fold (OOF) predictions, ridge strength 10 (fixed, no tuning). Policy: act iff
+OOF prediction > 0. Policy gain = Σ Δ over units where it acts. Uncertainty: dive-
+cluster bootstrap, 2,000 resamples, seed 0, 95% percentile intervals. Also reported:
+always-act gain and the oracle gain Σ max(Δ, 0) (headroom).
+
+Correctness signal (for the learned combiner): OOF AUROC for "box would be TP if
+reported" over all base boxes, calibrated combined confidence vs an L2 logistic
+model on confidences + probes (same folds), paired dive bootstrap of the difference.
+
+### 13.5 Decision rule (fixed now)
+
+* An action **passes** if the probe policy's gain over never-act has a 95% CI lower
+  bound > 0.
+* **GO** for the multi-step controller if at least one action passes. Probes are
+  credited only if (b) beats (a) for a passing action with paired CI lower bound > 0;
+  otherwise the controller is built without them.
+* **NO-GO** if no action passes: the multi-step controller is not built; work moves
+  to the taxonomy-aware, risk-controlled verifier with the Step 3 bandit as the
+  controller.
+* **Learned combiner** is adopted if its AUROC gain is ≥ 0.01 with CI lower bound > 0;
+  otherwise the verifier keeps the calibrated combined confidence.
+* Round-2 (action-pair) logs are not part of Week 0.
+
+---
+
+## 14. Week 3 — taxonomy-aware, risk-controlled verifier (registered 2026-11-23, before any fit)
+
+The verifier stops choosing only between "species" and "Unknown". It reports the most
+specific node of a fixed tree whose estimated chance of being right clears a threshold.
+The threshold is set by Learn-then-Test so that a target error rate holds per new dive.
+This section fixes the tree, the scoring, the data rules and the procedure. **Week 3 is
+development on S_cal only.** The S_policy / S_test tests of H4–H6 are registered
+separately, before those splits are read.
+
+### 14.1 Tree (fixed now)
+
+```
+Animal ─┬─ Chordata ........ fish
+        ├─ Arthropoda ─ Decapoda ─ crab, shrimp
+        ├─ Echinodermata ... starfish, sea-cucumber, crinoid
+        ├─ Cnidaria ........ coral/sea-anemone
+        └─ Porifera ........ sponge
+Man-made ................... machine
+```
+
+Levels per known leaf: species → group → phylum → kingdom. Group is Decapoda for crab
+and shrimp, and otherwise the phylum. Phylum and kingdom are Man-made for machine.
+
+Held-out taxa, deepest correct node: squat-lobster → Decapoda; sea-spider → Arthropoda;
+urchin → Echinodermata; jellyfish → Cnidaria; shark, ray, tunicate → Chordata;
+octopus, squid, ragworm, comb-jelly → Animal. (Comb jellies are Ctenophora, not
+Cnidaria.)
+
+### 14.2 Scoring
+
+* A reported node is **correct** iff the box matches a GT object (IoU ≥ 0.50, §2
+  harness) whose taxon has that node on its path. LOC_ERR and BG_FP boxes are wrong
+  at every node. Abstaining ("needs review") is never wrong.
+* **Specificity credit** per correct answer: species 1.0, Decapoda 0.75, phylum or
+  Man-made 0.5, Animal 0.25. Wrong answers and abstentions get 0.
+* Node probability = the sum of the classifier's 5%-crop probabilities over the
+  node's leaves. The candidate at each level is the node with the highest summed
+  probability. At species level the candidate is the agent's own final class
+  (after the vote), so species answers are those of today's agent.
+
+### 14.3 Data rules (§5.1 applied)
+
+* Boxes: the deployed agent's final boxes (learned → rules → plain chain), including
+  boxes flagged Unknown.
+* Fitting and calibration on S_cal may use, as unseen-animal signal, **only S_cal's role
+  taxa (OOD_dev: comb-jelly, octopus, ray, shark, urchin)**. Boxes matched to any other
+  held-out taxon (jellyfish, squid, tunicate, ragworm, sea-spider, squat-lobster) are
+  excluded from every fit and calibration on S_cal.
+
+### 14.4 Method
+
+* **Combiner:** one L2 logistic model per level for P(candidate at this level is
+  correct). Features:
+  * the candidate's summed probability, top-1 probability and entropy;
+  * energy and the Unknown flag;
+  * detector confidence, raw combined confidence and agreement;
+  * whether the detector's class lies under the candidate;
+  * log box area.
+* **Decision:** report the deepest level whose P ≥ t, otherwise abstain. One threshold
+  t for all levels.
+* **Risk:** per dive, the fraction of its boxes given a wrong answer, a bounded loss in
+  [0, 1]. Dives are the exchangeable unit.
+* **Learn-then-Test:** t on the grid 0.99, 0.98, …, 0.00, tested in that fixed order
+  with Hoeffding–Bentkus p-values for H0: risk(t) > α. Keep the lowest t reached
+  before the first non-rejection. δ = 0.10, α ∈ {0.10, 0.15, 0.20, 0.25}.
+* **Baseline ("flat"):** the same pipeline restricted to species-or-abstain (the
+  species-level model only), with t set by the same Learn-then-Test.
+
+### 14.5 Week-3 development check (S_cal only, descriptive)
+
+S_cal dives are split into three folds A / B / C, rotated three times:
+combiner on A, Learn-then-Test on B, measure on C. Reported per α:
+* the realised dive-level risk on C and whether it is ≤ α;
+* the count of correct answers and the specificity credit per image;
+* species answers given;
+* correct coarse answers on unseen-animal boxes;
+* hierarchical vs flat, with a dive bootstrap.
+
+These numbers decide whether to register the S_policy test. They are not
+confirmatory claims.
+
+---
+
+## 15. S_policy test of the image agent and the risk-controlled verifier (registered 2026-11-23, before S_policy is read for these components)
+
+Registered before any S_policy log of these components is written. S_policy was used
+in Step 3 to evaluate the Step 3 bandit; this is the first and only evaluation of the image
+agent and the verifier on it. The test script refuses to run if a frozen file's hash
+differs.
+
+### 15.1 Frozen inputs (fitted on S_cal only)
+
+| Component | File | sha256 |
+|---|---|---|
+| Image agent (no-probe state, CLAHE 3.0, two-step fitted Q-iteration) | `week2/image_agent_policy.json` | `fe1f5439a27f0a76c6be93455835db079fd0dbbcb8a323028349d804484f61bb` |
+| One-step comparator (same state, single decision, ridge on s1) | `week5/one_step_policy.json` | `5a77c48ec0e1d371e23c1854e179ba90aeeb73174f9e47d8c144b1b482383fa2` |
+| Verifier combiner (4 per-level logistic models) | `week4/verifier.json` | `fed9559f23128b18c0b270bad5c5029670a8579d26ca6876233f0e040927dc9b` |
+
+Operating points, both chosen on S_cal:
+* **λ = 0.002**: the deploy candidate.
+* **λ_m = 0.00892128865561972**: the λ whose S_cal discretionary cost equals the rule
+  agent's, 11.0 ms/img (`week4/frontier.json`, bisection).
+* Policy rules exactly as in the files. Two-step: re-run iff q1(s1) − λ·cost_ms > 0, then
+  keep pass 2 iff q2(s2) > 0. One-step: re-run and keep pass 2 iff q(s1) − λ·cost_ms > 0.
+
+### 15.2 Part A — image agent (exact replay of full-information logs)
+
+Logs: `log_image_agent.py --split S_policy` (opened by this section) and the existing
+Step 3 S_policy logs (rules, deployed). Reward +1 TP / −1 reported error / 0 Unknown;
+F1, AURC (GT-anchored, deployed calibration) and discretionary ms as in Step 3.
+
+| | Claim | Test |
+|---|---|---|
+| **H1-R** (primary) | At λ_m, the agent has higher reward per image **and** higher F1 than the rule agent | one-sided paired dive bootstrap, both p < α after Holm |
+| H1-A | At λ_m, AURC is not worse than the rule agent's by more than 0.01 | one-sided 95% upper bound of agent − rules < +0.01 |
+| H7 | At λ = 0.002, two-step reward per image > one-step | one-sided paired bootstrap |
+| H8 | At λ = 0.002, the agent's reward per image > the deployed bandit's | one-sided paired bootstrap |
+
+**Declared deviation from §7.4 H1.** H1 was registered on AURC at matched compute. On S_cal
+the image agent raises reward, F1 and precision at matched compute but does not improve
+AURC: the enhanced pass's confidences sit on a different scale from the deployed
+calibration map (`WEEK4` frontier, isotonic recalibration attempt unstable, rejected). The
+agent optimises reward, so H1-R is primary and AURC becomes a non-inferiority check.
+
+### 15.3 Part B — risk-controlled verifier on the deployed agent's boxes
+
+* Boxes: final boxes of the deployed agent, logged by `log_verifier_inputs.py --split S_policy`.
+* S_policy dives are split once, seed 0, into a **calibration half** and an **evaluation
+  half**. Learn-then-Test (Hoeffding–Bentkus, δ = 0.10, fixed sequence t = 0.99 … 0) sets
+  t on the calibration half, with the frozen combiner. Everything is measured on the
+  evaluation half.
+* §5.1: calibration may use as unseen-animal signal only S_policy's role taxa (OOD_val:
+  jellyfish, squid, tunicate). Boxes matched to the other eight held-out taxa are
+  excluded from calibration. All boxes count in the error accounting on the evaluation
+  half.
+* α ∈ {0.10, 0.20}. H4–H6 are tested at α = 0.20; α = 0.10 is descriptive.
+* The dive split: sorted S_policy dives, `random.Random(0).shuffle`, first half (rounded down) = calibration.
+
+| | Claim | Test |
+|---|---|---|
+| **H-risk** (primary) | Dive-level risk on the evaluation half ≤ α, for hierarchical and flat | point estimate ≤ α (the guarantee is probabilistic; also reported: share of dive bootstrap resamples ≤ α) |
+| H4 | Hierarchical gives more correct answers per image than flat | one-sided paired dive bootstrap |
+| H5 | Hierarchical gives a correct coarse label to > 0 OOD_val boxes (flat: 0 by construction) | count with dive-bootstrap 95% CI; the lower bound must be > 0 |
+| H6 | Species-level correct answers per image, hierarchical vs flat: non-inferior, margin 0.05 | one-sided 95% lower bound of hier − flat > −0.05 |
+
+Expectations from S_cal, stated so they cannot be reinterpreted afterwards:
+* H-risk and H4 are expected to hold.
+* H5 is expected to hold mostly through "Animal" answers (squid is "Animal"; jellyfish
+  is Cnidaria; tunicate is Chordata).
+* H6 may fail at α = 0.10.
+
+### 15.4 Statistics and multiplicity
+
+2,000 dive-cluster bootstrap resamples, seed 0, paired (the same dives for both arms).
+One-sided p = share of resamples with difference ≤ 0 (for H6: ≤ −0.05; for H5: count ≤ 0).
+H1-R's p is the larger of the reward and F1 p-values. Holm–Bonferroni at family-wise
+α = 0.05 within Part A (H1-R, H7, H8) and within Part B (H4, H5, H6). H1-A and H-risk are reported, not corrected.
+S_test is not touched. A confirmatory S_test run would be the second use of S_test
+and would need its own registration.
+
+---
+
+## 16. Confirmatory S_test run of §15 (registered 2026-11-23, before S_test is read for these components)
+
+**Second use of S_test.** The first was the Step 3 test, §12. This run repeats the §15
+tests once on S_test, with everything frozen. Nothing is tuned afterwards, and S_test is
+then closed for these components.
+
+### 16.1 Frozen inputs
+
+| Component | File | sha256 |
+|---|---|---|
+| Image agent | `week2/image_agent_policy.json` | `fe1f5439a27f0a76c6be93455835db079fd0dbbcb8a323028349d804484f61bb` |
+| One-step comparator | `week5/one_step_policy.json` | `5a77c48ec0e1d371e23c1854e179ba90aeeb73174f9e47d8c144b1b482383fa2` |
+| Verifier combiner | `week4/verifier.json` | `fed9559f23128b18c0b270bad5c5029670a8579d26ca6876233f0e040927dc9b` |
+| Verifier thresholds (Learn-then-Test on all of S_policy, δ = 0.10) | `week6/thresholds_S_policy.json` | `d583d9d2386e840fb9b08644dc7cabacf4f9d87d755219deaac040fc4fe2f749` |
+
+Thresholds:
+* hierarchical: **0.72** (α = 0.10), **0.38** (α = 0.20);
+* flat: **0.64** (α = 0.10), **0.27** (α = 0.20).
+
+Operating points as in §15: λ_m = 0.00892128865561972 and λ = 0.002.
+
+### 16.2 Tests
+
+* **Part A** is §15.2 unchanged on S_test: H1-R (primary), H1-A, H7, H8. Rules and
+  deployed are replayed from the Step 3 S_test logs. The agent is replayed from new
+  full-information logs (`log_image_agent.py --split S_test --confirmatory`).
+* **Part B** is §15.3 on **all** S_test dives, with the fixed thresholds above (no split,
+  no calibration on S_test): H-risk, H4, H5, H6 as in §15.3. H5 uses S_test's role taxa
+  (OOD_test: ragworm, sea-spider, squat-lobster). Boxes from
+  `log_verifier_inputs.py --split S_test --confirmatory`.
+* Statistics as §15.4: 2,000 paired dive-bootstrap resamples, seed 0; Holm at 0.05 within
+  each part. The script checks every hash above and refuses a second run.

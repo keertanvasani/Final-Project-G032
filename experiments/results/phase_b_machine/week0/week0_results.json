@@ -1,0 +1,408 @@
+{
+  "split": "S_cal",
+  "images": 889,
+  "dives": 315,
+  "actions": {
+    "clahe1.5": {
+      "units": 889,
+      "nonzero": 262,
+      "always_gain": 0.02249718785151856,
+      "oracle_gain": 0.20022497187851518,
+      "gain_features": 0.01799775028121485,
+      "gain_probes": 0.049493813273340834,
+      "gain_probes_ci95": [
+        0.004618937644341801,
+        0.09038901601830664
+      ],
+      "gain_features_ci95": [
+        -0.018867924528301886,
+        0.052980132450331126
+      ],
+      "probes_minus_features": 0.031496062992125984,
+      "probes_minus_features_ci95": [
+        0.0,
+        0.06208425720620843
+      ],
+      "always_ci95": [
+        -0.027972027972027972,
+        0.07068607068607069
+      ],
+      "oracle_ci95": [
+        0.16666666666666666,
+        0.23325635103926096
+      ],
+      "spearman_features": 0.10157130184114169,
+      "spearman_probes": 0.15454360529561803,
+      "act_rate_probes": 0.453318335208099,
+      "act_rate_features": 0.5703037120359955,
+      "ms_per_image_if_acting_probes": 13.835940944873288,
+      "ms_per_image_always": 27.544028796368206,
+      "passes": true,
+      "probes_credited": false
+    },
+    "clahe2.0": {
+      "units": 889,
+      "nonzero": 296,
+      "always_gain": 0.0044994375703037125,
+      "oracle_gain": 0.22609673790776152,
+      "gain_features": 0.0044994375703037125,
+      "gain_probes": 0.0798650168728909,
+      "gain_probes_ci95": [
+        0.03361344537815126,
+        0.125
+      ],
+      "gain_features_ci95": [
+        -0.036303630363036306,
+        0.04534883720930233
+      ],
+      "probes_minus_features": 0.07536557930258718,
+      "probes_minus_features_ci95": [
+        0.03678929765886288,
+        0.11395101171458999
+      ],
+      "always_ci95": [
+        -0.055495103373231776,
+        0.06002265005662514
+      ],
+      "oracle_ci95": [
+        0.1859052247873633,
+        0.2638248847926267
+      ],
+      "spearman_features": 0.08312637469056118,
+      "spearman_probes": 0.260504676894131,
+      "act_rate_probes": 0.41169853768278963,
+      "act_rate_features": 0.45894263217097864,
+      "ms_per_image_if_acting_probes": 12.697749493799277,
+      "ms_per_image_always": 27.878107874056706,
+      "passes": true,
+      "probes_credited": true
+    },
+    "clahe3.0": {
+      "units": 889,
+      "nonzero": 327,
+      "always_gain": -0.023622047244094488,
+      "oracle_gain": 0.23959505061867267,
+      "gain_features": 0.0022497187851518562,
+      "gain_probes": 0.0764904386951631,
+      "gain_probes_ci95": [
+        0.028058361391694726,
+        0.12419700214132762
+      ],
+      "gain_features_ci95": [
+        -0.03724604966139955,
+        0.044238683127572016
+      ],
+      "probes_minus_features": 0.07424071991001124,
+      "probes_minus_features_ci95": [
+        0.03107658157602664,
+        0.11551528878822197
+      ],
+      "always_ci95": [
+        -0.0859375,
+        0.034594594594594595
+      ],
+      "oracle_ci95": [
+        0.19954128440366972,
+        0.278372591006424
+      ],
+      "spearman_features": 0.027312819195505204,
+      "spearman_probes": 0.2455993676466117,
+      "act_rate_probes": 0.3712035995500562,
+      "act_rate_features": 0.3532058492688414,
+      "ms_per_image_if_acting_probes": 12.067323397033855,
+      "ms_per_image_always": 29.11867514053683,
+      "passes": true,
+      "probes_credited": true
+    },
+    "gamma": {
+      "units": 889,
+      "nonzero": 168,
+      "always_gain": 0.019122609673790775,
+      "oracle_gain": 0.13160854893138357,
+      "gain_features": -0.014623172103487065,
+      "gain_probes": 0.047244094488188976,
+      "gain_probes_ci95": [
+        0.012077294685990338,
+        0.08120133481646273
+      ],
+      "gain_features_ci95": [
+        -0.042483660130718956,
+        0.013201320132013201
+      ],
+      "probes_minus_features": 0.06186726659167604,
+      "probes_minus_features_ci95": [
+        0.03023758099352052,
+        0.09375
+      ],
+      "always_ci95": [
+        -0.020432692307692308,
+        0.058305830583058306
+      ],
+      "oracle_ci95": [
+        0.09785202863961814,
+        0.16612377850162866
+      ],
+      "spearman_features": -0.1902022799837539,
+      "spearman_probes": 0.06048701663582668,
+      "act_rate_probes": 0.4128233970753656,
+      "act_rate_features": 0.6006749156355455,
+      "ms_per_image_if_acting_probes": 11.677295163153206,
+      "ms_per_image_always": 23.739330821215667,
+      "passes": true,
+      "probes_credited": true
+    },
+    "greyworld": {
+      "units": 889,
+      "nonzero": 255,
+      "always_gain": -0.007874015748031496,
+      "oracle_gain": 0.19010123734533182,
+      "gain_features": -0.030371203599550055,
+      "gain_probes": 0.05736782902137233,
+      "gain_probes_ci95": [
+        0.015170670037926675,
+        0.09797297297297297
+      ],
+      "gain_features_ci95": [
+        -0.0646186440677966,
+        0.004329004329004329
+      ],
+      "probes_minus_features": 0.08773903262092239,
+      "probes_minus_features_ci95": [
+        0.04927884615384615,
+        0.1248642779587405
+      ],
+      "always_ci95": [
+        -0.060085836909871244,
+        0.04293785310734463
+      ],
+      "oracle_ci95": [
+        0.15614236509758897,
+        0.22727272727272727
+      ],
+      "spearman_features": -0.0899888880425021,
+      "spearman_probes": 0.10043604100049291,
+      "act_rate_probes": 0.3700787401574803,
+      "act_rate_features": 0.43082114735658045,
+      "ms_per_image_if_acting_probes": 11.587351631019665,
+      "ms_per_image_always": 27.447763667045777,
+      "passes": true,
+      "probes_credited": true
+    },
+    "det960": {
+      "units": 889,
+      "nonzero": 316,
+      "always_gain": -0.10011248593925759,
+      "oracle_gain": 0.2092238470191226,
+      "gain_features": -0.02249718785151856,
+      "gain_probes": 0.02924634420697413,
+      "gain_probes_ci95": [
+        -0.010830324909747292,
+        0.06846473029045644
+      ],
+      "gain_features_ci95": [
+        -0.04601571268237935,
+        -0.00425531914893617
+      ],
+      "probes_minus_features": 0.05174353205849269,
+      "probes_minus_features_ci95": [
+        0.011135857461024499,
+        0.09272300469483569
+      ],
+      "always_ci95": [
+        -0.17073170731707318,
+        -0.03376906318082789
+      ],
+      "oracle_ci95": [
+        0.1717062634989201,
+        0.24692737430167597
+      ],
+      "spearman_features": -0.11602748715019792,
+      "spearman_probes": 0.05870399664967478,
+      "act_rate_probes": 0.2688413948256468,
+      "act_rate_features": 0.07874015748031496,
+      "ms_per_image_if_acting_probes": 8.293493700868682,
+      "ms_per_image_always": 27.05710989869344,
+      "passes": false,
+      "probes_credited": false
+    },
+    "tile2x2": {
+      "units": 889,
+      "nonzero": 250,
+      "always_gain": -0.3262092238470191,
+      "oracle_gain": 0.043869516310461196,
+      "gain_features": 0.0,
+      "gain_probes": -0.007874015748031496,
+      "gain_probes_ci95": [
+        -0.013903743315508022,
+        -0.0024691358024691358
+      ],
+      "gain_features_ci95": [
+        0.0,
+        0.0
+      ],
+      "probes_minus_features": -0.007874015748031496,
+      "probes_minus_features_ci95": [
+        -0.013903743315508022,
+        -0.0024691358024691358
+      ],
+      "always_ci95": [
+        -0.38598326359832635,
+        -0.26895119418483904
+      ],
+      "oracle_ci95": [
+        0.028199566160520606,
+        0.061519903498190594
+      ],
+      "spearman_features": -0.10683298280396394,
+      "spearman_probes": 0.1047730520171465,
+      "act_rate_probes": 0.04049493813273341,
+      "act_rate_features": 0.0,
+      "ms_per_image_if_acting_probes": 2.4739959504837965,
+      "ms_per_image_always": 63.57762620914998,
+      "passes": false,
+      "probes_credited": false
+    },
+    "zoom": {
+      "units": 1527,
+      "nonzero": 49,
+      "always_gain": -0.012373453318335208,
+      "oracle_gain": 0.03824521934758155,
+      "gain_features": -0.008998875140607425,
+      "gain_probes": 0.0011248593925759281,
+      "gain_probes_ci95": [
+        -0.008928571428571428,
+        0.01245753114382786
+      ],
+      "gain_features_ci95": [
+        -0.022197558268590455,
+        0.0033707865168539327
+      ],
+      "probes_minus_features": 0.010123734533183352,
+      "probes_minus_features_ci95": [
+        -0.002285714285714286,
+        0.024255788313120176
+      ],
+      "always_ci95": [
+        -0.03728070175438596,
+        0.01126126126126126
+      ],
+      "oracle_ci95": [
+        0.0234192037470726,
+        0.056074766355140186
+      ],
+      "spearman_features": -0.003618574900890218,
+      "spearman_probes": -0.03006996795833142,
+      "act_rate_probes": 0.4106090373280943,
+      "act_rate_features": 0.4034053700065488,
+      "ms_per_image_if_acting_probes": 12.344370866205171,
+      "ms_per_image_always": 29.671392013595863,
+      "passes": false,
+      "probes_credited": false
+    },
+    "vote": {
+      "units": 314,
+      "nonzero": 22,
+      "always_gain": 0.0044994375703037125,
+      "oracle_gain": 0.02699662542182227,
+      "gain_features": 0.008998875140607425,
+      "gain_probes": 0.008998875140607425,
+      "gain_probes_ci95": [
+        -0.010075566750629723,
+        0.02728226652675761
+      ],
+      "gain_features_ci95": [
+        -0.004842615012106538,
+        0.02386117136659436
+      ],
+      "probes_minus_features": 0.0,
+      "probes_minus_features_ci95": [
+        -0.013071895424836602,
+        0.011918951132300357
+      ],
+      "always_ci95": [
+        -0.017094017094017096,
+        0.02531645569620253
+      ],
+      "oracle_ci95": [
+        0.01366742596810934,
+        0.04241071428571429
+      ],
+      "spearman_features": 0.017113631232188033,
+      "spearman_probes": 0.011764591878956664,
+      "act_rate_probes": 0.5382165605095541,
+      "act_rate_features": 0.5636942675159236,
+      "ms_per_image_if_acting_probes": 0.0,
+      "ms_per_image_always": 0.0,
+      "passes": false,
+      "probes_credited": false
+    },
+    "fliptta": {
+      "units": 1527,
+      "nonzero": 62,
+      "always_gain": 0.00562429696287964,
+      "oracle_gain": 0.04161979752530934,
+      "gain_features": -0.00562429696287964,
+      "gain_probes": -0.006749156355455568,
+      "gain_probes_ci95": [
+        -0.02132435465768799,
+        0.007017543859649123
+      ],
+      "gain_features_ci95": [
+        -0.020713463751438434,
+        0.009174311926605505
+      ],
+      "probes_minus_features": -0.0011248593925759281,
+      "probes_minus_features_ci95": [
+        -0.010869565217391304,
+        0.007900677200902935
+      ],
+      "always_ci95": [
+        -0.014959723820483314,
+        0.02702702702702703
+      ],
+      "oracle_ci95": [
+        0.027149321266968326,
+        0.05764705882352941
+      ],
+      "spearman_features": 0.030366446985017694,
+      "spearman_probes": 0.023317179463366394,
+      "act_rate_probes": 0.47806155861165683,
+      "act_rate_features": 0.5461689587426326,
+      "ms_per_image_if_acting_probes": 3.5701770914071727,
+      "ms_per_image_always": 7.36611574777314,
+      "passes": false,
+      "probes_credited": false
+    }
+  },
+  "combiner": {
+    "boxes": 1527,
+    "tp_rate": 0.6149312377210217,
+    "auroc": {
+      "calibrated_conf": 0.8110279788166598,
+      "logistic_base": 0.8317449450493722,
+      "logistic_probes": 0.8325201219998116
+    },
+    "gain_vs_calibrated": 0.021492143183151846,
+    "gain_ci95": [
+      0.008919399127766181,
+      0.03443429906297757
+    ],
+    "adopt": true
+  },
+  "decision": {
+    "go": true,
+    "passing_actions": [
+      "clahe1.5",
+      "clahe2.0",
+      "clahe3.0",
+      "gamma",
+      "greyworld"
+    ],
+    "probes_credited_for": [
+      "clahe2.0",
+      "clahe3.0",
+      "gamma",
+      "greyworld"
+    ]
+  }
+}

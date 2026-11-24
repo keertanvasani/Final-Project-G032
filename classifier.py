@@ -153,6 +153,7 @@ class SpeciesClassifier:
             # -logsumexp(logits): low for a crop the network recognises, higher
             # for an unfamiliar one. Used for the Known/Unknown flag.
             "energy": energy,
+            "probs": [float(v) for v in probs.tolist()],
             "top3": [
                 {
                     "class_name": self.class_names[idx.item()],
@@ -203,6 +204,8 @@ class SpeciesClassifier:
                     "class_name": self.class_names[top3_idxs[0].item()],
                     "confidence": float(top3_vals[0].item()),
                     "energy": float(energies[i]),
+                    # Full distribution, for the taxonomy-aware verifier.
+                    "probs": [float(v) for v in probs[i].tolist()],
                     "top3": [
                         {
                             "class_name": self.class_names[idx.item()],

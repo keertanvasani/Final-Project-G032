@@ -99,3 +99,52 @@ def finalise(idx: int, resolved: dict[str, Any], cls_res: dict[str, Any],
                 f"marked Unknown — '{resolved['classifier_class']}' is the nearest "
                 f"known class, not a confirmed identification")
     return trace
+
+
+def load_taxon_spec(pipeline: Any) -> dict[str, Any] | None:
+    """The fitted taxonomy-aware verifier (week 4), cached on the pipeline; None if off."""
+    cfg = getattr(config, "AGENT_VERIFIER", None)
+    if not cfg:
+        return None
+    spec = getattr(pipeline, "_taxon_spec", None)
+    if spec is None:
+        import json
+        from pathlib import Path
+        spec = json.loads(Path(config.AGENT_VERIFIER_FILE).read_text())
+        pipeline._taxon_spec = spec
+    return spec
+
+
+def taxon_label(resolved: dict[str, Any], cls_res: dict[str, Any], image_shape: tuple[int, ...],
+                spec: dict[str, Any], mode: str, alpha: float) -> dict[str, Any]:
+    """Most specific safe answer for one finished box (PROTOCOL §14).
+
+    Reports the deepest level whose combiner probability clears the
+    Learn-then-Test threshold for *alpha*; otherwise abstains (needs review).
+    A safety step: the policy cannot switch it off or change its threshold."""
+    import numpy as np
+
+    from agentic import taxonomy as tx
+    h, w = image_shape[:2]
+    b = resolved["bbox"]
+    area = max(b[2] - b[0], 1.0) * max(b[3] - b[1], 1.0) / float(w * h)
+    nov = resolved.get("novelty") or {}
+    nodes, feats = tx.level_features(
+        cls_res["probs"], spec["classes"], resolved["classifier_class"], nov.get("score"),
+        bool(nov.get("unknown")), resolved["detector_confidence"],
+        resolved.get("raw_combined_confidence", resolved["combined_confidence"]), resolved["agreement"],
+        resolved.get("detector_class", resolved.get("class_name")), area)
+    t = spec["thresholds"][mode][str(alpha)]
+    levels = list(range(len(tx.LEVELS))) if mode == "hierarchical" else [0]
+    probs = []
+    for j, lv in enumerate(tx.LEVELS):
+        m = spec["models"][lv]
+        z = (np.asarray(feats[j]) - np.asarray(m["mean"])) / np.asarray(m["std"])
+        probs.append(float(1 / (1 + np.exp(-(m["w"][0] + z @ np.asarray(m["w"][1:]))))))
+    chosen = next((j for j in levels if t is not None and probs[j] >= t), None)
+    return {"mode": mode, "alpha": alpha, "threshold": t,
+            "level": tx.LEVELS[chosen] if chosen is not None else None,
+            "node": nodes[chosen] if chosen is not None else None,
+            "p_correct": probs[chosen] if chosen is not None else None,
+            "candidates": [{"level": lv, "node": nd, "p_correct": round(pc, 4)}
+                           for lv, nd, pc in zip(tx.LEVELS, nodes, probs)]}

@@ -1,0 +1,16 @@
+{
+  "calibrated_on": "S_policy (all dives, eligible boxes)",
+  "delta": 0.1,
+  "boxes": 1387,
+  "dives": 267,
+  "thresholds": {
+    "hierarchical": {
+      "0.1": 0.72,
+      "0.2": 0.38
+    },
+    "flat": {
+      "0.1": 0.64,
+      "0.2": 0.27
+    }
+  }
+}

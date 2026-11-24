@@ -191,11 +191,39 @@ AGREEMENT_BOOST = 0.10           # Boost when detector & classifier agree
 # ──────────────────────────────────────────────
 # Agent loop guardrails (agentic/loop.py)
 # ──────────────────────────────────────────────
-# Policies asked in order; the first valid answer wins. Step 3 adds the
-# learned policy in front: ("learned", "rules", "plain").
-AGENT_POLICY_CHAIN = ("rules", "plain")
-# Fitted contextual-bandit policy used by the "learned" rung.
+# Policies asked in order; the first valid answer wins. The learned policy
+# (step 3, confirmed on S_test: experiments/results/phase_b_machine/
+# STEP3_RESULTS.md) leads; the rules take over if it is missing or fails.
+AGENT_POLICY_CHAIN = ("learned", "rules", "plain")
+# Fitted contextual-bandit policy used by the "learned" rung. models/ is not
+# in git, so fall back to the identical copy committed with the results.
 AGENT_LEARNED_POLICY = MODELS_DIR / "phase_b_machine" / "bandit_policy.json"
+if not AGENT_LEARNED_POLICY.is_file():
+    AGENT_LEARNED_POLICY = (PROJECT_ROOT / "experiments" / "results" / "phase_b_machine"
+                            / "step3" / "bandit_policy.json")
+# Image agent (week 1): after the first pass it may re-run the image on an
+# enhanced copy (D5) and keep the better pass (D6). Not in the deployed chain
+# until it is evaluated; add "image" in front of AGENT_POLICY_CHAIN to use it.
+AGENT_IMAGE_POLICY = MODELS_DIR / "phase_b_machine" / "image_agent_policy.json"
+if not AGENT_IMAGE_POLICY.is_file():
+    AGENT_IMAGE_POLICY = (PROJECT_ROOT / "experiments" / "results" / "phase_b_machine"
+                          / "week2" / "image_agent_policy.json")
+# Unit-norm ResNet-embedding centroid per class (S_fit training crops), read by
+# the image agent's probes (agentic/probes.py).
+AGENT_CENTROIDS = MODELS_DIR / "phase_b_machine" / "agent_centroids.npy"
+if not AGENT_CENTROIDS.is_file():
+    AGENT_CENTROIDS = (PROJECT_ROOT / "experiments" / "results" / "phase_b_machine"
+                       / "week1" / "agent_centroids.npy")
+# Taxonomy-aware, risk-controlled verifier (week 4, PROTOCOL §14). Off (None)
+# until it is evaluated; e.g. {"mode": "hierarchical", "alpha": 0.2} attaches a
+# "taxon" answer (deepest safe level, or abstain) to every final box. The
+# thresholds were calibrated on S_policy and confirmed on S_test (PROTOCOL §16);
+# only α 0.10 and 0.20 are available.
+AGENT_VERIFIER = None
+AGENT_VERIFIER_FILE = MODELS_DIR / "phase_b_machine" / "verifier.json"
+if not AGENT_VERIFIER_FILE.is_file():
+    AGENT_VERIFIER_FILE = (PROJECT_ROOT / "experiments" / "results" / "phase_b_machine"
+                           / "week6" / "verifier_deploy.json")
 # Once an image has used this much wall time, the remaining discretionary
 # steps (enhance, zoom, vote) are skipped and it finishes on the plain models.
 # The safety checks still run. A GPU image takes ~50 ms and a CPU image a few

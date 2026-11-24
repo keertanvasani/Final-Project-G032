@@ -1,0 +1,801 @@
+{
+  "images": 889,
+  "boxes": 1527,
+  "excluded_boxes": 84,
+  "alphas": {
+    "0.1": {
+      "hier": {
+        "rotations": [
+          {
+            "t": 0.86,
+            "risk_C_all": 0.05246816675388105,
+            "risk_C_eligible": 0.04367695796267224
+          },
+          {
+            "t": 0.84,
+            "risk_C_all": 0.043840398708560054,
+            "risk_C_eligible": 0.04598484848484848
+          },
+          {
+            "t": 0.9,
+            "risk_C_all": 0.03662843798713364,
+            "risk_C_eligible": 0.02365397283875545
+          }
+        ],
+        "risk_all_mean": 0.04431233448319158,
+        "risk_eligible_mean": 0.03777192642875873,
+        "risk_ok_all_rotations": true,
+        "reported_per_image": 0.8706411698537683,
+        "correct_per_image": 0.7975253093363329,
+        "credit_per_image": 0.625421822272216,
+        "error_among_reported": 0.08397932816537468,
+        "correct_by_level": {
+          "species": 474,
+          "group": 65,
+          "phylum": 0,
+          "kingdom": 170
+        },
+        "heldout_correct": 48,
+        "heldout_boxes": 162,
+        "heldout_correct_eligible": 27,
+        "heldout_eligible": 78
+      },
+      "flat": {
+        "rotations": [
+          {
+            "t": 0.83,
+            "risk_C_all": 0.05246816675388105,
+            "risk_C_eligible": 0.04367695796267225
+          },
+          {
+            "t": 0.78,
+            "risk_C_all": 0.03800022439012487,
+            "risk_C_eligible": 0.03837615283267457
+          },
+          {
+            "t": 0.85,
+            "risk_C_all": 0.057936587779938174,
+            "risk_C_eligible": 0.043560293784078954
+          }
+        ],
+        "risk_all_mean": 0.04946832630798137,
+        "risk_eligible_mean": 0.04187113485980859,
+        "risk_ok_all_rotations": true,
+        "reported_per_image": 0.735658042744657,
+        "correct_per_image": 0.6512935883014623,
+        "credit_per_image": 0.6512935883014623,
+        "error_among_reported": 0.11467889908256879,
+        "correct_by_level": {
+          "species": 579,
+          "group": 0,
+          "phylum": 0,
+          "kingdom": 0
+        },
+        "heldout_correct": 0,
+        "heldout_boxes": 162,
+        "heldout_correct_eligible": 0,
+        "heldout_eligible": 78
+      },
+      "hier2": {
+        "rotations": [
+          {
+            "t": [
+              0.89,
+              0.9
+            ],
+            "risk_C_all": 0.04813361241932671,
+            "risk_C_eligible": 0.04135705564276993
+          },
+          {
+            "t": [
+              0.92,
+              0.84
+            ],
+            "risk_C_all": 0.03949257262160353,
+            "risk_C_eligible": 0.041455862977602106
+          },
+          {
+            "t": [
+              0.93,
+              0.92
+            ],
+            "risk_C_all": 0.030205513085947867,
+            "risk_C_eligible": 0.017231047937569677
+          }
+        ],
+        "risk_all_mean": 0.039277232708959366,
+        "risk_eligible_mean": 0.03334798885264724,
+        "risk_ok_all_rotations": true,
+        "reported_per_image": 0.8346456692913385,
+        "correct_per_image": 0.7694038245219348,
+        "credit_per_image": 0.49437570303712036,
+        "error_among_reported": 0.07816711590296499,
+        "correct_by_level": {
+          "species": 281,
+          "group": 185,
+          "phylum": 0,
+          "kingdom": 218
+        },
+        "heldout_correct": 50,
+        "heldout_boxes": 162,
+        "heldout_correct_eligible": 30,
+        "heldout_eligible": 78
+      },
+      "hier_nok": {
+        "rotations": [
+          {
+            "t": 0.84,
+            "risk_C_all": 0.05124716553287982,
+            "risk_C_eligible": 0.042455956741671026
+          },
+          {
+            "t": 0.84,
+            "risk_C_all": 0.030072282766531067,
+            "risk_C_eligible": 0.031673254281949934
+          },
+          {
+            "t": 0.87,
+            "risk_C_all": 0.048912108422977996,
+            "risk_C_eligible": 0.03531221194264673
+          }
+        ],
+        "risk_all_mean": 0.04341051890746297,
+        "risk_eligible_mean": 0.03648047432208923,
+        "risk_ok_all_rotations": true,
+        "reported_per_image": 0.7199100112485939,
+        "correct_per_image": 0.6467941507311586,
+        "credit_per_image": 0.6183914510686164,
+        "error_among_reported": 0.1015625,
+        "correct_by_level": {
+          "species": 523,
+          "group": 52,
+          "phylum": 0,
+          "kingdom": 0
+        },
+        "heldout_correct": 3,
+        "heldout_boxes": 162,
+        "heldout_correct_eligible": 2,
+        "heldout_eligible": 78
+      },
+      "hier_minus_flat_correct_per_image": {
+        "diff": 0.14623172103487064,
+        "ci95": [
+          0.12072892938496584,
+          0.17395944503735325
+        ]
+      },
+      "hier_minus_flat_credit_per_image": {
+        "diff": -0.025871766029246346,
+        "ci95": [
+          -0.044450431034482756,
+          -0.0071794871794871795
+        ]
+      },
+      "hier2_minus_flat_correct_per_image": {
+        "diff": 0.11811023622047244,
+        "ci95": [
+          0.09003601440576231,
+          0.14819004524886878
+        ]
+      },
+      "hier2_minus_flat_credit_per_image": {
+        "diff": -0.15691788526434194,
+        "ci95": [
+          -0.19416562107904642,
+          -0.12374371859296482
+        ]
+      },
+      "hier_nok_minus_flat_correct_per_image": {
+        "diff": -0.0044994375703037125,
+        "ci95": [
+          -0.015197568389057751,
+          0.00683371298405467
+        ]
+      },
+      "hier_nok_minus_flat_credit_per_image": {
+        "diff": -0.03290213723284589,
+        "ci95": [
+          -0.04702102803738318,
+          -0.020951302378255945
+        ]
+      }
+    },
+    "0.15": {
+      "hier": {
+        "rotations": [
+          {
+            "t": 0.7,
+            "risk_C_all": 0.08221617806335414,
+            "risk_C_eligible": 0.07417501287933181
+          },
+          {
+            "t": 0.73,
+            "risk_C_all": 0.07211010968009467,
+            "risk_C_eligible": 0.07001003827090783
+          },
+          {
+            "t": 0.81,
+            "risk_C_all": 0.09680837741899125,
+            "risk_C_eligible": 0.0805395918567274
+          }
+        ],
+        "risk_all_mean": 0.08371155505414668,
+        "risk_eligible_mean": 0.07490821433565568,
+        "risk_ok_all_rotations": true,
+        "reported_per_image": 1.0416197975253094,
+        "correct_per_image": 0.8920134983127109,
+        "credit_per_image": 0.7716535433070866,
+        "error_among_reported": 0.14362850971922247,
+        "correct_by_level": {
+          "species": 636,
+          "group": 27,
+          "phylum": 0,
+          "kingdom": 130
+        },
+        "heldout_correct": 46,
+        "heldout_boxes": 162,
+        "heldout_correct_eligible": 20,
+        "heldout_eligible": 78
+      },
+      "flat": {
+        "rotations": [
+          {
+            "t": 0.61,
+            "risk_C_all": 0.08279391335869742,
+            "risk_C_eligible": 0.06863029919508325
+          },
+          {
+            "t": 0.6,
+            "risk_C_all": 0.07906606642656831,
+            "risk_C_eligible": 0.07233587715996183
+          },
+          {
+            "t": 0.68,
+            "risk_C_all": 0.09477335147092181,
+            "risk_C_eligible": 0.07780945787659344
+          }
+        ],
+        "risk_all_mean": 0.08554444375206251,
+        "risk_eligible_mean": 0.07292521141054617,
+        "risk_ok_all_rotations": true,
+        "reported_per_image": 0.9617547806524185,
+        "correct_per_image": 0.8087739032620922,
+        "credit_per_image": 0.8087739032620922,
+        "error_among_reported": 0.15906432748538013,
+        "correct_by_level": {
+          "species": 719,
+          "group": 0,
+          "phylum": 0,
+          "kingdom": 0
+        },
+        "heldout_correct": 0,
+        "heldout_boxes": 162,
+        "heldout_correct_eligible": 0,
+        "heldout_eligible": 78
+      },
+      "hier2": {
+        "rotations": [
+          {
+            "t": [
+              0.76,
+              0.83
+            ],
+            "risk_C_all": 0.0667765973413814,
+            "risk_C_eligible": 0.05798538855017261
+          },
+          {
+            "t": [
+              0.8,
+              0.68
+            ],
+            "risk_C_all": 0.09171754950753748,
+            "risk_C_eligible": 0.0869327179939308
+          },
+          {
+            "t": [
+              0.84,
+              0.83
+            ],
+            "risk_C_all": 0.08541212091403907,
+            "risk_C_eligible": 0.06893159057481309
+          }
+        ],
+        "risk_all_mean": 0.08130208925431932,
+        "risk_eligible_mean": 0.07128323237297217,
+        "risk_ok_all_rotations": true,
+        "reported_per_image": 1.015748031496063,
+        "correct_per_image": 0.8706411698537683,
+        "credit_per_image": 0.7415635545556806,
+        "error_among_reported": 0.1428571428571429,
+        "correct_by_level": {
+          "species": 592,
+          "group": 65,
+          "phylum": 0,
+          "kingdom": 117
+        },
+        "heldout_correct": 45,
+        "heldout_boxes": 162,
+        "heldout_correct_eligible": 20,
+        "heldout_eligible": 78
+      },
+      "hier_nok": {
+        "rotations": [
+          {
+            "t": 0.61,
+            "risk_C_all": 0.08436377207141328,
+            "risk_C_eligible": 0.07082810139288545
+          },
+          {
+            "t": 0.7,
+            "risk_C_all": 0.060060796334341686,
+            "risk_C_eligible": 0.05629032850571752
+          },
+          {
+            "t": 0.69,
+            "risk_C_all": 0.10079567814542241,
+            "risk_C_eligible": 0.08383178455109402
+          }
+        ],
+        "risk_all_mean": 0.08174008218372579,
+        "risk_eligible_mean": 0.070316738149899,
+        "risk_ok_all_rotations": true,
+        "reported_per_image": 0.9583802024746907,
+        "correct_per_image": 0.8065241844769404,
+        "credit_per_image": 0.7958380202474691,
+        "error_among_reported": 0.15845070422535212,
+        "correct_by_level": {
+          "species": 696,
+          "group": 21,
+          "phylum": 0,
+          "kingdom": 0
+        },
+        "heldout_correct": 3,
+        "heldout_boxes": 162,
+        "heldout_correct_eligible": 2,
+        "heldout_eligible": 78
+      },
+      "hier_minus_flat_correct_per_image": {
+        "diff": 0.08323959505061868,
+        "ci95": [
+          0.05921052631578947,
+          0.10839160839160839
+        ]
+      },
+      "hier_minus_flat_credit_per_image": {
+        "diff": -0.03712035995500562,
+        "ci95": [
+          -0.05406852248394004,
+          -0.021259418729817008
+        ]
+      },
+      "hier2_minus_flat_correct_per_image": {
+        "diff": 0.06186726659167604,
+        "ci95": [
+          0.03237410071942446,
+          0.09199134199134198
+        ]
+      },
+      "hier2_minus_flat_credit_per_image": {
+        "diff": -0.0672103487064117,
+        "ci95": [
+          -0.08884297520661157,
+          -0.04625425652667423
+        ]
+      },
+      "hier_nok_minus_flat_correct_per_image": {
+        "diff": -0.0022497187851518562,
+        "ci95": [
+          -0.011286681715575621,
+          0.006564551422319475
+        ]
+      },
+      "hier_nok_minus_flat_credit_per_image": {
+        "diff": -0.012935883014623173,
+        "ci95": [
+          -0.021659707724425888,
+          -0.004656577415599534
+        ]
+      }
+    },
+    "0.2": {
+      "hier": {
+        "rotations": [
+          {
+            "t": 0.5,
+            "risk_C_all": 0.13439014241412045,
+            "risk_C_eligible": 0.12404651778478153
+          },
+          {
+            "t": 0.55,
+            "risk_C_all": 0.14224263430295755,
+            "risk_C_eligible": 0.12592171510792793
+          },
+          {
+            "t": 0.65,
+            "risk_C_all": 0.1261150153733274,
+            "risk_C_eligible": 0.10989473203347884
+          }
+        ],
+        "risk_all_mean": 0.13424926403013512,
+        "risk_eligible_mean": 0.11995432164206277,
+        "risk_ok_all_rotations": true,
+        "reported_per_image": 1.2542182227221597,
+        "correct_per_image": 0.9955005624296963,
+        "credit_per_image": 0.891169853768279,
+        "error_among_reported": 0.20627802690582964,
+        "correct_by_level": {
+          "species": 752,
+          "group": 20,
+          "phylum": 0,
+          "kingdom": 113
+        },
+        "heldout_correct": 46,
+        "heldout_boxes": 162,
+        "heldout_correct_eligible": 24,
+        "heldout_eligible": 78
+      },
+      "flat": {
+        "rotations": [
+          {
+            "t": 0.4,
+            "risk_C_all": 0.13431773420217735,
+            "risk_C_eligible": 0.11916423690582291
+          },
+          {
+            "t": 0.5,
+            "risk_C_all": 0.1167489435220441,
+            "risk_C_eligible": 0.10115296888466223
+          },
+          {
+            "t": 0.47,
+            "risk_C_all": 0.1361569718347212,
+            "risk_C_eligible": 0.11575747398957119
+          }
+        ],
+        "risk_all_mean": 0.12907454985298086,
+        "risk_eligible_mean": 0.11202489326001878,
+        "risk_ok_all_rotations": true,
+        "reported_per_image": 1.1541057367829022,
+        "correct_per_image": 0.8998875140607424,
+        "credit_per_image": 0.8998875140607424,
+        "error_among_reported": 0.22027290448343084,
+        "correct_by_level": {
+          "species": 800,
+          "group": 0,
+          "phylum": 0,
+          "kingdom": 0
+        },
+        "heldout_correct": 0,
+        "heldout_boxes": 162,
+        "heldout_correct_eligible": 0,
+        "heldout_eligible": 78
+      },
+      "hier2": {
+        "rotations": [
+          {
+            "t": [
+              0.62,
+              0.55
+            ],
+            "risk_C_all": 0.11284383158209534,
+            "risk_C_eligible": 0.10297116456657117
+          },
+          {
+            "t": [
+              0.75,
+              0.53
+            ],
+            "risk_C_all": 0.14175128832484407,
+            "risk_C_eligible": 0.12808621727243008
+          },
+          {
+            "t": [
+              0.47,
+              2.0
+            ],
+            "risk_C_all": 0.1361569718347212,
+            "risk_C_eligible": 0.11575747398957119
+          }
+        ],
+        "risk_all_mean": 0.1302506972472202,
+        "risk_eligible_mean": 0.11560495194285748,
+        "risk_ok_all_rotations": true,
+        "reported_per_image": 1.2418447694038246,
+        "correct_per_image": 0.9865016872890888,
+        "credit_per_image": 0.8709223847019123,
+        "error_among_reported": 0.20561594202898548,
+        "correct_by_level": {
+          "species": 711,
+          "group": 74,
+          "phylum": 0,
+          "kingdom": 92
+        },
+        "heldout_correct": 45,
+        "heldout_boxes": 162,
+        "heldout_correct_eligible": 21,
+        "heldout_eligible": 78
+      },
+      "hier_nok": {
+        "rotations": [
+          {
+            "t": 0.41,
+            "risk_C_all": 0.13966207929807523,
+            "risk_C_eligible": 0.1266017269520086
+          },
+          {
+            "t": 0.52,
+            "risk_C_all": 0.12622933854709886,
+            "risk_C_eligible": 0.1032337534382729
+          },
+          {
+            "t": 0.48,
+            "risk_C_all": 0.1380203258719883,
+            "risk_C_eligible": 0.11684443051131031
+          }
+        ],
+        "risk_all_mean": 0.13463724790572082,
+        "risk_eligible_mean": 0.11555997030053061,
+        "risk_ok_all_rotations": true,
+        "reported_per_image": 1.1732283464566928,
+        "correct_per_image": 0.906636670416198,
+        "credit_per_image": 0.8982002249718786,
+        "error_among_reported": 0.22722914669223393,
+        "correct_by_level": {
+          "species": 791,
+          "group": 15,
+          "phylum": 0,
+          "kingdom": 0
+        },
+        "heldout_correct": 0,
+        "heldout_boxes": 162,
+        "heldout_correct_eligible": 0,
+        "heldout_eligible": 78
+      },
+      "hier_minus_flat_correct_per_image": {
+        "diff": 0.09561304836895389,
+        "ci95": [
+          0.06947608200455581,
+          0.1217292377701934
+        ]
+      },
+      "hier_minus_flat_credit_per_image": {
+        "diff": -0.008717660292463443,
+        "ci95": [
+          -0.023015873015873017,
+          0.004376930998970134
+        ]
+      },
+      "hier2_minus_flat_correct_per_image": {
+        "diff": 0.08661417322834646,
+        "ci95": [
+          0.06104328523862375,
+          0.11498257839721254
+        ]
+      },
+      "hier2_minus_flat_credit_per_image": {
+        "diff": -0.028965129358830145,
+        "ci95": [
+          -0.0456989247311828,
+          -0.01273696682464455
+        ]
+      },
+      "hier_nok_minus_flat_correct_per_image": {
+        "diff": 0.006749156355455568,
+        "ci95": [
+          -0.0011467889908256881,
+          0.01557285873192436
+        ]
+      },
+      "hier_nok_minus_flat_credit_per_image": {
+        "diff": -0.001687289088863892,
+        "ci95": [
+          -0.007891770011273957,
+          0.004103165298944901
+        ]
+      }
+    },
+    "0.25": {
+      "hier": {
+        "rotations": [
+          {
+            "t": 0.36,
+            "risk_C_all": 0.17080788283718315,
+            "risk_C_eligible": 0.15990105462266266
+          },
+          {
+            "t": 0.45,
+            "risk_C_all": 0.1678104090621575,
+            "risk_C_eligible": 0.14453258888327536
+          },
+          {
+            "t": 0.45,
+            "risk_C_all": 0.18689422532932762,
+            "risk_C_eligible": 0.1726871612581331
+          }
+        ],
+        "risk_all_mean": 0.17517083907622277,
+        "risk_eligible_mean": 0.1590402682546904,
+        "risk_ok_all_rotations": true,
+        "reported_per_image": 1.3937007874015748,
+        "correct_per_image": 1.0404949381327333,
+        "credit_per_image": 0.9491001124859393,
+        "error_among_reported": 0.25343018563357544,
+        "correct_by_level": {
+          "species": 812,
+          "group": 11,
+          "phylum": 0,
+          "kingdom": 102
+        },
+        "heldout_correct": 42,
+        "heldout_boxes": 162,
+        "heldout_correct_eligible": 21,
+        "heldout_eligible": 78
+      },
+      "flat": {
+        "rotations": [
+          {
+            "t": 0.24,
+            "risk_C_all": 0.18705966286244957,
+            "risk_C_eligible": 0.17337572774994303
+          },
+          {
+            "t": 0.31,
+            "risk_C_all": 0.1974381141611465,
+            "risk_C_eligible": 0.17123554728388823
+          },
+          {
+            "t": 0.36,
+            "risk_C_all": 0.16711765528101843,
+            "risk_C_eligible": 0.15167266850450994
+          }
+        ],
+        "risk_all_mean": 0.18387181076820483,
+        "risk_eligible_mean": 0.16542798117944707,
+        "risk_ok_all_rotations": true,
+        "reported_per_image": 1.3104611923509561,
+        "correct_per_image": 0.9482564679415073,
+        "credit_per_image": 0.9482564679415073,
+        "error_among_reported": 0.27639484978540774,
+        "correct_by_level": {
+          "species": 843,
+          "group": 0,
+          "phylum": 0,
+          "kingdom": 0
+        },
+        "heldout_correct": 0,
+        "heldout_boxes": 162,
+        "heldout_correct_eligible": 0,
+        "heldout_eligible": 78
+      },
+      "hier2": {
+        "rotations": [
+          {
+            "t": [
+              0.44,
+              0.45
+            ],
+            "risk_C_all": 0.1463222058087001,
+            "risk_C_eligible": 0.13478743410909325
+          },
+          {
+            "t": [
+              0.6,
+              0.38
+            ],
+            "risk_C_all": 0.18446153046753225,
+            "risk_C_eligible": 0.1679517964872656
+          },
+          {
+            "t": [
+              0.38,
+              2.0
+            ],
+            "risk_C_all": 0.16455519216868322,
+            "risk_C_eligible": 0.14904052869206322
+          }
+        ],
+        "risk_all_mean": 0.1651129761483052,
+        "risk_eligible_mean": 0.1505932530961407,
+        "risk_ok_all_rotations": true,
+        "reported_per_image": 1.358830146231721,
+        "correct_per_image": 1.0247469066366703,
+        "credit_per_image": 0.9246344206974129,
+        "error_among_reported": 0.2458609271523179,
+        "correct_by_level": {
+          "species": 777,
+          "group": 42,
+          "phylum": 0,
+          "kingdom": 92
+        },
+        "heldout_correct": 41,
+        "heldout_boxes": 162,
+        "heldout_correct_eligible": 20,
+        "heldout_eligible": 78
+      },
+      "hier_nok": {
+        "rotations": [
+          {
+            "t": 0.24,
+            "risk_C_all": 0.19349608358458456,
+            "risk_C_eligible": 0.1819052934223658
+          },
+          {
+            "t": 0.38,
+            "risk_C_all": 0.16850123805153885,
+            "risk_C_eligible": 0.14573547670229592
+          },
+          {
+            "t": 0.41,
+            "risk_C_all": 0.16222635093319235,
+            "risk_C_eligible": 0.14678136415668383
+          }
+        ],
+        "risk_all_mean": 0.17474122418977192,
+        "risk_eligible_mean": 0.1581407114271152,
+        "risk_ok_all_rotations": true,
+        "reported_per_image": 1.296962879640045,
+        "correct_per_image": 0.9516310461192351,
+        "credit_per_image": 0.9471316085489314,
+        "error_among_reported": 0.2662619254119688,
+        "correct_by_level": {
+          "species": 838,
+          "group": 8,
+          "phylum": 0,
+          "kingdom": 0
+        },
+        "heldout_correct": 1,
+        "heldout_boxes": 162,
+        "heldout_correct_eligible": 1,
+        "heldout_eligible": 78
+      },
+      "hier_minus_flat_correct_per_image": {
+        "diff": 0.0922384701912261,
+        "ci95": [
+          0.0683371298405467,
+          0.11796536796536797
+        ]
+      },
+      "hier_minus_flat_credit_per_image": {
+        "diff": 0.000843644544431946,
+        "ci95": [
+          -0.01376889848812095,
+          0.013568129330254041
+        ]
+      },
+      "hier2_minus_flat_correct_per_image": {
+        "diff": 0.0764904386951631,
+        "ci95": [
+          0.052568697729988054,
+          0.10108695652173913
+        ]
+      },
+      "hier2_minus_flat_credit_per_image": {
+        "diff": -0.023622047244094488,
+        "ci95": [
+          -0.04157549234135667,
+          -0.007700770077007701
+        ]
+      },
+      "hier_nok_minus_flat_correct_per_image": {
+        "diff": 0.003374578177727784,
+        "ci95": [
+          -0.002386634844868735,
+          0.010610079575596816
+        ]
+      },
+      "hier_nok_minus_flat_credit_per_image": {
+        "diff": -0.0011248593925759281,
+        "ci95": [
+          -0.005978260869565218,
+          0.003601440576230492
+        ]
+      }
+    }
+  },
+  "today": {
+    "risk_all": 0.2763846407019826,
+    "reported_per_image": 1.5568053993250843,
+    "correct_per_image": 0.9786276715410573,
+    "error_among_reported": 0.3713872832369942
+  }
+}
