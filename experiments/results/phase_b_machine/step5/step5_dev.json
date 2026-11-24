@@ -1,0 +1,640 @@
+{
+  "boxes": 1527,
+  "images": 889,
+  "candidates": {
+    "deployed": {
+      "0.1": {
+        "hier": {
+          "thresholds": [
+            0.86,
+            0.84,
+            0.9
+          ],
+          "risk_eligible_mean": 0.03777192642875873,
+          "risk_ok_all_rotations": true,
+          "reported_per_image": 0.8706411698537683,
+          "correct_per_image": 0.7975253093363329,
+          "credit_per_image": 0.625421822272216,
+          "species_correct_per_image": 0.5331833520809899,
+          "error_among_reported": 0.08397932816537468,
+          "correct_by_level": {
+            "species": 474,
+            "group": 65,
+            "phylum": 0,
+            "kingdom": 170
+          },
+          "heldout_correct_eligible": 27,
+          "heldout_eligible": 78,
+          "heldout_correct_nodes": {
+            "Chordata": 3,
+            "Animal": 24
+          }
+        },
+        "flat": {
+          "thresholds": [
+            0.83,
+            0.78,
+            0.85
+          ],
+          "risk_eligible_mean": 0.04187113485980859,
+          "risk_ok_all_rotations": true,
+          "reported_per_image": 0.735658042744657,
+          "correct_per_image": 0.6512935883014623,
+          "credit_per_image": 0.6512935883014623,
+          "species_correct_per_image": 0.6512935883014623,
+          "error_among_reported": 0.11467889908256879,
+          "correct_by_level": {
+            "species": 579,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          },
+          "heldout_correct_eligible": 0,
+          "heldout_eligible": 78,
+          "heldout_correct_nodes": {}
+        }
+      },
+      "0.2": {
+        "hier": {
+          "thresholds": [
+            0.5,
+            0.55,
+            0.65
+          ],
+          "risk_eligible_mean": 0.11995432164206277,
+          "risk_ok_all_rotations": true,
+          "reported_per_image": 1.2542182227221597,
+          "correct_per_image": 0.9955005624296963,
+          "credit_per_image": 0.891169853768279,
+          "species_correct_per_image": 0.8458942632170978,
+          "error_among_reported": 0.20627802690582964,
+          "correct_by_level": {
+            "species": 752,
+            "group": 20,
+            "phylum": 0,
+            "kingdom": 113
+          },
+          "heldout_correct_eligible": 24,
+          "heldout_eligible": 78,
+          "heldout_correct_nodes": {
+            "Animal": 24
+          }
+        },
+        "flat": {
+          "thresholds": [
+            0.4,
+            0.5,
+            0.47
+          ],
+          "risk_eligible_mean": 0.11202489326001878,
+          "risk_ok_all_rotations": true,
+          "reported_per_image": 1.1541057367829022,
+          "correct_per_image": 0.8998875140607424,
+          "credit_per_image": 0.8998875140607424,
+          "species_correct_per_image": 0.8998875140607424,
+          "error_among_reported": 0.22027290448343084,
+          "correct_by_level": {
+            "species": 800,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          },
+          "heldout_correct_eligible": 0,
+          "heldout_eligible": 78,
+          "heldout_correct_nodes": {}
+        }
+      },
+      "ood_dev_deep_node_top_candidate": {
+        "boxes": 25,
+        "hit": 19,
+        "by_taxon": {
+          "shark": 12,
+          "ray": 3,
+          "urchin": 4
+        }
+      },
+      "better_mistakes": {
+        "wrong_species_boxes": 88,
+        "group_right": 19
+      },
+      "S_modelsel_top1": 0.8528399311531841,
+      "eligible": true
+    },
+    "ce": {
+      "0.1": {
+        "hier": {
+          "thresholds": [
+            0.85,
+            0.88,
+            0.92
+          ],
+          "risk_eligible_mean": 0.037397709261063304,
+          "risk_ok_all_rotations": true,
+          "reported_per_image": 0.829021372328459,
+          "correct_per_image": 0.7581552305961755,
+          "credit_per_image": 0.5672103487064117,
+          "species_correct_per_image": 0.45219347581552305,
+          "error_among_reported": 0.08548168249660792,
+          "correct_by_level": {
+            "species": 402,
+            "group": 95,
+            "phylum": 0,
+            "kingdom": 177
+          },
+          "heldout_correct_eligible": 25,
+          "heldout_eligible": 78,
+          "heldout_correct_nodes": {
+            "Animal": 23,
+            "Chordata": 2
+          }
+        },
+        "flat": {
+          "thresholds": [
+            0.83,
+            0.79,
+            0.86
+          ],
+          "risk_eligible_mean": 0.037711325265216394,
+          "risk_ok_all_rotations": true,
+          "reported_per_image": 0.7199100112485939,
+          "correct_per_image": 0.641169853768279,
+          "credit_per_image": 0.641169853768279,
+          "species_correct_per_image": 0.641169853768279,
+          "error_among_reported": 0.109375,
+          "correct_by_level": {
+            "species": 570,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          },
+          "heldout_correct_eligible": 0,
+          "heldout_eligible": 78,
+          "heldout_correct_nodes": {}
+        }
+      },
+      "0.2": {
+        "hier": {
+          "thresholds": [
+            0.52,
+            0.6,
+            0.69
+          ],
+          "risk_eligible_mean": 0.12515082081922424,
+          "risk_ok_all_rotations": true,
+          "reported_per_image": 1.235095613048369,
+          "correct_per_image": 0.9853768278965129,
+          "credit_per_image": 0.8703599550056242,
+          "species_correct_per_image": 0.8155230596175478,
+          "error_among_reported": 0.20218579234972678,
+          "correct_by_level": {
+            "species": 725,
+            "group": 21,
+            "phylum": 0,
+            "kingdom": 130
+          },
+          "heldout_correct_eligible": 23,
+          "heldout_eligible": 78,
+          "heldout_correct_nodes": {
+            "Animal": 21,
+            "Chordata": 2
+          }
+        },
+        "flat": {
+          "thresholds": [
+            0.4,
+            0.49,
+            0.51
+          ],
+          "risk_eligible_mean": 0.11430858983719361,
+          "risk_ok_all_rotations": true,
+          "reported_per_image": 1.1586051743532058,
+          "correct_per_image": 0.8953880764904387,
+          "credit_per_image": 0.8953880764904387,
+          "species_correct_per_image": 0.8953880764904387,
+          "error_among_reported": 0.22718446601941744,
+          "correct_by_level": {
+            "species": 796,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          },
+          "heldout_correct_eligible": 0,
+          "heldout_eligible": 78,
+          "heldout_correct_nodes": {}
+        }
+      },
+      "ood_dev_deep_node_top_candidate": {
+        "boxes": 25,
+        "hit": 18,
+        "by_taxon": {
+          "shark": 12,
+          "ray": 3,
+          "urchin": 3
+        }
+      },
+      "better_mistakes": {
+        "wrong_species_boxes": 88,
+        "group_right": 22
+      },
+      "S_modelsel_top1": 0.8554216867469879,
+      "eligible": true,
+      "credit_minus_deployed": {
+        "diff": -0.02080989876265467,
+        "ci95": [
+          -0.03197353914002205,
+          -0.01020408163265306
+        ]
+      }
+    },
+    "soft1": {
+      "0.1": {
+        "hier": {
+          "thresholds": [
+            0.86,
+            0.93,
+            0.9
+          ],
+          "risk_eligible_mean": 0.030568241426160683,
+          "risk_ok_all_rotations": true,
+          "reported_per_image": 0.7941507311586051,
+          "correct_per_image": 0.735658042744657,
+          "credit_per_image": 0.5253093363329584,
+          "species_correct_per_image": 0.4015748031496063,
+          "error_among_reported": 0.07365439093484416,
+          "correct_by_level": {
+            "species": 357,
+            "group": 90,
+            "phylum": 0,
+            "kingdom": 207
+          },
+          "heldout_correct_eligible": 20,
+          "heldout_eligible": 78,
+          "heldout_correct_nodes": {
+            "Animal": 20
+          }
+        },
+        "flat": {
+          "thresholds": [
+            0.82,
+            0.82,
+            0.88
+          ],
+          "risk_eligible_mean": 0.03563451070438648,
+          "risk_ok_all_rotations": true,
+          "reported_per_image": 0.6895388076490439,
+          "correct_per_image": 0.6220472440944882,
+          "credit_per_image": 0.6220472440944882,
+          "species_correct_per_image": 0.6220472440944882,
+          "error_among_reported": 0.0978792822185971,
+          "correct_by_level": {
+            "species": 553,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          },
+          "heldout_correct_eligible": 0,
+          "heldout_eligible": 78,
+          "heldout_correct_nodes": {}
+        }
+      },
+      "0.2": {
+        "hier": {
+          "thresholds": [
+            0.57,
+            0.62,
+            0.64
+          ],
+          "risk_eligible_mean": 0.11625746898886753,
+          "risk_ok_all_rotations": true,
+          "reported_per_image": 1.2260967379077616,
+          "correct_per_image": 0.9808773903262092,
+          "credit_per_image": 0.8723284589426322,
+          "species_correct_per_image": 0.8166479190101237,
+          "error_among_reported": 0.19999999999999996,
+          "correct_by_level": {
+            "species": 726,
+            "group": 44,
+            "phylum": 0,
+            "kingdom": 102
+          },
+          "heldout_correct_eligible": 20,
+          "heldout_eligible": 78,
+          "heldout_correct_nodes": {
+            "Animal": 19,
+            "Echinodermata": 1
+          }
+        },
+        "flat": {
+          "thresholds": [
+            0.38,
+            0.49,
+            0.5
+          ],
+          "risk_eligible_mean": 0.115447744818348,
+          "risk_ok_all_rotations": true,
+          "reported_per_image": 1.1496062992125984,
+          "correct_per_image": 0.9021372328458943,
+          "credit_per_image": 0.9021372328458943,
+          "species_correct_per_image": 0.9021372328458943,
+          "error_among_reported": 0.21526418786692758,
+          "correct_by_level": {
+            "species": 802,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          },
+          "heldout_correct_eligible": 0,
+          "heldout_eligible": 78,
+          "heldout_correct_nodes": {}
+        }
+      },
+      "ood_dev_deep_node_top_candidate": {
+        "boxes": 25,
+        "hit": 18,
+        "by_taxon": {
+          "shark": 12,
+          "ray": 3,
+          "urchin": 3
+        }
+      },
+      "better_mistakes": {
+        "wrong_species_boxes": 88,
+        "group_right": 45
+      },
+      "S_modelsel_top1": 0.8674698795180723,
+      "eligible": true,
+      "credit_minus_deployed": {
+        "diff": -0.018841394825646795,
+        "ci95": [
+          -0.031833150384193196,
+          -0.006686046511627907
+        ]
+      }
+    },
+    "soft2": {
+      "0.1": {
+        "hier": {
+          "thresholds": [
+            0.85,
+            0.94,
+            0.92
+          ],
+          "risk_eligible_mean": 0.02460334279821858,
+          "risk_ok_all_rotations": true,
+          "reported_per_image": 0.7379077615298087,
+          "correct_per_image": 0.6895388076490439,
+          "credit_per_image": 0.47919010123734535,
+          "species_correct_per_image": 0.35545556805399325,
+          "error_among_reported": 0.06554878048780488,
+          "correct_by_level": {
+            "species": 316,
+            "group": 90,
+            "phylum": 0,
+            "kingdom": 207
+          },
+          "heldout_correct_eligible": 25,
+          "heldout_eligible": 78,
+          "heldout_correct_nodes": {
+            "Animal": 23,
+            "Chordata": 2
+          }
+        },
+        "flat": {
+          "thresholds": [
+            0.81,
+            0.84,
+            0.89
+          ],
+          "risk_eligible_mean": 0.029982062307372864,
+          "risk_ok_all_rotations": true,
+          "reported_per_image": 0.6580427446569179,
+          "correct_per_image": 0.6017997750281214,
+          "credit_per_image": 0.6017997750281214,
+          "species_correct_per_image": 0.6017997750281214,
+          "error_among_reported": 0.0854700854700855,
+          "correct_by_level": {
+            "species": 535,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          },
+          "heldout_correct_eligible": 0,
+          "heldout_eligible": 78,
+          "heldout_correct_nodes": {}
+        }
+      },
+      "0.2": {
+        "hier": {
+          "thresholds": [
+            0.56,
+            0.57,
+            0.64
+          ],
+          "risk_eligible_mean": 0.11431814809051655,
+          "risk_ok_all_rotations": true,
+          "reported_per_image": 1.220472440944882,
+          "correct_per_image": 0.9797525309336333,
+          "credit_per_image": 0.8832958380202475,
+          "species_correct_per_image": 0.8413948256467941,
+          "error_among_reported": 0.19723502304147467,
+          "correct_by_level": {
+            "species": 748,
+            "group": 21,
+            "phylum": 0,
+            "kingdom": 102
+          },
+          "heldout_correct_eligible": 24,
+          "heldout_eligible": 78,
+          "heldout_correct_nodes": {
+            "Animal": 23,
+            "Echinodermata": 1
+          }
+        },
+        "flat": {
+          "thresholds": [
+            0.43,
+            0.47,
+            0.51
+          ],
+          "risk_eligible_mean": 0.10622151958790436,
+          "risk_ok_all_rotations": true,
+          "reported_per_image": 1.1327334083239595,
+          "correct_per_image": 0.8965129358830146,
+          "credit_per_image": 0.8965129358830146,
+          "species_correct_per_image": 0.8965129358830146,
+          "error_among_reported": 0.20854021847070503,
+          "correct_by_level": {
+            "species": 797,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          },
+          "heldout_correct_eligible": 0,
+          "heldout_eligible": 78,
+          "heldout_correct_nodes": {}
+        }
+      },
+      "ood_dev_deep_node_top_candidate": {
+        "boxes": 25,
+        "hit": 20,
+        "by_taxon": {
+          "shark": 12,
+          "ray": 3,
+          "urchin": 5
+        }
+      },
+      "better_mistakes": {
+        "wrong_species_boxes": 88,
+        "group_right": 38
+      },
+      "S_modelsel_top1": 0.8562822719449226,
+      "eligible": true,
+      "credit_minus_deployed": {
+        "diff": -0.007874015748031496,
+        "ci95": [
+          -0.01741573033707865,
+          0.002066115702479339
+        ]
+      }
+    },
+    "marginal": {
+      "0.1": {
+        "hier": {
+          "thresholds": [
+            0.86,
+            0.88,
+            0.9
+          ],
+          "risk_eligible_mean": 0.037077658941012975,
+          "risk_ok_all_rotations": true,
+          "reported_per_image": 0.8301462317210349,
+          "correct_per_image": 0.7649043869516311,
+          "credit_per_image": 0.5922384701912261,
+          "species_correct_per_image": 0.49268841394825647,
+          "error_among_reported": 0.07859078590785906,
+          "correct_by_level": {
+            "species": 438,
+            "group": 82,
+            "phylum": 0,
+            "kingdom": 160
+          },
+          "heldout_correct_eligible": 20,
+          "heldout_eligible": 78,
+          "heldout_correct_nodes": {
+            "Animal": 19,
+            "Chordata": 1
+          }
+        },
+        "flat": {
+          "thresholds": [
+            0.83,
+            0.82,
+            0.87
+          ],
+          "risk_eligible_mean": 0.03418480401011457,
+          "risk_ok_all_rotations": true,
+          "reported_per_image": 0.6850393700787402,
+          "correct_per_image": 0.6242969628796401,
+          "credit_per_image": 0.6242969628796401,
+          "species_correct_per_image": 0.6242969628796401,
+          "error_among_reported": 0.08866995073891626,
+          "correct_by_level": {
+            "species": 555,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          },
+          "heldout_correct_eligible": 0,
+          "heldout_eligible": 78,
+          "heldout_correct_nodes": {}
+        }
+      },
+      "0.2": {
+        "hier": {
+          "thresholds": [
+            0.5,
+            0.57,
+            0.6
+          ],
+          "risk_eligible_mean": 0.11800967039620401,
+          "risk_ok_all_rotations": true,
+          "reported_per_image": 1.2530933633295838,
+          "correct_per_image": 0.9910011248593926,
+          "credit_per_image": 0.8956692913385826,
+          "species_correct_per_image": 0.8526434195725534,
+          "error_among_reported": 0.2091561938958707,
+          "correct_by_level": {
+            "species": 758,
+            "group": 19,
+            "phylum": 0,
+            "kingdom": 104
+          },
+          "heldout_correct_eligible": 21,
+          "heldout_eligible": 78,
+          "heldout_correct_nodes": {
+            "Animal": 20,
+            "Echinodermata": 1
+          }
+        },
+        "flat": {
+          "thresholds": [
+            0.41,
+            0.46,
+            0.47
+          ],
+          "risk_eligible_mean": 0.11264919850388926,
+          "risk_ok_all_rotations": true,
+          "reported_per_image": 1.1541057367829022,
+          "correct_per_image": 0.8987626546681665,
+          "credit_per_image": 0.8987626546681665,
+          "species_correct_per_image": 0.8987626546681665,
+          "error_among_reported": 0.22124756335282647,
+          "correct_by_level": {
+            "species": 799,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          },
+          "heldout_correct_eligible": 0,
+          "heldout_eligible": 78,
+          "heldout_correct_nodes": {}
+        }
+      },
+      "ood_dev_deep_node_top_candidate": {
+        "boxes": 25,
+        "hit": 20,
+        "by_taxon": {
+          "shark": 12,
+          "ray": 3,
+          "urchin": 5
+        }
+      },
+      "better_mistakes": {
+        "wrong_species_boxes": 88,
+        "group_right": 32
+      },
+      "S_modelsel_top1": 0.8537005163511188,
+      "eligible": true,
+      "credit_minus_deployed": {
+        "diff": 0.0044994375703037125,
+        "ci95": [
+          -0.007230255839822024,
+          0.016717325227963525
+        ]
+      }
+    }
+  },
+  "deployed_vs_log": {
+    "max_abs_diff": 0.011696815490722656,
+    "top_class_changes": 0
+  },
+  "selection": {
+    "selected": "marginal",
+    "criteria": {
+      "credit_ci_above_0": false,
+      "beats_ce_rerun_gain": true,
+      "risk_ok_all_rotations": true
+    },
+    "go": false
+  }
+}
