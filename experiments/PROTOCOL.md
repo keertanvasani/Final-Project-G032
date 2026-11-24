@@ -1018,10 +1018,13 @@ seed 0, the same S_fit / S_modelsel crops of the 9 known classes, no held-out ta
 Only the loss differs.
 
 * **CE-rerun:** plain cross-entropy, retrained (noise reference for run-to-run variation).
-* **Soft-4, Soft-10:** soft-label cross-entropy (Bertinetto et al., CVPR 2020). Target for
-  true leaf y: q_j ∝ exp(−β·d(y, j)) with β = 4 or 10, where d is the first level of
+* **Soft-1, Soft-2:** soft-label cross-entropy (Bertinetto et al., CVPR 2020). Target for
+  true leaf y: q_j ∝ exp(−β·d(y, j)) with β = 1 or 2, where d is the first level of
   §14.1 at which the two leaves share a node (species 0, group 1, phylum 2, kingdom 3,
-  none 4).
+  none 4). *Amended 2026-11-24, before any training:* the first draft had β = 4 and 10,
+  which on this shallow tree put ≥ 98% (β = 4) and ≈ 100% (β = 10) of the target on the
+  true leaf, i.e. plain cross-entropy. β = 1 / 2 put about 59% / 87% on a crab's own
+  leaf, 22% / 12% on shrimp and the rest across other animals.
 * **Marginal:** cross-entropy on the leaf **plus** the negative log of the summed
   probability of the true node at group, phylum and kingdom (weight 1 each).
 

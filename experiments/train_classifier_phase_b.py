@@ -116,6 +116,44 @@ def build_crops(known: set[str], force: bool = False,
     return dict(counts)
 
 
+def tree_distance(classes: list[str]):
+    """d(i, j): first level of the §14.1 tree at which two known leaves share a node
+    (species 0, group 1, phylum 2, kingdom 3, none 4)."""
+    import numpy as np
+    from agentic import taxonomy as tx
+    names = [c.replace("_", "/") for c in classes]
+    d = np.full((len(names), len(names)), 4.0)
+    for i, a in enumerate(names):
+        for j, b in enumerate(names):
+            for k, lv in enumerate(tx.LEVELS):
+                if tx.node_of(a, lv) == tx.node_of(b, lv):
+                    d[i, j] = k
+                    break
+    return d
+
+
+def make_loss(kind: str, beta: float, classes: list[str], dev: str):
+    """The training loss for PROTOCOL §17 (plain cross-entropy by default)."""
+    import torch
+    import torch.nn as nn
+    if kind == "ce":
+        return nn.CrossEntropyLoss()
+    d = torch.tensor(tree_distance(classes), dtype=torch.float32, device=dev)
+    if kind == "soft":
+        q = torch.softmax(-beta * d, dim=1)                       # row y = target for true leaf y
+        return lambda out, y: -(q[y] * torch.log_softmax(out, 1)).sum(1).mean()
+    same = [(d <= k).float() for k in (1, 2, 3)]                 # leaves sharing the group / phylum / kingdom
+    ce = nn.CrossEntropyLoss()
+
+    def marginal(out, y):
+        p = torch.softmax(out, 1)
+        loss = ce(out, y)
+        for m in same:
+            loss = loss - torch.log((p * m[y]).sum(1).clamp_min(1e-8)).mean()
+        return loss
+    return marginal
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--seeds", nargs="*", type=int, default=[0, 1, 2])
@@ -133,6 +171,10 @@ def main() -> None:
     ap.add_argument("--outdir", type=Path, default=OUTDIR,
                     help="where classifier_seed*/ and classifier_runs.json go")
     ap.add_argument("--workers", type=int, default=0)
+    ap.add_argument("--loss", choices=("ce", "soft", "marginal"), default="ce",
+                    help="ce (default); soft = soft labels over the §14.1 tree; marginal = "
+                         "leaf CE + NLL of the true node at group/phylum/kingdom (PROTOCOL §17)")
+    ap.add_argument("--beta", type=float, default=10.0, help="soft-label temperature (--loss soft)")
     args = ap.parse_args()
     args.manifest, args.crops, args.outdir = (
         args.manifest.resolve(), args.crops.resolve(), args.outdir.resolve())
@@ -194,7 +236,7 @@ def main() -> None:
 
         opt = torch.optim.Adam([p for p in model.parameters() if p.requires_grad],
                                lr=args.lr)
-        crit = nn.CrossEntropyLoss()
+        crit = make_loss(args.loss, args.beta, ds_tr.classes, dev)
         best = 0.0
         name = f"classifier_seed{seed}" + ("_smoke" if args.smoke else "")
         dest = args.outdir / name
