@@ -1,0 +1,2584 @@
+{
+ "55-gallon drum": {
+  "label": "Man-made",
+  "mbari": [],
+  "why": "man-made, not machine"
+ },
+ "Abraliopsis": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Abyssocucumis abyssorum": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Acanthascinae": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Acanthascinae sp. 1": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Acanthascinae sp. 2": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Acanthascinae sp. 4": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Acanthephyra": {
+  "label": "shrimp",
+  "why": "known leaf"
+ },
+ "Acanthogorgia": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Acesta": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Acesta mori": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Acesta sphoni": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Acoustic Doppler Current Profiler": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "Actinernus": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Actiniaria": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Actiniidae": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Actiniidae sp. 1": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Actinopteri": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Actinopterygii": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Actinoscyphia": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Actinostolidae": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Actinostoloidea": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Aegina": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Aegina citrea": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Akoya platinum": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Alcyonacea": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Alcyonium varum": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Alternatipathes": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Amphipoda": {
+  "label": "unseen:Arthropoda",
+  "why": "unseen"
+ },
+ "Anguilliformes": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Anoplopoma fimbria": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Antedonidae": {
+  "label": "crinoid",
+  "why": "known leaf"
+ },
+ "Antedonoidea": {
+  "label": "crinoid",
+  "why": "known leaf"
+ },
+ "Antedonoidea sp. 1": {
+  "label": "crinoid",
+  "why": "known leaf"
+ },
+ "Anthoptilum grandiflorum": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Anthozoa": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Antimora microlepis": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Antipatharia": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Apolemia": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Aporocidaris milleri": {
+  "label": "unseen:Echinodermata",
+  "why": "unseen"
+ },
+ "Apostichopus": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Apostichopus leukothele": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Appendicularia": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Apristurus": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Apristurus brunneus": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Apristurus kampae": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Aquadopp": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "Asbestopluma": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Asbestopluma monticola": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Asbestopluma monticola ": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Asbestopluma rickettsi": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Asteroidea": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Asteronyx": {
+  "label": "unseen:Echinodermata",
+  "why": "unseen"
+ },
+ "Asteronyx longifissus": {
+  "label": "unseen:Echinodermata",
+  "why": "unseen"
+ },
+ "Asteronyx loveni": {
+  "label": "unseen:Echinodermata",
+  "why": "unseen"
+ },
+ "Asthenactis fisheri": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Asthenactis papyraceus": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Atolla": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Atolla parva": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Atolla vanhoeffeni": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Atolla wyvillei": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Axoniderma kensmithi": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Bargmannia elongata": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Bargmannia lata": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Bathochordaeus": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Bathochordaeus charon": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Bathochordaeus mcnutti": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Bathochordaeus sinker": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "Bathochordaeus stygius": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Bathocyroe fosteri": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Bathyalcyon robustum": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Bathybembix": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Bathycrinus complanatus": {
+  "label": "crinoid",
+  "why": "known leaf"
+ },
+ "Bathycrinus equatorialis": {
+  "label": "crinoid",
+  "why": "known leaf"
+ },
+ "Bathydorus laevis pseudospinosus": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Bathydorus laniger": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Bathydorus sp. 1": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Bathymetrinae": {
+  "label": "crinoid",
+  "why": "known leaf"
+ },
+ "Bathyphellia australis": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Bathypterois grallator": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Bathyraja": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Bathyraja abyssicola": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Bathyraja kincaidii": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Bathyraja microtrachys": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Bathyraja spinosissima": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Bathyraja trachura": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Bathysaurus mollis": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Bathysiphon major": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "Benthic Respiration System": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "Benthic Rover": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "Benthocodon": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Benthocodon pedunculata": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Benthoctopus": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Benthopecten": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Benthothuria": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Beringraja rhina": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Beroe": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Beroe abyssicola": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Beroe cucumis": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Beroe forskalii": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Bio tube": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "Biology box": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "Bivalvia": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Bolinopsis": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Bolocera": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Bolocera kensmithi": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Bonelliidae": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Brachiopoda": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Branchiocerianthus imperator": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Brisingida": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Brisingidae": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "CO2 Corral": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "CTD pH Meter Cage": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "Callistephanus": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Callistephanus kofoidi": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Callistephanus simplex": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Calyptrophora": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Camptoplites sp. A": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Candelabridae sp. 1": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Careproctus": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Careproctus kamikawai": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Careproctus longifilis": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Careproctus melanurus": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Careproctus ovigerus": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Caridea": {
+  "label": "shrimp",
+  "why": "known leaf"
+ },
+ "Cephalurus cephalus": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Cerataspis monstrosus": {
+  "label": "shrimp",
+  "why": "known leaf"
+ },
+ "Ceriantharia": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Ceriantharia sp. 1": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Ceriantharia sp. 2": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Ceriantharia sp. 3": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Cerianthidae": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Chaunacops coloratus": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Cherublemma emmelas": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Chionoecetes tanneri": {
+  "label": "crab",
+  "why": "known leaf"
+ },
+ "Chiroteuthis calyx": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Chonelasma": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Chorilia": {
+  "label": "crab",
+  "why": "known leaf"
+ },
+ "Chorilia longipes": {
+  "label": "crab",
+  "why": "known leaf"
+ },
+ "Chrysogorgia": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Chrysogorgia monticola": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Cladorhizidae": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Clavularia": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Clavularia grandiflora": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Cnemidocarpa": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Colobonema sericeum": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Colossendeidae": {
+  "label": "unseen:Arthropoda",
+  "why": "unseen"
+ },
+ "Colossendeis": {
+  "label": "unseen:Arthropoda",
+  "why": "unseen"
+ },
+ "Comatulida": {
+  "label": "crinoid",
+  "why": "known leaf"
+ },
+ "Copepoda": {
+  "label": "unseen:Arthropoda",
+  "why": "unseen"
+ },
+ "Coralliidae": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Corallimorphidae": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Corallimorphus": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Corallimorphus pilatus": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Corallium": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Coryphaenoides": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Coryphaenoides acrolepis": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Coryphaenoides acrolepis-filifer complex": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Coryphaenoides armatus-leptolepis-yaquinae complex": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Coryphaenoides armatus-yaquinae complex": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Coryphaenoides filifer": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Coryphaenoides leptolepis": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Crinoidea": {
+  "label": "crinoid",
+  "why": "known leaf"
+ },
+ "Crossaster": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Crossaster borealis": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Ctenophora": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Culeolus": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Culeolus barryi": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Culeolus sp. 2": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Cunina": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Cystechinus giganteus": {
+  "label": "unseen:Echinodermata",
+  "why": "unseen"
+ },
+ "Cystechinus loveni": {
+  "label": "unseen:Echinodermata",
+  "why": "unseen"
+ },
+ "Cystocrepis setigera": {
+  "label": "unseen:Echinodermata",
+  "why": "unseen"
+ },
+ "Decapoda": {
+  "label": null,
+  "why": "coarser than the tree needs"
+ },
+ "DeepPIV 2.0": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "Deepstaria enigmatica": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Demospongiae": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Demospongiae sp. 1": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Desmophyes annectens": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Detritus Sampler": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "Dipsacaster": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Dipsacaster eximius": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Dissolution Ball": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "Distichoptilum gracile": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Docosaccus maculatus": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Dofleinia": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Doryteuthis (Amerigo) opalescens": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Doryteuthis opalescens": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Dosidicus gigas": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Earleria corachloeae": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Echinocrepis rostrata": {
+  "label": "unseen:Echinodermata",
+  "why": "unseen"
+ },
+ "Echinoidea": {
+  "label": "unseen:Echinodermata",
+  "why": "unseen"
+ },
+ "Echiura": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Elpidia": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Elpidia sp. A": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Embassichthys bathybius": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Emergence Trap": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "Enteroctopus": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Enteroctopus dofleini": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Enteropneusta": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Epizoanthus stellaris": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Eptatretus": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Erenna cornuta": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Erenna richardi": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Eretmichthys pinnatus": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Eualus macrophthalmus": {
+  "label": "shrimp",
+  "why": "known leaf"
+ },
+ "Euchone": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Euplectellidae": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Eusergestes similis": {
+  "label": "shrimp",
+  "why": "known leaf"
+ },
+ "Eutonina indicans": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Eye-in-the-Sea": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "Fariometra parvula": {
+  "label": "crinoid",
+  "why": "known leaf"
+ },
+ "Farrea": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Farrea occa": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Farrea truncata complex": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Fecampiid eggcase": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Firesting O2-temp sensor": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "Florometra serratissima": {
+  "label": "crinoid",
+  "why": "known leaf"
+ },
+ "Fungiacyathus (Bathyactis) marenzelleri": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Funiculina": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Funiculina-Balticina complex": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Funiculina-Halipteris complex": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Galatheidae": {
+  "label": "unseen:Decapoda",
+  "why": "unseen"
+ },
+ "Galatheoidea": {
+  "label": "unseen:Decapoda",
+  "why": "unseen"
+ },
+ "Galiteuthis phyllura": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Gastropoda": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Gersemia juliepackardae": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Glyphocrangon vicaria": {
+  "label": "shrimp",
+  "why": "known leaf"
+ },
+ "Glyptocephalus zachirus": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Gonatus": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Gonatus onyx": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Goniasteridae": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Gorgoniidae": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Gorgonocephalus": {
+  "label": "unseen:Echinodermata",
+  "why": "unseen"
+ },
+ "Gorgonocephalus eucnemis": {
+  "label": "unseen:Echinodermata",
+  "why": "unseen"
+ },
+ "Graneledone boreopacifica": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Halicreas": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Halipteris californica": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Helicocranchia": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Henricia": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Heterochone calyx": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Heteropathes": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Heteropolypus": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Heteropolypus ritteri": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Hexacorallia": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Hexactinella": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Hexactinellida": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Hexactinellida sp. 1": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Hexactinellida sp. 2": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Hexactinellida sp. 3": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Hexactinellida sp. 4": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Hippasteria": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Hippasteria californica": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Hippasteria lepidonotus": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Histioteuthis heteropsis": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Hollardia": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Holothuroidea": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Holothuroidea sp. 3": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Holothuroidea sp. 8": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Hormathiidae": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Hormathiidae sp. 1": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Hormiphora californensis": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Hyalonema (Corynonema) populiferum": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Hyalonema (Oonema) bianchoratum": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Hydractiniidae": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Hydroidolina": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Hydrolagus": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Hydrolagus colliei": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Hymenaster": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Hymenaster koehleri": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Hymenodora": {
+  "label": "shrimp",
+  "why": "known leaf"
+ },
+ "Hyocrinida": {
+  "label": "crinoid",
+  "why": "known leaf"
+ },
+ "Hyocrinidae": {
+  "label": "crinoid",
+  "why": "known leaf"
+ },
+ "Iosactis vagabunda": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Ischnomesidae": {
+  "label": "unseen:Arthropoda",
+  "why": "unseen"
+ },
+ "Isidella": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Isidella tentaculum": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Isididae": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Isopoda": {
+  "label": "unseen:Arthropoda",
+  "why": "unseen"
+ },
+ "Isosicyonis": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Isostichopus": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Kephyes ovata": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Keratoisis": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Kiyohimea usagi": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Kophobelemnon sp. 1": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "LRJ complex": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Laetmogone wyvillethomsoni": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Laetmogonidae": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Lagrangian sediment trap": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "Lamellibrachia": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Lampocteis cruentiventer": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Laqueus": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Laqueus californicus": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Latrunculia (Latrunculia) austini": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Lepidisis": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Leptychaster": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Lillipathes": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Liparidae": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Liponema": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Liponema brevicorne": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Lithodes couesi": {
+  "label": "unseen:Decapoda",
+  "why": "unseen"
+ },
+ "Lithodidae": {
+  "label": "unseen:Decapoda",
+  "why": "unseen"
+ },
+ "Lophaster": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Lophaster furcilliger": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Luidia foliolata": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Lycenchelys": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Lycenchelys crotalinus": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Lycenchelys sp. 1": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Lychnagalma utricularia": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Lycodapus": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Lycodapus fierasfer": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Lycodes cortezianus": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Lycodes diapterus": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Lycodes pacificus": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Lyopsetta exilis": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Lyssacinosida": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Lyssacinosida sp. 1": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Macrouridae": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Majidae": {
+  "label": "crab",
+  "why": "known leaf"
+ },
+ "Marrus claudanielis": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Mediaster": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Mediaster aequalis": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Medusae": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Megalodicopia": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Megalodicopia hians": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Merluccius productus": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Metacarcinus magister": {
+  "label": "crab",
+  "why": "known leaf"
+ },
+ "Metridium farcimen": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Microstomus bathybius": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Microstomus pacificus": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Midwater Respirometry System": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "Modeeria rotunda": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Moloha faxoni": {
+  "label": "crab",
+  "why": "known leaf"
+ },
+ "Munida": {
+  "label": "unseen:Decapoda",
+  "why": "unseen"
+ },
+ "Munida quadrispina": {
+  "label": "unseen:Decapoda",
+  "why": "unseen"
+ },
+ "Munida sp. A": {
+  "label": "unseen:Decapoda",
+  "why": "unseen"
+ },
+ "Munidopsis": {
+  "label": "unseen:Decapoda",
+  "why": "unseen"
+ },
+ "Munidopsis depressa": {
+  "label": "unseen:Decapoda",
+  "why": "unseen"
+ },
+ "Munidopsis kensmithi": {
+  "label": "unseen:Decapoda",
+  "why": "unseen"
+ },
+ "Munnopsidae": {
+  "label": "unseen:Arthropoda",
+  "why": "unseen"
+ },
+ "Muusoctopus robustus": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Mycale": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Mycale sp. 1": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Mysida": {
+  "label": "unseen:Arthropoda",
+  "why": "unseen"
+ },
+ "Mysidacea": {
+  "label": "unseen:Arthropoda",
+  "why": "unseen"
+ },
+ "Mysidae": {
+  "label": "unseen:Arthropoda",
+  "why": "unseen"
+ },
+ "Myxoderma": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Myxoderma platyacanthum": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Nanomia bijuga": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Narcomedusae": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Neolithodes diomedeae": {
+  "label": "unseen:Decapoda",
+  "why": "unseen"
+ },
+ "Neptunea": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Neptunea amianta": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Neptunea-Buccinum Complex": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Nettastoma parviceps": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Octacnemidae sp. 1": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Octacnemus sp. 1": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Octocorallia": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Octopoda": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Octopodidae": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Octopus californicus": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Octopus rubescens": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Oneirophanta mutabilis complex": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Onykia robusta": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Ophiacanthidae": {
+  "label": "unseen:Echinodermata",
+  "why": "unseen"
+ },
+ "Ophiuroidea": {
+  "label": "unseen:Echinodermata",
+  "why": "unseen"
+ },
+ "Opisthoteuthis sp. A": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Opiuroidea": {
+  "label": "unseen:Echinodermata",
+  "why": "unseen"
+ },
+ "Oplophoridae": {
+  "label": "shrimp",
+  "why": "known leaf"
+ },
+ "Osedax": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Osedax frankpressi": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "PVC pipe": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "Pachycara": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Paelopatides confundens": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Paguroidea": {
+  "label": "unseen:Decapoda",
+  "why": "unseen"
+ },
+ "Pagurus tanneri": {
+  "label": "unseen:Decapoda",
+  "why": "unseen"
+ },
+ "Pandalidae": {
+  "label": "shrimp",
+  "why": "known leaf"
+ },
+ "Pandalopsis ampla": {
+  "label": "shrimp",
+  "why": "known leaf"
+ },
+ "Pandalus amplus": {
+  "label": "shrimp",
+  "why": "known leaf"
+ },
+ "Pandalus platyceros": {
+  "label": "shrimp",
+  "why": "known leaf"
+ },
+ "Pannychia": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Pannychia moseleyi": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Pannychia sp. 1": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Pantachogon": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Paradiopatra": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Paragorgia": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Paragorgia arborea": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Paragorgia sp. 1": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Paragorgiidae": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Paraliparis sp. 1": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Paralithodes rathbuni": {
+  "label": "unseen:Decapoda",
+  "why": "unseen"
+ },
+ "Paralomis": {
+  "label": "unseen:Decapoda",
+  "why": "unseen"
+ },
+ "Paralomis multispina": {
+  "label": "unseen:Decapoda",
+  "why": "unseen"
+ },
+ "Paralomis verrilli": {
+  "label": "unseen:Decapoda",
+  "why": "unseen"
+ },
+ "Paraphyllina": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Parastenella": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Parmaturus xaniurus": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Pasiphaea": {
+  "label": "shrimp",
+  "why": "known leaf"
+ },
+ "Pectinidae": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Peniagone": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Peniagone gracilis": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Peniagone papillata": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Peniagone sp. 1": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Peniagone sp. 2": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Peniagone sp. A": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Peniagone vitrea": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Peniagone vitrea- sp. 1 complex": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Pennatula": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Pennatula murrayi": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Pennatula phosphorea": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Pennatula phosphorea ": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Pennatulacea": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Pennatuloidea": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Pentametrocrinus paucispinulus": {
+  "label": "crinoid",
+  "why": "known leaf"
+ },
+ "Pentanchidae": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Phacellophora camtschatica": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Phialidium": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Phyllospadix-Zostera detritus": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "Physiculus nematopus": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Physonectae": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Planctoteuthis": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Plantae detritus": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "Plesionika": {
+  "label": "shrimp",
+  "why": "known leaf"
+ },
+ "Plesionika sp. A": {
+  "label": "shrimp",
+  "why": "known leaf"
+ },
+ "Pleurobranchaea californica": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Pleuronectidae": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Pleuronectiformes": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Poeobius meseres": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Polychaeta": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Polychaeta tube": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "Polynoidae": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Poralia rufescens": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Poraniopsis inflata": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Porifera": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Porifera detritus": {
+  "label": null,
+  "why": "no WoRMS match"
+ },
+ "Porifera sp. 1": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Porifera sp. 4": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Praya dubia": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Prayidae": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Primnoidae": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Propeamussium meridionale": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Protoptilum": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Protoptilum sp. 1": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Psamminidae": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "Psamminidae sp. 1": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "Psamminidae sp. 2": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "Psathyrometra fragilis": {
+  "label": "crinoid",
+  "why": "known leaf"
+ },
+ "Pseudobathylagus milleri": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Pseudostichopus mollis": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Psolus squamatus": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Psychrolutes phrictus": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Psychropotes depressa": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Psychropotes sp. 1": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Pteraster": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Pterasteridae": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Ptychogastria polaris": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Ptychogena lactea": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Push Corer": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "Pycnogonida": {
+  "label": "unseen:Arthropoda",
+  "why": "unseen"
+ },
+ "Pyrosoma detritus": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "Pythonaster": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Pythonaster pacificus": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Pyuridae": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Rajiformes": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Rathbunaster californicus": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Rhodaliidae": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Rhynchonereella": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Rossellidae": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Sabellidae": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Salpa fusiformis": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Salpida": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Scalpelliformes": {
+  "label": "unseen:Arthropoda",
+  "why": "unseen"
+ },
+ "Scaphopoda": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Schizopathidae": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Scleractinia": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Sclerothamnopsis": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Scopelarchus": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Scotoplanes": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Scotoplanes clarki": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Scotoplanes globosa": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Scotoplanes sp. A": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Sebastes": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Sebastes aurora": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Sebastes babcocki": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Sebastes chlorostictus": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Sebastes diploproa": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Sebastes elongatus": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Sebastes melanostomus": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Sebastes phillipsi": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Sebastes saxicola": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Sebastes zacentrus": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Sebastidae": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Sebastolobus": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Sebastolobus alascanus": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Sebastolobus altivelis": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Sergestidae": {
+  "label": "shrimp",
+  "why": "known leaf"
+ },
+ "Serpulidae": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Sibogagorgia cauliflora": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Sicyonis": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Siphonophorae": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Sipuncula": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Smithsonius dorothea": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Solaster": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Solaster hypothrissus": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Solasteridae": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Solemyidae": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Solmissus": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Solmissus incisa": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Spectrunculus grandis": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Squalus suckleyi": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Staurocalyptus": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Staurocalyptus solidus": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Sternostylus": {
+  "label": "unseen:Decapoda",
+  "why": "unseen"
+ },
+ "Sternostylus iaspis": {
+  "label": "unseen:Decapoda",
+  "why": "unseen"
+ },
+ "Sternostylus perarmatus": {
+  "label": "unseen:Decapoda",
+  "why": "unseen"
+ },
+ "Stigmatoteuthis dofleini": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Stomphia": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Strongylocentrotus": {
+  "label": "unseen:Echinodermata",
+  "why": "unseen"
+ },
+ "Strongylocentrotus fragilis": {
+  "label": "unseen:Echinodermata",
+  "why": "unseen"
+ },
+ "Stygiomedusa gigantea": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Stylasterias forreri": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Suction Sampler": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "Swiftia": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Swiftia kofoidi": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Swiftia simplex": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Swima": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Synallactes": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Synallactidae": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Synallactidae gen. et sp. indet.": {
+  "label": "sea-cucumber",
+  "why": "known leaf"
+ },
+ "Systellaspis": {
+  "label": "shrimp",
+  "why": "known leaf"
+ },
+ "Taonius": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Temperature Gradient Probe": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "Tenebrincola cukri": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Terebellidae": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Terebratulina complex": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Tergivelum baldwinae": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Tetronarce californica": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Thalassobathia pelagica": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Thenea": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Thenea muricata": {
+  "label": "sponge",
+  "why": "known leaf"
+ },
+ "Thrissacanthias penicillatus": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "Tiburonia granrojo": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Tjalfiella": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Tjalfiellidae": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Tomopteris": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Tomopteris nisseni": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Torquaratoridae": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Tottonophyes enigmatica": {
+  "label": "unseen:Cnidaria",
+  "why": "unseen"
+ },
+ "Trissopathes": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Tritonia": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Tritonia tetraquetra": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Tromikosoma": {
+  "label": "unseen:Echinodermata",
+  "why": "unseen"
+ },
+ "Tromikosoma panamense": {
+  "label": "unseen:Echinodermata",
+  "why": "unseen"
+ },
+ "Tunicata": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Umbellapathes": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Umbellula": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Umbellula sp. 1": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Umbellula sp. 2": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Vampyroteuthis infernalis": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Vanhoeffenura pulchra": {
+  "label": "unseen:Arthropoda",
+  "why": "unseen"
+ },
+ "Verum proximum": {
+  "label": "unseen:Arthropoda",
+  "why": "unseen"
+ },
+ "Vesicomya": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Vesicomyidae": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Vibracorer": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "Vitreosalpa gemini": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "Xenophyophoroidea": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "Yoda demiankoopi": {
+  "label": "unseen:Animal",
+  "why": "unseen"
+ },
+ "Zoantharia": {
+  "label": "coral/sea-anemone",
+  "why": "known leaf"
+ },
+ "Zoarcidae": {
+  "label": "fish",
+  "why": "known leaf"
+ },
+ "Zoroasteridae": {
+  "label": "starfish",
+  "why": "known leaf"
+ },
+ "amphipod tube mat": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "bacterial mat": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "black frame": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "bone": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "bottle": {
+  "label": "Man-made",
+  "mbari": [],
+  "why": "man-made, not machine"
+ },
+ "bottle-2": {
+  "label": "Man-made",
+  "mbari": [],
+  "why": "man-made, not machine"
+ },
+ "cable": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "cable tracker": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "cage": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "can": {
+  "label": "Man-made",
+  "mbari": [],
+  "why": "man-made, not machine"
+ },
+ "carapace": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "cardboard": {
+  "label": "Man-made",
+  "mbari": [],
+  "why": "man-made, not machine"
+ },
+ "coiled fecal cast": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "coral skeleton": {
+  "label": null,
+  "why": "no WoRMS match"
+ },
+ "coral transplant container": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "detrital aggregate": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "detritus": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "drawer": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "eggcase": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "eggs": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "elevator": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "enteropneust spiral fecal cast": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "equipment": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "fecal cast": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "fecal material": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "hairpin enteropneust fecal cast": {
+  "label": null,
+  "why": "no WoRMS match"
+ },
+ "kelp holdfast": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "knife": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "lasers": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "manipulator": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "manufactured wood": {
+  "label": "Man-made",
+  "mbari": [],
+  "why": "man-made, not machine"
+ },
+ "marine organism": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "metal": {
+  "label": "Man-made",
+  "mbari": [],
+  "why": "man-made, not machine"
+ },
+ "military apparatus": {
+  "label": "Man-made",
+  "mbari": [],
+  "why": "man-made, not machine"
+ },
+ "mini container array": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "mung": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "outer filter": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "plastic": {
+  "label": "Man-made",
+  "mbari": [],
+  "why": "man-made, not machine"
+ },
+ "plastic bag": {
+  "label": "Man-made",
+  "mbari": [],
+  "why": "man-made, not machine"
+ },
+ "polypropylene line": {
+  "label": "Man-made",
+  "mbari": [],
+  "why": "man-made, not machine"
+ },
+ "portable video camera": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "probe": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "quiver": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "rope": {
+  "label": "Man-made",
+  "mbari": [],
+  "why": "man-made, not machine"
+ },
+ "salp chain": {
+  "label": "unseen:Chordata",
+  "why": "unseen"
+ },
+ "shadow": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "shell": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "shell fragment": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "ship container": {
+  "label": "Man-made",
+  "mbari": [],
+  "why": "man-made, not machine"
+ },
+ "ship wreckage": {
+  "label": "Man-made",
+  "mbari": [],
+  "why": "man-made, not machine"
+ },
+ "sinker": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "siphon": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "site marker": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "skeleton": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "spicule": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "test": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "tire": {
+  "label": "Man-made",
+  "mbari": [],
+  "why": "man-made, not machine"
+ },
+ "trap": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ },
+ "trash": {
+  "label": "Man-made",
+  "mbari": [],
+  "why": "man-made, not machine"
+ },
+ "whale carcass": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "wood": {
+  "label": null,
+  "why": "not an animal"
+ },
+ "wood fall experiment": {
+  "label": "machine",
+  "mbari": [],
+  "why": "man-made leaf (equipment)"
+ }
+}

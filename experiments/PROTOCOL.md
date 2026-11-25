@@ -1169,3 +1169,21 @@ than 300 matched F_eval boxes result, E1–E4 are reported as descriptive only. 
 is used once for these components.
 
 Frozen manifest (�18.3): `data_external/fathomnet/meta/manifest.json`, 2,897 images / 963 dives, sha256 `b07caf6bd2576e256096c0436452456c5599bffcf75bd16c356b930d6786ca0a`.
+
+**§18.2 implementation note (2026-11-25, before any image is read).** The mapping is
+`experiments/fathomnet_labels.py` → `experiments/results/external_fathomnet/concept_labels.json`
+(sha256 `929db292376677132c330781aa39c9cf4d3e7b86e46111cda5a569d7d77bf19c`). Details
+the text above left open, settled from names only:
+* Morphospecies and species complexes WoRMS does not know ("Acanthascinae sp. 1",
+  "Coryphaenoides … complex") are placed by climbing FathomNet's MBARI hierarchy to the
+  nearest name WoRMS knows. One misspelling is corrected (Opiuroidea → Ophiuroidea).
+* `machine` = every concept under `equipment` in that hierarchy (instruments, cables,
+  the ROV's own tools, traps). Man-made but not machine = litter and materials (trash,
+  metal, plastic, bottles, rope, tyres, wreckage).
+* Excluded: non-animal organisms (xenophyophores, bacterial mats), remains and traces
+  (shells, bones, fecal casts, eggcases, detritus), image artefacts (shadow, black
+  frame), and "Decapoda" (coarser than the crab/shrimp leaves).
+* Boxes in the manifest by label: coral/sea-anemone 2,699; sponge 2,199;
+  sea-cucumber 1,631; fish 973; crab 846; starfish 845; machine 650; shrimp 629;
+  crinoid 600; unseen 5,995 (Echinodermata 2,248, Animal 1,219, Decapoda 794,
+  Chordata 638, Cnidaria 326, Arthropoda 70); Man-made 144; excluded 1,040.
