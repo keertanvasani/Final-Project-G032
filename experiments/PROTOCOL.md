@@ -991,3 +991,66 @@ Operating points as in §15: λ_m = 0.00892128865561972 and λ = 0.002.
   `log_verifier_inputs.py --split S_test --confirmatory`.
 * Statistics as §15.4: 2,000 paired dive-bootstrap resamples, seed 0; Holm at 0.05 within
   each part. The script checks every hash above and refuses a second run.
+
+---
+
+## 17. Step 5 — taxonomy-trained classifier for the verifier (registered 2026-11-24, before any training)
+
+§15 and §16 found that the verifier's coarse answers are almost all "Animal": the
+classifier's probabilities carry little group structure, so unseen animals rarely reach
+Decapoda, Echinodermata, Cnidaria or Chordata (H5), and species answers fall (H6). Step 5
+asks whether a classifier **trained with the tree in its loss** fixes this. **Development
+on S_cal only.** S_policy and S_test are not read. Nothing is deployed.
+
+### 17.1 Design: a second classifier used only by the verifier
+
+The agent (detector, classifier, vote, calibration, novelty, image agent) is unchanged.
+For every final box, the verifier reads its probabilities from a **taxonomy-trained
+ResNet-18** on the same 5% crop, instead of from the agent's classifier. The species
+candidate is still the agent's own final class (§14.2). This isolates the effect of the
+loss and avoids re-freezing the whole stack. Cost: one extra ResNet-18 pass per box.
+
+### 17.2 Candidates (fixed now)
+
+Same recipe as the deployed classifier (`train_classifier_phase_b.py`: ImageNet ResNet-18,
+224 px, 25 epochs, freeze stem + layer1–2 for 10 epochs, Adam 1e-3 then 1e-4, batch 32,
+seed 0, the same S_fit / S_modelsel crops of the 9 known classes, no held-out taxon).
+Only the loss differs.
+
+* **CE-rerun:** plain cross-entropy, retrained (noise reference for run-to-run variation).
+* **Soft-1, Soft-2:** soft-label cross-entropy (Bertinetto et al., CVPR 2020). Target for
+  true leaf y: q_j ∝ exp(−β·d(y, j)) with β = 1 or 2, where d is the first level of
+  §14.1 at which the two leaves share a node (species 0, group 1, phylum 2, kingdom 3,
+  none 4). *Amended 2026-11-24, before any training:* the first draft had β = 4 and 10,
+  which on this shallow tree put ≥ 98% (β = 4) and ≈ 100% (β = 10) of the target on the
+  true leaf, i.e. plain cross-entropy. β = 1 / 2 put about 59% / 87% on a crab's own
+  leaf, 22% / 12% on shrimp and the rest across other animals.
+* **Marginal:** cross-entropy on the leaf **plus** the negative log of the summed
+  probability of the true node at group, phylum and kingdom (weight 1 each).
+
+### 17.3 Eligibility (S_modelsel) and dev metrics (S_cal)
+
+* **Eligible:** best S_modelsel top-1 ≥ 0.833 (deployed classifier 0.853 − 0.02).
+* **Dev evaluation on S_cal**, procedure of §14.5 unchanged (three dive-fold rotations:
+  fit combiner / Learn-then-Test / measure; §14.3 fit-eligibility), boxes from the
+  week-3 S_cal log, probabilities recomputed by each candidate on the same crops. The
+  deployed classifier is the baseline (its recomputed probabilities must reproduce the
+  logged ones). Reported for each candidate:
+  * hierarchical at α = 0.20: realised risk, correct/img, **credit/img**, species
+    correct/img, correct answers by level, held-out boxes correct and at which node;
+  * threshold-free: on OOD_dev boxes whose deepest node is not "Animal" (shark, ray →
+    Chordata; urchin → Echinodermata), the share whose top group candidate is that
+    node; on known-class boxes whose species candidate is wrong, the share whose top
+    group candidate is right ("better mistakes").
+
+### 17.4 Selection and go / no-go
+
+* **Selection:** among eligible candidates other than CE-rerun, the one with the highest
+  hierarchical credit/img at α = 0.20.
+* **Go** to a registered S_policy test (separate section, written before S_policy is
+  read for this) only if, for the selected candidate vs the deployed classifier on S_cal:
+  1. credit/img is higher with a dive-bootstrap 95% CI above 0 (2,000 resamples, seed 0),
+  2. the gain exceeds CE-rerun's gain over the deployed classifier, and
+  3. realised risk ≤ α in every rotation.
+  The S_cal comparison is optimistic (selection happened on it). Otherwise Step 5 stops
+  and is reported as negative.
