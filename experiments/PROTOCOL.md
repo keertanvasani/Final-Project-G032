@@ -1054,3 +1054,136 @@ Only the loss differs.
   3. realised risk ≤ α in every rotation.
   The S_cal comparison is optimistic (selection happened on it). Otherwise Step 5 stops
   and is reported as negative.
+
+---
+
+## 18. External validation on FathomNet (registered 2026-11-25, before any FathomNet image is downloaded)
+
+Every result in §1–§17 comes from one dataset (J-EDI / JODD: JAMSTEC, waters around
+Japan, 480-px frames). §18 tests the frozen system once on a second, independent source:
+**FathomNet**, mostly MBARI ROV dives in Monterey Bay (Tiburon, Doc Ricketts, Ventana),
+200–3,984 m. Nothing is trained or tuned on FathomNet except, where stated, the
+Learn-then-Test threshold. Images are CC BY-NC-ND 4.0 and boxes CC BY-NC 4.0; they stay
+local (`data_external/`, git-excluded) and no modified frame is published.
+
+### 18.1 What is known before the run (metadata only)
+
+* Metadata fetched: `experiments/fathomnet_meta.py` (box counts per concept) and
+  `experiments/fathomnet_image_meta.py` (per-image records: ROV, depth ≥ 200 m, up to
+  1,000 images per mapped taxon root). 19,543 images, 2,248 dive groups.
+* **Dive** = the MBARI dive number in the image URL (`<vehicle>/images/<dive>/`), or
+  vehicle + day for `stills/<year>/<day>` frames. Dives are the exchangeable unit.
+* **Annotation is not exhaustive.** 51% of images have one box and 92% of boxes are
+  UNVERIFIED. A detection on an unboxed animal cannot be scored as an error. Hence two
+  parts: Part A scores only labelled objects; Part B uses the full pipeline accounting
+  only on images whose boxes are all VERIFIED (859 images / 301 dives in the sample),
+  and is descriptive.
+
+### 18.2 Label mapping (fixed now)
+
+Each FathomNet concept is placed on the §14.1 tree through its WoRMS ancestry
+(FathomNet taxa provider):
+
+| §14.1 leaf | FathomNet sub-tree |
+|---|---|
+| coral/sea-anemone | Anthozoa |
+| crab | Brachyura |
+| crinoid | Crinoidea |
+| fish | Actinopterygii |
+| sea-cucumber | Holothuroidea |
+| shrimp | Caridea, Dendrobranchiata |
+| sponge | Porifera |
+| starfish | Asteroidea |
+| machine | `equipment` |
+
+* Every other animal concept is an **unseen animal**. Its deepest correct node is
+  Decapoda (any other Decapoda, e.g. Lithodidae, Galatheoidea), else its phylum if the
+  phylum is on the tree (Chordata, Arthropoda, Echinodermata, Cnidaria, Porifera), else
+  Animal. So brittle stars (Ophiuroidea) → Echinodermata, king crabs → Decapoda,
+  hydromedusae and siphonophores → Cnidaria, sharks/rays/tunicates → Chordata,
+  molluscs, polychaetes and ctenophores → Animal. A species answer on them is wrong.
+* `trash` → deepest correct node Man-made (the species answer "machine" is wrong).
+* **Excluded** (no box of this kind is scored in either part, and detections matched to
+  them count neither as right nor wrong): concepts that are not organisms or equipment
+  (e.g. detrital aggregate, fecal cast, marine snow, bacterial mat), and concepts whose
+  WoRMS rank is coarser than the node a correct answer needs to be judged against
+  (e.g. "Animalia", "Crustacea", "Invertebrata"), because a deeper answer could not be judged.
+* Unmapped concepts (no WoRMS match) are excluded and listed in the results.
+
+### 18.3 Sample and pre-processing (fixed now)
+
+* `experiments/fathomnet_sample.py`, seed 0, from the fetched records: images with a dive
+  id. Up to 200 images per known leaf (drawn so that no single dive gives more than 10
+  of a leaf's images), up to 600 images whose boxes include an unseen animal, up to 100
+  `equipment`/`trash` images, plus every all-VERIFIED image (Part B). Duplicates
+  removed. The manifest (image uuid, url, dive, sha256) is frozen before download, and
+  downloaded files are checked against FathomNet's sha256.
+* **Frames are resized to 480 px wide** (aspect kept, area interpolation), the condition
+  the system was built and calibrated for (JODD was released this way). Boxes are scaled
+  to match. Everything downstream is the deployed pipeline unchanged.
+* Dive split, seed 0: sorted Part A dives, `random.Random(0).shuffle`, first half
+  (rounded down) = **F_cal**, rest = **F_eval**. Part B images are reported on their own.
+
+### 18.4 Frozen inputs
+
+Deployed detector, classifier, calibration and novelty as in §16; image agent
+`week2/image_agent_policy.json`; verifier combiner `week4/verifier.json`; JODD
+thresholds `week6/thresholds_S_policy.json` (hashes as §16.1). The test script checks
+every hash and refuses a second run.
+
+### 18.5 Part A — labelled objects (classifier, verifier, recall)
+
+* Run the deployed agent (plain chain, as deployed: image agent and verifier off for the
+  boxes; verifier applied after) on every Part A image. Each scorable GT box is matched
+  to the agent's final boxes (IoU ≥ 0.50, greedy by confidence, §2 harness). Unmatched
+  GT boxes are detector misses. Final boxes not matched to any GT box are **ignored** in
+  Part A (the annotation is incomplete).
+* Verifier loss per matched GT box: wrong answer = 1, correct or abstain = 0. Dive risk =
+  wrong / matched boxes in the dive.
+
+| | Claim | Test |
+|---|---|---|
+| **E1** (primary) | Learn-then-Test re-run on F_cal (frozen combiner, δ = 0.10) gives dive-level risk ≤ α on F_eval, α ∈ {0.10, 0.20} | point estimate ≤ α; share of 2,000 dive-bootstrap resamples ≤ α also reported |
+| E2 | With the JODD thresholds unchanged (no recalibration), risk on F_eval ≤ α | as E1. **Expected to fail**; it measures how far the guarantee drifts across datasets |
+| E3 | Hierarchical gives more correct answers per image than flat (both recalibrated on F_cal), α = 0.20 | one-sided paired dive bootstrap |
+| E4 | Unseen-animal boxes on F_eval with a correct coarse answer > 0, α = 0.20 | count, dive-bootstrap 95% CI lower bound > 0; reported by node |
+
+Descriptive: detector recall per known leaf and for unseen animals (F_cal ∪ F_eval), vs
+the JODD S_test recall; classifier top-1 on matched known-leaf boxes; specificity credit
+per image; the same tables with the image agent switched on.
+
+### 18.6 Part B — full pipeline on fully verified images (descriptive)
+
+On the all-VERIFIED images, with §2 accounting (BG_FP and LOC_ERR count as errors; boxes
+on excluded concepts are ignored): reward per image, F1, precision and recall for the
+rule agent, the deployed bandit and the image agent at λ_m and λ = 0.002, with paired
+dive-bootstrap CIs; and the verifier's realised dive risk with the F_cal thresholds and
+with the JODD thresholds. No hypothesis is tested in Part B, because "VERIFIED" does not
+prove that every animal in the frame is boxed.
+
+### 18.7 Statistics and stopping
+
+2,000 paired dive-cluster bootstrap resamples, seed 0. Holm–Bonferroni at 0.05 over E3
+and E4; E1 and E2 are reported, not corrected. If fewer than 30 F_eval dives or fewer
+than 300 matched F_eval boxes result, E1–E4 are reported as descriptive only. FathomNet
+is used once for these components.
+
+Frozen manifest (�18.3): `data_external/fathomnet/meta/manifest.json`, 2,897 images / 963 dives, sha256 `b07caf6bd2576e256096c0436452456c5599bffcf75bd16c356b930d6786ca0a`.
+
+**§18.2 implementation note (2026-11-25, before any image is read).** The mapping is
+`experiments/fathomnet_labels.py` → `experiments/results/external_fathomnet/concept_labels.json`
+(sha256 `929db292376677132c330781aa39c9cf4d3e7b86e46111cda5a569d7d77bf19c`). Details
+the text above left open, settled from names only:
+* Morphospecies and species complexes WoRMS does not know ("Acanthascinae sp. 1",
+  "Coryphaenoides … complex") are placed by climbing FathomNet's MBARI hierarchy to the
+  nearest name WoRMS knows. One misspelling is corrected (Opiuroidea → Ophiuroidea).
+* `machine` = every concept under `equipment` in that hierarchy (instruments, cables,
+  the ROV's own tools, traps). Man-made but not machine = litter and materials (trash,
+  metal, plastic, bottles, rope, tyres, wreckage).
+* Excluded: non-animal organisms (xenophyophores, bacterial mats), remains and traces
+  (shells, bones, fecal casts, eggcases, detritus), image artefacts (shadow, black
+  frame), and "Decapoda" (coarser than the crab/shrimp leaves).
+* Boxes in the manifest by label: coral/sea-anemone 2,699; sponge 2,199;
+  sea-cucumber 1,631; fish 973; crab 846; starfish 845; machine 650; shrimp 629;
+  crinoid 600; unseen 5,995 (Echinodermata 2,248, Animal 1,219, Decapoda 794,
+  Chordata 638, Cnidaria 326, Arthropoda 70); Man-made 144; excluded 1,040.

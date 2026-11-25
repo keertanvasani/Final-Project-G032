@@ -1,0 +1,615 @@
+{
+  "protocol": "PROTOCOL \u00a718",
+  "part_a": {
+    "images": 2173,
+    "dives": 850,
+    "F_cal_dives": 425,
+    "F_eval_dives": 425,
+    "F_eval_images": 1114,
+    "matched_boxes": {
+      "F_cal": 1654,
+      "F_eval": 1660
+    },
+    "unseen_boxes_F_eval": 392,
+    "descriptive_only (\u00a718.7)": false,
+    "thresholds_F_cal": {
+      "hierarchical": {
+        "0.1": 0.9,
+        "0.2": 0.81
+      },
+      "flat": {
+        "0.1": 0.88,
+        "0.2": 0.78
+      }
+    },
+    "E1_recalibrated": {
+      "0.1": {
+        "hierarchical": {
+          "threshold": 0.9,
+          "risk": 0.06479508575406548,
+          "dives": 344,
+          "risk_le_alpha": true,
+          "share_resamples_le_alpha": 0.999,
+          "reported_per_image": 0.5870736086175943,
+          "correct_per_image": 0.5035906642728905,
+          "credit_per_image": 0.30745062836624776,
+          "species_correct_per_image": 0.2118491921005386,
+          "error_among_reported": 0.14220183486238536,
+          "unseen_correct": 62,
+          "unseen_correct_by_node": {
+            "Animal": 53,
+            "Chordata": 2,
+            "Echinodermata": 4,
+            "Decapoda": 3
+          },
+          "correct_by_level": {
+            "species": 236,
+            "group": 68,
+            "phylum": 0,
+            "kingdom": 257
+          }
+        },
+        "flat": {
+          "threshold": 0.88,
+          "risk": 0.05744144776089261,
+          "dives": 344,
+          "risk_le_alpha": true,
+          "share_resamples_le_alpha": 1.0,
+          "reported_per_image": 0.3348294434470377,
+          "correct_per_image": 0.25583482944344704,
+          "credit_per_image": 0.25583482944344704,
+          "species_correct_per_image": 0.25583482944344704,
+          "error_among_reported": 0.23592493297587136,
+          "unseen_correct": 0,
+          "unseen_correct_by_node": {},
+          "correct_by_level": {
+            "species": 285,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "0.2": {
+        "hierarchical": {
+          "threshold": 0.81,
+          "risk": 0.14265921112623509,
+          "dives": 344,
+          "risk_le_alpha": true,
+          "share_resamples_le_alpha": 1.0,
+          "reported_per_image": 0.8096947935368043,
+          "correct_per_image": 0.6463195691202872,
+          "credit_per_image": 0.4631956912028725,
+          "species_correct_per_image": 0.36983842010771995,
+          "error_among_reported": 0.2017738359201774,
+          "unseen_correct": 63,
+          "unseen_correct_by_node": {
+            "Animal": 44,
+            "Echinodermata": 14,
+            "Decapoda": 4,
+            "Chordata": 1
+          },
+          "correct_by_level": {
+            "species": 412,
+            "group": 79,
+            "phylum": 0,
+            "kingdom": 229
+          }
+        },
+        "flat": {
+          "threshold": 0.78,
+          "risk": 0.14384295193284247,
+          "dives": 344,
+          "risk_le_alpha": true,
+          "share_resamples_le_alpha": 1.0,
+          "reported_per_image": 0.573608617594255,
+          "correct_per_image": 0.40484739676840215,
+          "credit_per_image": 0.40484739676840215,
+          "species_correct_per_image": 0.40484739676840215,
+          "error_among_reported": 0.2942097026604069,
+          "unseen_correct": 0,
+          "unseen_correct_by_node": {},
+          "correct_by_level": {
+            "species": 451,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      }
+    },
+    "E2_jodd_thresholds": {
+      "0.1": {
+        "hierarchical": {
+          "threshold": 0.72,
+          "risk": 0.1828225653563256,
+          "dives": 344,
+          "risk_le_alpha": false,
+          "share_resamples_le_alpha": 0.0,
+          "reported_per_image": 0.9353680430879713,
+          "correct_per_image": 0.7172351885098743,
+          "credit_per_image": 0.5612657091561939,
+          "species_correct_per_image": 0.48473967684021546,
+          "error_among_reported": 0.23320537428023036,
+          "unseen_correct": 53,
+          "unseen_correct_by_node": {
+            "Animal": 39,
+            "Echinodermata": 8,
+            "Chordata": 2,
+            "Decapoda": 4
+          },
+          "correct_by_level": {
+            "species": 540,
+            "group": 64,
+            "phylum": 0,
+            "kingdom": 195
+          }
+        },
+        "flat": {
+          "threshold": 0.64,
+          "risk": 0.21010720566408456,
+          "dives": 344,
+          "risk_le_alpha": false,
+          "share_resamples_le_alpha": 0.0,
+          "reported_per_image": 0.7854578096947935,
+          "correct_per_image": 0.5412926391382405,
+          "credit_per_image": 0.5412926391382405,
+          "species_correct_per_image": 0.5412926391382405,
+          "error_among_reported": 0.31085714285714283,
+          "unseen_correct": 0,
+          "unseen_correct_by_node": {},
+          "correct_by_level": {
+            "species": 603,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "0.2": {
+        "hierarchical": {
+          "threshold": 0.38,
+          "risk": 0.3289967017655665,
+          "dives": 344,
+          "risk_le_alpha": false,
+          "share_resamples_le_alpha": 0.0,
+          "reported_per_image": 1.2432675044883303,
+          "correct_per_image": 0.8527827648114902,
+          "credit_per_image": 0.7257630161579892,
+          "species_correct_per_image": 0.6642728904847397,
+          "error_among_reported": 0.3140794223826715,
+          "unseen_correct": 40,
+          "unseen_correct_by_node": {
+            "Animal": 36,
+            "Decapoda": 3,
+            "Echinodermata": 1
+          },
+          "correct_by_level": {
+            "species": 740,
+            "group": 49,
+            "phylum": 0,
+            "kingdom": 161
+          }
+        },
+        "flat": {
+          "threshold": 0.27,
+          "risk": 0.3686535431407155,
+          "dives": 344,
+          "risk_le_alpha": false,
+          "share_resamples_le_alpha": 0.0,
+          "reported_per_image": 1.1579892280071813,
+          "correct_per_image": 0.7199281867145422,
+          "credit_per_image": 0.7199281867145422,
+          "species_correct_per_image": 0.7199281867145422,
+          "error_among_reported": 0.3782945736434109,
+          "unseen_correct": 0,
+          "unseen_correct_by_node": {},
+          "correct_by_level": {
+            "species": 802,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      }
+    },
+    "tests": {
+      "E3": {
+        "diff_correct_per_image": 0.2414721723518851,
+        "ci95": [
+          0.20959147424511546,
+          0.2749326145552561
+        ],
+        "p": 0.0,
+        "supported_holm": true
+      },
+      "E4": {
+        "unseen_correct": 63,
+        "unseen_boxes": 392,
+        "ci95": [
+          46.0,
+          82.0
+        ],
+        "p": 0.0,
+        "supported_holm": true
+      }
+    },
+    "recall": {
+      "Man-made": {
+        "gt": 115,
+        "matched": 25,
+        "recall": 0.21739130434782608,
+        "classifier_top1": null
+      },
+      "coral/sea-anemone": {
+        "gt": 2317,
+        "matched": 530,
+        "recall": 0.22874406560207164,
+        "classifier_top1": 0.7320754716981132
+      },
+      "crab": {
+        "gt": 542,
+        "matched": 208,
+        "recall": 0.3837638376383764,
+        "classifier_top1": 0.9326923076923077
+      },
+      "crinoid": {
+        "gt": 580,
+        "matched": 167,
+        "recall": 0.28793103448275864,
+        "classifier_top1": 0.5389221556886228
+      },
+      "fish": {
+        "gt": 900,
+        "matched": 332,
+        "recall": 0.3688888888888889,
+        "classifier_top1": 0.8463855421686747
+      },
+      "machine": {
+        "gt": 480,
+        "matched": 235,
+        "recall": 0.4895833333333333,
+        "classifier_top1": 0.9361702127659575
+      },
+      "sea-cucumber": {
+        "gt": 1233,
+        "matched": 242,
+        "recall": 0.19626926196269262,
+        "classifier_top1": 0.4132231404958678
+      },
+      "shrimp": {
+        "gt": 611,
+        "matched": 67,
+        "recall": 0.10965630114566285,
+        "classifier_top1": 0.7014925373134329
+      },
+      "sponge": {
+        "gt": 1814,
+        "matched": 353,
+        "recall": 0.19459757442116868,
+        "classifier_top1": 0.773371104815864
+      },
+      "starfish": {
+        "gt": 781,
+        "matched": 311,
+        "recall": 0.39820742637644047,
+        "classifier_top1": 0.7234726688102894
+      },
+      "unseen": {
+        "gt": 4210,
+        "matched": 844,
+        "recall": 0.2004750593824228,
+        "classifier_top1": null
+      }
+    },
+    "known_recall_overall": 0.2640959170447181,
+    "known_top1_overall": 0.743558282208589
+  },
+  "part_b": {
+    "images": 859,
+    "dives": 301,
+    "agents": {
+      "images": 859,
+      "skipped_arm_images": 0,
+      "policies": {
+        "rules": {
+          "reward_per_image": -0.4889406286379511,
+          "f1": 0.27757824525397645,
+          "precision": 0.3601864181091877,
+          "recall": 0.22579298831385644,
+          "aurc": 0.4345544844770654,
+          "discretionary_ms_per_image": 30.124764028289903,
+          "rerun_rate": 0.0
+        },
+        "deployed": {
+          "reward_per_image": -0.4318975552968568,
+          "f1": 0.30319818685469657,
+          "precision": 0.38222222222222224,
+          "recall": 0.25125208681135225,
+          "aurc": 0.4387318219049967,
+          "discretionary_ms_per_image": 5.997644120524285,
+          "rerun_rate": 0.0
+        },
+        "agent_lam_m": {
+          "reward_per_image": -0.3469150174621653,
+          "f1": 0.2940251572327044,
+          "precision": 0.39507042253521124,
+          "recall": 0.23414023372287146,
+          "aurc": 0.42938454707177887,
+          "discretionary_ms_per_image": 19.24116146597335,
+          "rerun_rate": 0.21769499417927823
+        },
+        "agent_lam": {
+          "reward_per_image": -0.25029103608847497,
+          "f1": 0.2891369452763409,
+          "precision": 0.4158183241973375,
+          "recall": 0.22161936560934892,
+          "aurc": 0.42175211019230446,
+          "discretionary_ms_per_image": 39.48755657636589,
+          "rerun_rate": 0.580908032596042
+        },
+        "one_step_lam": {
+          "reward_per_image": -0.3108265424912689,
+          "f1": 0.29531622122254564,
+          "precision": 0.403470715835141,
+          "recall": 0.2328881469115192,
+          "aurc": 0.43577018163568354,
+          "discretionary_ms_per_image": 30.054763212063587,
+          "rerun_rate": 0.4318975552968568
+        }
+      },
+      "descriptive": {
+        "agent_lam_m_minus_rules": {
+          "reward_per_image": [
+            0.0574162679425837,
+            0.21595330739299612
+          ],
+          "f1": [
+            -0.005316556672149975,
+            0.03662972334921333
+          ],
+          "aurc": [
+            -0.038895089818529294,
+            0.02592352658226904
+          ],
+          "precision": [
+            0.009391210879359235,
+            0.060579385257479246
+          ],
+          "recall": [
+            -0.011799410029498525,
+            0.026888604353393075
+          ],
+          "discretionary_ms_per_image": [
+            -14.123695902562535,
+            -7.422064547275813
+          ]
+        },
+        "agent_lam_minus_deployed": {
+          "reward_per_image": [
+            0.12500000000000003,
+            0.23809523809523808
+          ],
+          "f1": [
+            -0.028426397553050042,
+            -0.0011013647247971048
+          ],
+          "aurc": [
+            -0.03620699046647369,
+            0.0019164676039816753
+          ],
+          "discretionary_ms_per_image": [
+            30.106705785050703,
+            36.91235527942914
+          ]
+        },
+        "agent_lam_minus_one_step": {
+          "reward_per_image": [
+            0.016304347826086918,
+            0.10309278350515466
+          ],
+          "f1": [
+            -0.019106684207229274,
+            0.003637149752032387
+          ],
+          "discretionary_ms_per_image": [
+            7.481500467732115,
+            11.924208280992072
+          ]
+        }
+      }
+    },
+    "verifier_F_cal_thresholds": {
+      "0.1": {
+        "hierarchical": {
+          "threshold": 0.9,
+          "risk": 0.08550421707435191,
+          "dives": 286,
+          "risk_le_alpha": true,
+          "share_resamples_le_alpha": 0.915,
+          "reported_per_image": 0.7380675203725262,
+          "correct_per_image": 0.5750873108265425,
+          "credit_per_image": 0.35564610011641445,
+          "species_correct_per_image": 0.24330616996507567,
+          "error_among_reported": 0.2208201892744479,
+          "unseen_correct": 118,
+          "unseen_correct_by_node": {
+            "Animal": 106,
+            "Decapoda": 2,
+            "Chordata": 7,
+            "Echinodermata": 3
+          },
+          "correct_by_level": {
+            "species": 209,
+            "group": 56,
+            "phylum": 0,
+            "kingdom": 229
+          }
+        },
+        "flat": {
+          "threshold": 0.88,
+          "risk": 0.07551691073515711,
+          "dives": 286,
+          "risk_le_alpha": true,
+          "share_resamples_le_alpha": 0.9895,
+          "reported_per_image": 0.4318975552968568,
+          "correct_per_image": 0.2910360884749709,
+          "credit_per_image": 0.2910360884749709,
+          "species_correct_per_image": 0.2910360884749709,
+          "error_among_reported": 0.3261455525606469,
+          "unseen_correct": 0,
+          "unseen_correct_by_node": {},
+          "correct_by_level": {
+            "species": 250,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "0.2": {
+        "hierarchical": {
+          "threshold": 0.81,
+          "risk": 0.1729771394649255,
+          "dives": 286,
+          "risk_le_alpha": true,
+          "share_resamples_le_alpha": 0.9595,
+          "reported_per_image": 0.9394644935972061,
+          "correct_per_image": 0.6204889406286379,
+          "credit_per_image": 0.46973224679860304,
+          "species_correct_per_image": 0.3911525029103609,
+          "error_among_reported": 0.3395291201982652,
+          "unseen_correct": 79,
+          "unseen_correct_by_node": {
+            "Decapoda": 3,
+            "Animal": 67,
+            "Chordata": 4,
+            "Echinodermata": 5
+          },
+          "correct_by_level": {
+            "species": 336,
+            "group": 48,
+            "phylum": 0,
+            "kingdom": 149
+          }
+        },
+        "flat": {
+          "threshold": 0.78,
+          "risk": 0.1740047195136984,
+          "dives": 286,
+          "risk_le_alpha": true,
+          "share_resamples_le_alpha": 0.9455,
+          "reported_per_image": 0.7171129220023282,
+          "correct_per_image": 0.4179278230500582,
+          "credit_per_image": 0.4179278230500582,
+          "species_correct_per_image": 0.4179278230500582,
+          "error_among_reported": 0.41720779220779225,
+          "unseen_correct": 0,
+          "unseen_correct_by_node": {},
+          "correct_by_level": {
+            "species": 359,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      }
+    },
+    "verifier_jodd_thresholds": {
+      "0.1": {
+        "hierarchical": {
+          "threshold": 0.72,
+          "risk": 0.2517434221358783,
+          "dives": 286,
+          "risk_le_alpha": false,
+          "share_resamples_le_alpha": 0.0,
+          "reported_per_image": 1.1036088474970895,
+          "correct_per_image": 0.6542491268917345,
+          "credit_per_image": 0.520663562281723,
+          "species_correct_per_image": 0.4586728754365541,
+          "error_among_reported": 0.40717299578059074,
+          "unseen_correct": 61,
+          "unseen_correct_by_node": {
+            "Animal": 58,
+            "Decapoda": 2,
+            "Echinodermata": 1
+          },
+          "correct_by_level": {
+            "species": 394,
+            "group": 28,
+            "phylum": 0,
+            "kingdom": 140
+          }
+        },
+        "flat": {
+          "threshold": 0.64,
+          "risk": 0.2535288142703423,
+          "dives": 286,
+          "risk_le_alpha": false,
+          "share_resamples_le_alpha": 0.0,
+          "reported_per_image": 0.9476135040745053,
+          "correct_per_image": 0.49941792782305006,
+          "credit_per_image": 0.49941792782305006,
+          "species_correct_per_image": 0.49941792782305006,
+          "error_among_reported": 0.472972972972973,
+          "unseen_correct": 0,
+          "unseen_correct_by_node": {},
+          "correct_by_level": {
+            "species": 429,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "0.2": {
+        "hierarchical": {
+          "threshold": 0.38,
+          "risk": 0.43244467129403574,
+          "dives": 286,
+          "risk_le_alpha": false,
+          "share_resamples_le_alpha": 0.0,
+          "reported_per_image": 1.5820721769499417,
+          "correct_per_image": 0.7625145518044237,
+          "credit_per_image": 0.6557043073341094,
+          "species_correct_per_image": 0.6088474970896391,
+          "error_among_reported": 0.5180279617365711,
+          "unseen_correct": 47,
+          "unseen_correct_by_node": {
+            "Animal": 45,
+            "Decapoda": 2
+          },
+          "correct_by_level": {
+            "species": 523,
+            "group": 19,
+            "phylum": 0,
+            "kingdom": 113
+          }
+        },
+        "flat": {
+          "threshold": 0.27,
+          "risk": 0.450837336420447,
+          "dives": 286,
+          "risk_le_alpha": false,
+          "share_resamples_le_alpha": 0.0,
+          "reported_per_image": 1.491268917345751,
+          "correct_per_image": 0.6507566938300349,
+          "credit_per_image": 0.6507566938300349,
+          "species_correct_per_image": 0.6507566938300349,
+          "error_among_reported": 0.5636221701795472,
+          "unseen_correct": 0,
+          "unseen_correct_by_node": {},
+          "correct_by_level": {
+            "species": 559,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      }
+    }
+  },
+  "deviations": [
+    "\u00a718.5 descriptive 'same tables with the image agent on' not computed: the image-agent logs hold no classifier probabilities for pass-2 boxes, so the verifier cannot be replayed on them."
+  ]
+}

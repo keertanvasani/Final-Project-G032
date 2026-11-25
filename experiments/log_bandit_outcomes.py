@@ -96,7 +96,7 @@ def box_variants(work, dets, pipe):
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--split", required=True, choices=["S_cal", "S_policy", "S_test"])
+    ap.add_argument("--split", required=True, choices=["S_cal", "S_policy", "S_test", "F_ext"])  # F_ext: FathomNet, §18
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--confirmatory", action="store_true",
                     help="required for S_test: the single registered run (PROTOCOL §12)")
