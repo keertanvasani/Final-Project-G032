@@ -1167,3 +1167,5 @@ prove that every animal in the frame is boxed.
 and E4; E1 and E2 are reported, not corrected. If fewer than 30 F_eval dives or fewer
 than 300 matched F_eval boxes result, E1â€“E4 are reported as descriptive only. FathomNet
 is used once for these components.
+
+Frozen manifest (§18.3): `data_external/fathomnet/meta/manifest.json`, 2,897 images / 963 dives, sha256 `b07caf6bd2576e256096c0436452456c5599bffcf75bd16c356b930d6786ca0a`.
