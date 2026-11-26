@@ -1187,3 +1187,61 @@ the text above left open, settled from names only:
   sea-cucumber 1,631; fish 973; crab 846; starfish 845; machine 650; shrimp 629;
   crinoid 600; unseen 5,995 (Echinodermata 2,248, Animal 1,219, Decapoda 794,
   Chordata 638, Cnidaria 326, Arthropoda 70); Man-made 144; excluded 1,040.
+
+## 19. H3 on FathomNet Part A (registered 2026-11-26, before the H3 statistic is computed)
+
+§7.4 registered three confirmatory hypotheses; H1 and H2 were tested on S_test (§12), but
+**H3 never was**: S_test's unseen-taxon sample was too small for it on the earlier stack
+(§11), and §15/§16 tested the verifier through H-risk, H4–H6 instead. S_test is closed for
+the verifier (§16). This section tests H3 once, on FathomNet Part A's evaluation half.
+
+> **H3 — uncertainty-aware abstention reduces confident errors on unseen taxa.** At
+> matched GT-anchored coverage, the OOD-aware gate yields a lower `OOD_ERR` rate among
+> accepted detections than the baseline confidence gate.
+
+**Disclosure.** F_eval was read for §18 (E1–E4). What has been seen of it: the risk, answer
+counts and the number of unseen boxes given a *correct* answer (`fathomnet_test.json`).
+Nothing below has been computed: no confidence-gate result, no matched-coverage comparison
+and no count of unseen boxes given a *wrong* answer. Every input is frozen: the §18 logs, the
+F_cal/F_eval split and the F_cal thresholds in `fathomnet_test.json`.
+
+### 19.1 Definitions
+
+* **Boxes:** F_eval boxes of the deployed agent matched to a scorable FathomNet box, exactly
+  as in §18.5 (1,660 boxes, 392 on unseen animals).
+* **OOD-aware gate (the verifier):** hierarchical mode, F_cal threshold at α = 0.20
+  (0.81, from `fathomnet_test.json`). A box is *accepted* when the verifier reports a node;
+  the answer is wrong when that node is not on the box's true path.
+* **Baseline confidence gate:** each box keeps its species label; the box is accepted when
+  its deployed calibrated confidence (`combined_confidence`) is among the top *k*, with ties
+  broken by `raw_combined_confidence`. *k* = the number of boxes the verifier accepts on
+  F_eval, so coverage is matched exactly. Wrong = species label ≠ ground truth.
+* **`OOD_ERR` rate among accepted** = accepted boxes on unseen animals given a wrong answer
+  ÷ all accepted boxes.
+* *Coverage* = accepted ÷ all F_eval boxes (GT-anchored: matched boxes only).
+
+### 19.2 Tests
+
+| | Claim | Test |
+|---|---|---|
+| **H3** (primary) | Verifier `OOD_ERR` rate < baseline confidence gate's | one-sided paired dive bootstrap, 2,000 resamples, seed 0 |
+| H3-U | Verifier `OOD_ERR` rate < the deployed gate's: confidence gate **plus** the deployed energy Unknown flag (boxes flagged Unknown are not accepted; the top *k* of the rest are, or all of them if fewer) | same |
+
+* Holm–Bonferroni over {H3, H3-U} at α = 0.05.
+* In each resample, *k* and the gate's cut-off stay fixed at their F_eval values; the
+  rates are recomputed on the resampled dives.
+* Descriptive: the same at α = 0.10 (verifier threshold 0.90); unseen boxes given a wrong
+  answer as a share of unseen boxes; known-animal error among accepted; for H3-U, the
+  achieved coverage if it falls short of *k*.
+
+### 19.3 Expectations, stated before the run
+
+* H3 should hold. A confidence gate gives every accepted unseen animal a known species, so
+  each one is an error. The verifier can answer "Animal" or abstain.
+* H3-U is the meaningful test, because the deployed system already flags some unseen
+  animals as Unknown. Step 1 measured that flag at only 8.6 % of unseen detections on JODD,
+  so H3-U is expected to hold too, by a smaller margin.
+* If either fails, it is reported as a failure.
+
+Script: `experiments/test_h3_fathomnet.py`, committed before it is run. Output:
+`experiments/results/external_fathomnet/h3_test.json`. Single use.
