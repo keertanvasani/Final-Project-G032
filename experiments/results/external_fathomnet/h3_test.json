@@ -1,0 +1,102 @@
+{
+  "protocol": "PROTOCOL \u00a719",
+  "f_eval_boxes": 1660,
+  "f_eval_dives": 344,
+  "unseen_boxes": 392,
+  "flagged_unknown": {
+    "other|unknown=False": 1140,
+    "unseen|unknown=False": 352,
+    "other|unknown=True": 128,
+    "unseen|unknown=True": 40
+  },
+  "alpha_0.20": {
+    "k_matched": 902,
+    "coverage_target": 0.5433734939759036,
+    "gates": {
+      "verifier": {
+        "accepted": 902,
+        "coverage": 0.5433734939759036,
+        "ood_err_rate_among_accepted": 0.15853658536585366,
+        "unseen_wrong": 143,
+        "unseen_boxes": 392,
+        "unseen_wrong_share_of_unseen": 0.3647959183673469,
+        "known_err_among_accepted": 0.043237250554323724,
+        "error_among_accepted": 0.2017738359201774
+      },
+      "confidence": {
+        "accepted": 902,
+        "coverage": 0.5433734939759036,
+        "ood_err_rate_among_accepted": 0.22838137472283815,
+        "unseen_wrong": 206,
+        "unseen_boxes": 392,
+        "unseen_wrong_share_of_unseen": 0.5255102040816326,
+        "known_err_among_accepted": 0.10753880266075388,
+        "error_among_accepted": 0.33592017738359203
+      },
+      "confidence_unknown": {
+        "accepted": 902,
+        "coverage": 0.5433734939759036,
+        "ood_err_rate_among_accepted": 0.23059866962305986,
+        "unseen_wrong": 208,
+        "unseen_boxes": 392,
+        "unseen_wrong_share_of_unseen": 0.5306122448979592,
+        "known_err_among_accepted": 0.10753880266075388,
+        "error_among_accepted": 0.33813747228381374
+      }
+    },
+    "H3": {
+      "diff_baseline_minus_verifier": 0.06984478935698449,
+      "ci95": [
+        0.0503431066749844,
+        0.09271066882183374
+      ],
+      "p": 0.0,
+      "supported_holm": true
+    },
+    "H3-U": {
+      "diff_baseline_minus_verifier": 0.0720620842572062,
+      "ci95": [
+        0.052109700685629284,
+        0.09512225430664992
+      ],
+      "p": 0.0,
+      "supported_holm": true
+    }
+  },
+  "alpha_0.10_descriptive": {
+    "k_matched": 654,
+    "coverage_target": 0.39397590361445783,
+    "gates": {
+      "verifier": {
+        "accepted": 654,
+        "coverage": 0.39397590361445783,
+        "ood_err_rate_among_accepted": 0.12232415902140673,
+        "unseen_wrong": 80,
+        "unseen_boxes": 392,
+        "unseen_wrong_share_of_unseen": 0.20408163265306123,
+        "known_err_among_accepted": 0.019877675840978593,
+        "error_among_accepted": 0.14220183486238533
+      },
+      "confidence": {
+        "accepted": 654,
+        "coverage": 0.39397590361445783,
+        "ood_err_rate_among_accepted": 0.21559633027522937,
+        "unseen_wrong": 141,
+        "unseen_boxes": 392,
+        "unseen_wrong_share_of_unseen": 0.3596938775510204,
+        "known_err_among_accepted": 0.0764525993883792,
+        "error_among_accepted": 0.29204892966360857
+      },
+      "confidence_unknown": {
+        "accepted": 654,
+        "coverage": 0.39397590361445783,
+        "ood_err_rate_among_accepted": 0.21559633027522937,
+        "unseen_wrong": 141,
+        "unseen_boxes": 392,
+        "unseen_wrong_share_of_unseen": 0.3596938775510204,
+        "known_err_among_accepted": 0.07492354740061162,
+        "error_among_accepted": 0.290519877675841
+      }
+    }
+  }
+}
