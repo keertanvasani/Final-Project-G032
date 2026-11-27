@@ -1333,3 +1333,36 @@ at the strict end:
 
 Every other method, and the §20 output, are unchanged. The paper reports the §20 grid and
 this extension side by side. Output: `experiments/results/baselines/baselines_extended_grid.json`.
+
+## 21. Option D in the app: image agent + verifier together (registered 2026-11-27, before the run)
+
+**Descriptive only.** Decision taken: the app runs the two-step image agent at λ_m
+(0.00892128865561972) in front of the deployed chain, plus the hierarchical verifier at
+α = 0.20 with the S_policy thresholds (`week6/verifier_deploy.json`). Each part was
+confirmed on S_test separately (§16), but the verifier's guarantee was calibrated and
+tested on the *deployed bandit's* boxes. The image agent changes some images' final
+boxes (second pass on an enhanced copy), so the verifier's risk on the combined system
+has not been measured.
+
+**21.1 Data.** S_policy (844 images). S_test is closed for these components (§16) and is
+not used. S_policy is where the thresholds were chosen, so its risk is in-sample and
+optimistic; the comparison of interest is the **paired difference** between the two
+systems on the same images and the same thresholds, not the absolute level.
+
+**21.2 Run.** `experiments/log_verifier_inputs.py --split S_policy --option-d` writes
+`option_d/S_policy_verifier.jsonl` (same fields as `week3/S_policy_verifier.jsonl`). One
+run. The bandit log `week3/S_policy_verifier.jsonl` (hash d36ec85c…) is the comparison.
+
+**21.3 Analysis** (`experiments/option_d_check.py`). For each system, with the frozen
+combiner of `week4/verifier.json` and the S_policy thresholds (hierarchical 0.72 / 0.38,
+flat 0.64 / 0.27), at α 0.10 and 0.20:
+* dive-level risk (§14 definition, all boxes, dives with boxes);
+* correct answers per image, answers per image, error among reported;
+* the paired dive bootstrap (2,000 resamples, seed 0) of option D minus bandit for risk
+  and correct answers per image.
+
+**21.4 Reading.** If option D's risk at α 0.20 is ≤ 0.20 and its paired risk difference
+has a 95% interval that includes 0 or is negative, the deployed guarantee is taken to
+carry over to the combined system (descriptively). Otherwise the app falls back to the
+verifier alone (image agent off) until the verifier is re-calibrated on option-D boxes,
+which would need a new registration and a fresh split.
