@@ -42,6 +42,7 @@ import config  # noqa: E402
 
 # This script checks the refactor against the old rule controller, so it runs
 # the rule chain whatever the app's deployed chain is.
+config.pin_pre_d()
 config.AGENT_POLICY_CHAIN = ("rules", "plain")
 
 import agent_controller as new  # noqa: E402

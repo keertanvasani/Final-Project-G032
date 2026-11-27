@@ -1,0 +1,19 @@
+plumbing check: §18 thresholds reproduced on F_cal
+F_fit 833 boxes / F_thr 821 boxes (170 / 171 dives)
+α 0.1  M1_frozen            param 0.89  risk 0.074  correct/img 0.526  species 0.235  unseen wrong 86
+α 0.1  M2_refit_all         param 0.79  risk 0.064  correct/img 1.329  species 0.020  unseen wrong 37
+α 0.1  M3_refit_classifier  param 0.79  risk 0.067  correct/img 1.318  species 0.000  unseen wrong 35
+α 0.1  M4_darts             param 27542.28703338163  risk 0.055  correct/img 0.486  species 0.276  unseen wrong 115
+α 0.1  M2_refit_all_minus_M1_frozen             +0.803  [0.696, 0.918]
+α 0.1  M3_refit_classifier_minus_M1_frozen      +0.792  [0.686, 0.902]
+α 0.1  M2_refit_all_minus_M4_darts              +0.844  [0.742, 0.952]
+α 0.1  M3_refit_classifier_minus_M4_darts       +0.832  [0.732, 0.936]
+α 0.2  M1_frozen            param 0.81  risk 0.143  correct/img 0.646  species 0.370  unseen wrong 143
+α 0.2  M2_refit_all         param 0.67  risk 0.163  correct/img 1.251  species 0.174  unseen wrong 106
+α 0.2  M3_refit_classifier  param 0.64  risk 0.149  correct/img 1.245  species 0.045  unseen wrong 98
+α 0.2  M4_darts             param 1737.8008287493763  risk 0.123  correct/img 0.692  species 0.442  unseen wrong 184
+α 0.2  M2_refit_all_minus_M1_frozen             +0.605  [0.518, 0.699]
+α 0.2  M3_refit_classifier_minus_M1_frozen      +0.599  [0.513, 0.689]
+α 0.2  M2_refit_all_minus_M4_darts              +0.559  [0.486, 0.641]
+α 0.2  M3_refit_classifier_minus_M4_darts       +0.553  [0.481, 0.629]
+wrote D:\Final-Project-Phase-1\experiments\results\refit_fathomnet\refit.json

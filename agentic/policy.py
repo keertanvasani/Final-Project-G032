@@ -188,6 +188,10 @@ class ImageAgentPolicy(Policy):
         import config
         p = Path(path or getattr(config, "AGENT_IMAGE_POLICY", ""))
         self.spec = json.loads(p.read_text()) if p.is_file() else None
+        lam = getattr(config, "AGENT_IMAGE_LAMBDA", None)
+        if self.spec is not None and lam is not None and path is None:
+            # Operating point chosen in config (e.g. λ_m); the fitted Q-functions are unchanged.
+            self.spec = dict(self.spec, **{"lambda": float(lam)})
 
     def _spec(self):
         if self.spec is None:
@@ -196,6 +200,10 @@ class ImageAgentPolicy(Policy):
 
     def rerun(self, obs):
         sp = self._spec()
+        pipe = obs.extra.get("pipeline")
+        if pipe is not None and getattr(pipe, "profile", "deepsea") != "deepsea":
+            # Fitted on deep-sea logs only; the chain falls back (no re-run) on other profiles.
+            raise ValueError("image agent is fitted for the deep-sea profile only")
         obs.extra["probe_keys"] = sp.get("probe_keys", PROBE_KEYS)
         s1 = pass_states(obs)[0]
         best, arm = 0.0, None

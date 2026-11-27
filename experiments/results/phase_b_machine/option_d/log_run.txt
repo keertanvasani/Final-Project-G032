@@ -1,0 +1,4 @@
+600/844 images, 896 boxes (126s)
+800/844 images, 1290 boxes (143s)
+wrote experimentsesults\phase_b_machine\option_d\S_policy_verifier.jsonl: 844 images, 1371 boxes (146s)
+(tail only: the tee target directory did not exist when the run started; earlier progress lines were not kept)

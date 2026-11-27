@@ -27,6 +27,8 @@ from ablation_deepsea import image_path  # noqa: E402
 from agentic import loop  # noqa: E402
 from agentic import taxonomy as tx  # noqa: E402
 from pipeline import EnsemblePipeline  # noqa: E402
+
+config.pin_pre_d()   # reproduce the committed logs: the pre-option-D app settings
 from week3_verifier import box_rows  # noqa: E402
 
 W3 = ROOT / "experiments" / "results" / "phase_b_machine" / "week3"

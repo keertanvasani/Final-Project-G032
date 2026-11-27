@@ -194,7 +194,9 @@ AGREEMENT_BOOST = 0.10           # Boost when detector & classifier agree
 # Policies asked in order; the first valid answer wins. The learned policy
 # (step 3, confirmed on S_test: experiments/results/phase_b_machine/
 # STEP3_RESULTS.md) leads; the rules take over if it is missing or fails.
-AGENT_POLICY_CHAIN = ("learned", "rules", "plain")
+# Option D (2026-11-27): the two-step image agent leads (confirmed on S_test, H1-R / H8,
+# PROTOCOL §16); it makes only the re-run decisions, the learned bandit the rest.
+AGENT_POLICY_CHAIN = ("image", "learned", "rules", "plain")
 # Fitted contextual-bandit policy used by the "learned" rung. models/ is not
 # in git, so fall back to the identical copy committed with the results.
 AGENT_LEARNED_POLICY = MODELS_DIR / "phase_b_machine" / "bandit_policy.json"
@@ -204,6 +206,9 @@ if not AGENT_LEARNED_POLICY.is_file():
 # Image agent (week 1): after the first pass it may re-run the image on an
 # enhanced copy (D5) and keep the better pass (D6). Not in the deployed chain
 # until it is evaluated; add "image" in front of AGENT_POLICY_CHAIN to use it.
+# Its operating point: λ_m (PROTOCOL §15), the λ whose S_cal cost matches the rule agent
+# (S_test: reward +0.665, F1 0.663, 7.5 ms/img). None uses the file's λ (0.002).
+AGENT_IMAGE_LAMBDA = 0.00892128865561972
 AGENT_IMAGE_POLICY = MODELS_DIR / "phase_b_machine" / "image_agent_policy.json"
 if not AGENT_IMAGE_POLICY.is_file():
     AGENT_IMAGE_POLICY = (PROJECT_ROOT / "experiments" / "results" / "phase_b_machine"
@@ -219,11 +224,25 @@ if not AGENT_CENTROIDS.is_file():
 # "taxon" answer (deepest safe level, or abstain) to every final box. The
 # thresholds were calibrated on S_policy and confirmed on S_test (PROTOCOL §16);
 # only α 0.10 and 0.20 are available.
-AGENT_VERIFIER = None
+AGENT_VERIFIER = {"mode": "hierarchical", "alpha": 0.2}
 AGENT_VERIFIER_FILE = MODELS_DIR / "phase_b_machine" / "verifier.json"
 if not AGENT_VERIFIER_FILE.is_file():
     AGENT_VERIFIER_FILE = (PROJECT_ROOT / "experiments" / "results" / "phase_b_machine"
                            / "week6" / "verifier_deploy.json")
+
+
+def pin_pre_d() -> None:
+    """Restore the app settings every logged experiment up to §20 ran with (before option D).
+
+    Called by the app-mode experiment scripts (loggers, live checks, timing) so that a
+    re-run reproduces the committed logs: deployed bandit chain, verifier off, the image
+    agent at its policy file's λ."""
+    global AGENT_POLICY_CHAIN, AGENT_VERIFIER, AGENT_IMAGE_LAMBDA
+    AGENT_POLICY_CHAIN = ("learned", "rules", "plain")
+    AGENT_VERIFIER = None
+    AGENT_IMAGE_LAMBDA = None
+
+
 # Once an image has used this much wall time, the remaining discretionary
 # steps (enhance, zoom, vote) are skipped and it finishes on the plain models.
 # The safety checks still run. A GPU image takes ~50 ms and a CPU image a few

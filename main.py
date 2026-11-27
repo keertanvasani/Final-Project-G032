@@ -57,6 +57,9 @@ class DetectionResult(BaseModel):
         None, description="Known/Unknown verdict from the classifier energy score (deep-sea profile)")
     gt: Optional[dict[str, Any]] = Field(
         None, description="Outcome against the dataset labels, when the upload is a JEDI frame")
+    taxon: Optional[dict[str, Any]] = Field(
+        None, description="Risk-controlled verifier answer (config.AGENT_VERIFIER, deep-sea profile): "
+                          "level (species/group/phylum/kingdom, or null = needs review), node, p_correct")
 
 
 class InferenceBreakdown(BaseModel):
@@ -398,6 +401,7 @@ async def predict(
             agreement=det["agreement"],
             novelty=det.get("novelty"),
             gt=det.get("gt"),
+            taxon=det.get("taxon"),
         )
         for det in detections
     ]

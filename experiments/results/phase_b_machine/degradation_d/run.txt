@@ -1,0 +1,67 @@
+option_d clean             1371 boxes  (38s)
+bandit   clean             1463 boxes  (64s)
+option_d gaussian_blur_1   1275 boxes  (98s)
+bandit   gaussian_blur_1   1340 boxes  (123s)
+option_d gaussian_blur_2    902 boxes  (152s)
+bandit   gaussian_blur_2    959 boxes  (175s)
+option_d gaussian_blur_3     63 boxes  (193s)
+bandit   gaussian_blur_3     69 boxes  (207s)
+option_d motion_blur_1     1146 boxes  (239s)
+bandit   motion_blur_1     1268 boxes  (264s)
+option_d motion_blur_2     1290 boxes  (299s)
+bandit   motion_blur_2     1418 boxes  (327s)
+option_d motion_blur_3     1218 boxes  (367s)
+bandit   motion_blur_3     1384 boxes  (399s)
+option_d noise_1            857 boxes  (453s)
+bandit   noise_1           1013 boxes  (491s)
+option_d noise_2            298 boxes  (545s)
+bandit   noise_2            345 boxes  (618s)
+option_d noise_3             99 boxes  (670s)
+bandit   noise_3            123 boxes  (712s)
+option_d low_light_1       1345 boxes  (793s)
+bandit   low_light_1       1402 boxes  (839s)
+option_d low_light_2       1280 boxes  (890s)
+bandit   low_light_2       1332 boxes  (930s)
+option_d low_light_3       1171 boxes  (975s)
+bandit   low_light_3       1209 boxes  (1013s)
+option_d low_contrast_1    1348 boxes  (1069s)
+bandit   low_contrast_1    1425 boxes  (1115s)
+option_d low_contrast_2    1302 boxes  (1172s)
+bandit   low_contrast_2    1382 boxes  (1216s)
+option_d low_contrast_3    1131 boxes  (1269s)
+bandit   low_contrast_3    1189 boxes  (1312s)
+option_d colour_shift_1    1348 boxes  (1364s)
+bandit   colour_shift_1    1427 boxes  (1406s)
+option_d colour_shift_2    1288 boxes  (1457s)
+bandit   colour_shift_2    1391 boxes  (1499s)
+option_d colour_shift_3    1280 boxes  (1549s)
+bandit   colour_shift_3    1359 boxes  (1590s)
+option_d compression_1     1204 boxes  (1642s)
+bandit   compression_1     1329 boxes  (1680s)
+option_d compression_2      968 boxes  (1729s)
+bandit   compression_2     1099 boxes  (1762s)
+option_d compression_3      648 boxes  (1805s)
+bandit   compression_3      728 boxes  (1839s)
+clean            D risk 0.187 (79%)  correct/img 1.002  | bandit risk 0.184 correct/img 1.031  | D re-run 17%
+gaussian_blur_1  D risk 0.212 (24%)  correct/img 0.961  | bandit risk 0.195 correct/img 0.986  | D re-run 16%
+gaussian_blur_2  D risk 0.220 (17%)  correct/img 0.679  | bandit risk 0.181 correct/img 0.705  | D re-run 12%
+gaussian_blur_3  D risk 0.244 (27%)  correct/img 0.045  | bandit risk 0.250 correct/img 0.047  | D re-run 1%
+motion_blur_1    D risk 0.229 (6%)  correct/img 0.864  | bandit risk 0.210 correct/img 0.915  | D re-run 17%
+motion_blur_2    D risk 0.401 (0%)  correct/img 0.626  | bandit risk 0.366 correct/img 0.674  | D re-run 20%
+motion_blur_3    D risk 0.441 (0%)  correct/img 0.428  | bandit risk 0.385 correct/img 0.461  | D re-run 28%
+noise_1          D risk 0.218 (17%)  correct/img 0.642  | bandit risk 0.194 correct/img 0.699  | D re-run 20%
+noise_2          D risk 0.228 (16%)  correct/img 0.199  | bandit risk 0.206 correct/img 0.214  | D re-run 9%
+noise_3          D risk 0.333 (1%)  correct/img 0.053  | bandit risk 0.313 correct/img 0.060  | D re-run 4%
+low_light_1      D risk 0.196 (58%)  correct/img 1.026  | bandit risk 0.194 correct/img 1.039  | D re-run 14%
+low_light_2      D risk 0.191 (71%)  correct/img 0.960  | bandit risk 0.183 correct/img 0.970  | D re-run 14%
+low_light_3      D risk 0.194 (63%)  correct/img 0.877  | bandit risk 0.184 correct/img 0.873  | D re-run 12%
+low_contrast_1   D risk 0.196 (60%)  correct/img 1.032  | bandit risk 0.189 correct/img 1.052  | D re-run 18%
+low_contrast_2   D risk 0.195 (63%)  correct/img 0.972  | bandit risk 0.179 correct/img 0.987  | D re-run 18%
+low_contrast_3   D risk 0.200 (50%)  correct/img 0.867  | bandit risk 0.191 correct/img 0.860  | D re-run 16%
+colour_shift_1   D risk 0.200 (50%)  correct/img 1.002  | bandit risk 0.181 correct/img 1.043  | D re-run 15%
+colour_shift_2   D risk 0.221 (11%)  correct/img 0.953  | bandit risk 0.201 correct/img 0.993  | D re-run 14%
+colour_shift_3   D risk 0.213 (24%)  correct/img 0.919  | bandit risk 0.208 correct/img 0.951  | D re-run 13%
+compression_1    D risk 0.215 (19%)  correct/img 0.860  | bandit risk 0.198 correct/img 0.909  | D re-run 18%
+compression_2    D risk 0.251 (0%)  correct/img 0.641  | bandit risk 0.201 correct/img 0.706  | D re-run 20%
+compression_3    D risk 0.413 (0%)  correct/img 0.287  | bandit risk 0.348 correct/img 0.321  | D re-run 18%
+wrote D:\Final-Project-Phase-1\experiments\results\phase_b_machine\degradation_d\degradation_d.json

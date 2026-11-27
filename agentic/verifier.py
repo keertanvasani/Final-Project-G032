@@ -112,6 +112,9 @@ def load_taxon_spec(pipeline: Any) -> dict[str, Any] | None:
         from pathlib import Path
         spec = json.loads(Path(config.AGENT_VERIFIER_FILE).read_text())
         pipeline._taxon_spec = spec
+    # Fitted on the deep-sea classifier's classes; any other profile gets no taxon answer.
+    if list(spec["classes"]) != list(getattr(pipeline.classifier, "class_names", [])):
+        return None
     return spec
 
 

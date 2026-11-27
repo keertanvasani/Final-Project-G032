@@ -1,0 +1,467 @@
+{
+ "protocol": "PROTOCOL \u00a724 (descriptive)",
+ "images": 602,
+ "dives": 197,
+ "boxes": 1137,
+ "unmatched_boxes": 426,
+ "alphas": {
+  "0.1": {
+   "M1_frozen": {
+    "parameter": 0.89,
+    "risk": 0.09275466634138771,
+    "risk_le_alpha": true,
+    "dives_with_boxes": 184,
+    "coverage": 0.35532102022867196,
+    "reported_per_image": 0.6710963455149501,
+    "correct_per_image": 0.5016611295681063,
+    "credit_per_image": 0.3235049833887043,
+    "species_correct_per_image": 0.22757475083056478,
+    "error_among_reported": 0.2524752475247525,
+    "unseen_boxes": 239,
+    "unseen_correct": 71,
+    "unseen_wrong": 31,
+    "correct_by_answer_type": {
+     "species": 137,
+     "Animal": 112,
+     "Decapoda": 13,
+     "Man-made": 19,
+     "Chordata": 5,
+     "Echinodermata": 12,
+     "Porifera": 3,
+     "Cnidaria": 1
+    },
+    "false_detections_labelled": 67,
+    "false_detections_labelled_by_answer": {
+     "Chordata": 1,
+     "Animal": 6,
+     "Man-made": 24,
+     "species": 33,
+     "Porifera": 2,
+     "Echinodermata": 1
+    }
+   },
+   "M2_refit_all": {
+    "parameter": 0.79,
+    "risk": 0.31470057405416757,
+    "risk_le_alpha": false,
+    "dives_with_boxes": 184,
+    "coverage": 0.8970976253298153,
+    "reported_per_image": 1.6943521594684385,
+    "correct_per_image": 1.058139534883721,
+    "credit_per_image": 0.4356312292358804,
+    "species_correct_per_image": 0.04152823920265781,
+    "error_among_reported": 0.37549019607843137,
+    "unseen_boxes": 239,
+    "unseen_correct": 201,
+    "unseen_wrong": 9,
+    "correct_by_answer_type": {
+     "Animal": 354,
+     "species": 25,
+     "Cnidaria": 14,
+     "Decapoda": 79,
+     "Porifera": 20,
+     "Echinodermata": 64,
+     "Man-made": 60,
+     "Chordata": 21
+    },
+    "false_detections_labelled": 360,
+    "false_detections_labelled_by_answer": {
+     "Animal": 156,
+     "Man-made": 142,
+     "Decapoda": 20,
+     "Chordata": 5,
+     "Porifera": 10,
+     "Echinodermata": 18,
+     "species": 9
+    }
+   },
+   "M3_refit_classifier": {
+    "parameter": 0.79,
+    "risk": 0.3107161073015372,
+    "risk_le_alpha": false,
+    "dives_with_boxes": 184,
+    "coverage": 0.8988566402814424,
+    "reported_per_image": 1.697674418604651,
+    "correct_per_image": 1.0448504983388704,
+    "credit_per_image": 0.4161129568106312,
+    "species_correct_per_image": 0.0,
+    "error_among_reported": 0.3845401174168297,
+    "unseen_boxes": 239,
+    "unseen_correct": 193,
+    "unseen_wrong": 11,
+    "correct_by_answer_type": {
+     "Animal": 352,
+     "Man-made": 67,
+     "Cnidaria": 17,
+     "Porifera": 21,
+     "Echinodermata": 58,
+     "Decapoda": 96,
+     "Chordata": 18
+    },
+    "false_detections_labelled": 366,
+    "false_detections_labelled_by_answer": {
+     "Animal": 150,
+     "Man-made": 157,
+     "Echinodermata": 19,
+     "Chordata": 5,
+     "Decapoda": 23,
+     "Porifera": 9,
+     "Cnidaria": 3
+    }
+   },
+   "M4_darts": {
+    "parameter": 27542.28703338163,
+    "risk": 0.13576791835883356,
+    "risk_le_alpha": false,
+    "dives_with_boxes": 184,
+    "coverage": 0.3526824978012313,
+    "reported_per_image": 0.6661129568106312,
+    "correct_per_image": 0.3953488372093023,
+    "credit_per_image": 0.3185215946843854,
+    "species_correct_per_image": 0.2823920265780731,
+    "error_among_reported": 0.40648379052369077,
+    "unseen_boxes": 239,
+    "unseen_correct": 15,
+    "unseen_wrong": 25,
+    "correct_by_answer_type": {
+     "species": 170,
+     "Animal": 58,
+     "Decapoda": 9,
+     "Echinodermata": 1
+    },
+    "false_detections_labelled": 134,
+    "false_detections_labelled_by_answer": {
+     "species": 104,
+     "Decapoda": 5,
+     "Animal": 25
+    }
+   },
+   "M5_refit_with_unmatched": {
+    "parameter": 0.67,
+    "risk": 0.012640297761494784,
+    "risk_le_alpha": true,
+    "dives_with_boxes": 184,
+    "coverage": 0.1785400175901495,
+    "reported_per_image": 0.3372093023255814,
+    "correct_per_image": 0.29900332225913623,
+    "credit_per_image": 0.1117109634551495,
+    "species_correct_per_image": 0.0,
+    "error_among_reported": 0.11330049261083741,
+    "unseen_boxes": 239,
+    "unseen_correct": 49,
+    "unseen_wrong": 1,
+    "correct_by_answer_type": {
+     "Animal": 123,
+     "Decapoda": 32,
+     "Echinodermata": 12,
+     "Porifera": 6,
+     "Man-made": 7
+    },
+    "false_detections_labelled": 21,
+    "false_detections_labelled_by_answer": {
+     "Animal": 14,
+     "Porifera": 1,
+     "Man-made": 5,
+     "Decapoda": 1
+    }
+   },
+   "paired": {
+    "M2_refit_all_minus_M1_frozen": {
+     "correct": {
+      "per_image": 0.5564784053156147,
+      "ci95": [
+       0.46564885496183206,
+       0.6530612244897959
+      ]
+     },
+     "credit": {
+      "per_image": 0.11212624584717608,
+      "ci95": [
+       0.07399577167019028,
+       0.15678776290630975
+      ]
+     }
+    },
+    "M2_refit_all_minus_M4_darts": {
+     "correct": {
+      "per_image": 0.6627906976744186,
+      "ci95": [
+       0.5790273556231003,
+       0.765625
+      ]
+     },
+     "credit": {
+      "per_image": 0.11710963455149502,
+      "ci95": [
+       0.07556818181818181,
+       0.15739329268292682
+      ]
+     }
+    },
+    "M5_refit_with_unmatched_minus_M1_frozen": {
+     "correct": {
+      "per_image": -0.2026578073089701,
+      "ci95": [
+       -0.2879684418145957,
+       -0.1384083044982699
+      ]
+     },
+     "credit": {
+      "per_image": -0.21179401993355482,
+      "ci95": [
+       -0.28343949044585987,
+       -0.15838852097130243
+      ]
+     }
+    },
+    "M5_refit_with_unmatched_minus_M4_darts": {
+     "correct": {
+      "per_image": -0.09634551495016612,
+      "ci95": [
+       -0.18629173989455183,
+       -0.02849002849002849
+      ]
+     },
+     "credit": {
+      "per_image": -0.20681063122923588,
+      "ci95": [
+       -0.292578125,
+       -0.1410857908847185
+      ]
+     }
+    }
+   }
+  },
+  "0.2": {
+   "M1_frozen": {
+    "parameter": 0.81,
+    "risk": 0.16944966724725985,
+    "risk_le_alpha": true,
+    "dives_with_boxes": 184,
+    "coverage": 0.44327176781002636,
+    "reported_per_image": 0.8372093023255814,
+    "correct_per_image": 0.5514950166112956,
+    "credit_per_image": 0.4049003322259136,
+    "species_correct_per_image": 0.32558139534883723,
+    "error_among_reported": 0.3412698412698413,
+    "unseen_boxes": 239,
+    "unseen_correct": 56,
+    "unseen_wrong": 75,
+    "correct_by_answer_type": {
+     "species": 196,
+     "Decapoda": 11,
+     "Animal": 92,
+     "Man-made": 12,
+     "Chordata": 2,
+     "Echinodermata": 15,
+     "Porifera": 4
+    },
+    "false_detections_labelled": 87,
+    "false_detections_labelled_by_answer": {
+     "Animal": 10,
+     "species": 61,
+     "Man-made": 14,
+     "Chordata": 1,
+     "Echinodermata": 1
+    }
+   },
+   "M2_refit_all": {
+    "parameter": 0.67,
+    "risk": 0.4095768273174691,
+    "risk_le_alpha": false,
+    "dives_with_boxes": 184,
+    "coverage": 0.9226033421284081,
+    "reported_per_image": 1.7425249169435215,
+    "correct_per_image": 0.9833887043189369,
+    "credit_per_image": 0.5236710963455149,
+    "species_correct_per_image": 0.22093023255813954,
+    "error_among_reported": 0.4356530028598665,
+    "unseen_boxes": 239,
+    "unseen_correct": 159,
+    "unseen_wrong": 58,
+    "correct_by_answer_type": {
+     "Porifera": 24,
+     "Animal": 238,
+     "species": 133,
+     "Cnidaria": 7,
+     "Decapoda": 49,
+     "Echinodermata": 84,
+     "Chordata": 29,
+     "Man-made": 28
+    },
+    "false_detections_labelled": 375,
+    "false_detections_labelled_by_answer": {
+     "Animal": 125,
+     "Man-made": 93,
+     "Porifera": 14,
+     "Echinodermata": 28,
+     "species": 71,
+     "Chordata": 16,
+     "Decapoda": 25,
+     "Cnidaria": 3
+    }
+   },
+   "M3_refit_classifier": {
+    "parameter": 0.64,
+    "risk": 0.3604565407025458,
+    "risk_le_alpha": false,
+    "dives_with_boxes": 184,
+    "coverage": 0.9226033421284081,
+    "reported_per_image": 1.7425249169435215,
+    "correct_per_image": 1.0166112956810631,
+    "credit_per_image": 0.4846345514950166,
+    "species_correct_per_image": 0.08970099667774087,
+    "error_among_reported": 0.41658722592945663,
+    "unseen_boxes": 239,
+    "unseen_correct": 183,
+    "unseen_wrong": 29,
+    "correct_by_answer_type": {
+     "Animal": 240,
+     "species": 54,
+     "Cnidaria": 20,
+     "Decapoda": 75,
+     "Porifera": 28,
+     "Echinodermata": 86,
+     "Man-made": 60,
+     "Chordata": 49
+    },
+    "false_detections_labelled": 382,
+    "false_detections_labelled_by_answer": {
+     "Animal": 112,
+     "Porifera": 14,
+     "Man-made": 156,
+     "Echinodermata": 34,
+     "Chordata": 18,
+     "Decapoda": 27,
+     "species": 16,
+     "Cnidaria": 5
+    }
+   },
+   "M4_darts": {
+    "parameter": 1737.8008287493763,
+    "risk": 0.2250177022477611,
+    "risk_le_alpha": false,
+    "dives_with_boxes": 184,
+    "coverage": 0.5417766051011433,
+    "reported_per_image": 1.0232558139534884,
+    "correct_per_image": 0.5614617940199336,
+    "credit_per_image": 0.4431063122923588,
+    "species_correct_per_image": 0.39700996677740863,
+    "error_among_reported": 0.4512987012987013,
+    "unseen_boxes": 239,
+    "unseen_correct": 29,
+    "unseen_wrong": 66,
+    "correct_by_answer_type": {
+     "species": 239,
+     "Animal": 93,
+     "Decapoda": 6
+    },
+    "false_detections_labelled": 201,
+    "false_detections_labelled_by_answer": {
+     "species": 174,
+     "Animal": 25,
+     "Decapoda": 2
+    }
+   },
+   "M5_refit_with_unmatched": {
+    "parameter": 0.55,
+    "risk": 0.058634093160385856,
+    "risk_le_alpha": true,
+    "dives_with_boxes": 184,
+    "coverage": 0.38786279683377306,
+    "reported_per_image": 0.7325581395348837,
+    "correct_per_image": 0.6096345514950167,
+    "credit_per_image": 0.2462624584717608,
+    "species_correct_per_image": 0.0033222591362126247,
+    "error_among_reported": 0.16780045351473927,
+    "unseen_boxes": 239,
+    "unseen_correct": 102,
+    "unseen_wrong": 4,
+    "correct_by_answer_type": {
+     "Man-made": 20,
+     "Animal": 214,
+     "Cnidaria": 4,
+     "Decapoda": 69,
+     "Porifera": 11,
+     "Echinodermata": 40,
+     "Chordata": 7,
+     "species": 2
+    },
+    "false_detections_labelled": 65,
+    "false_detections_labelled_by_answer": {
+     "Animal": 30,
+     "Man-made": 21,
+     "Porifera": 5,
+     "Decapoda": 5,
+     "Echinodermata": 4
+    }
+   },
+   "paired": {
+    "M2_refit_all_minus_M1_frozen": {
+     "correct": {
+      "per_image": 0.4318936877076412,
+      "ci95": [
+       0.3486529318541997,
+       0.521594684385382
+      ]
+     },
+     "credit": {
+      "per_image": 0.11877076411960133,
+      "ci95": [
+       0.08636363636363636,
+       0.1640926640926641
+      ]
+     }
+    },
+    "M2_refit_all_minus_M4_darts": {
+     "correct": {
+      "per_image": 0.4219269102990033,
+      "ci95": [
+       0.3553008595988539,
+       0.5104761904761905
+      ]
+     },
+     "credit": {
+      "per_image": 0.08056478405315615,
+      "ci95": [
+       0.04635258358662614,
+       0.12096774193548387
+      ]
+     }
+    },
+    "M5_refit_with_unmatched_minus_M1_frozen": {
+     "correct": {
+      "per_image": 0.05813953488372093,
+      "ci95": [
+       -0.01773049645390071,
+       0.12371134020618557
+      ]
+     },
+     "credit": {
+      "per_image": -0.15863787375415284,
+      "ci95": [
+       -0.21545454545454545,
+       -0.11089939024390244
+      ]
+     }
+    },
+    "M5_refit_with_unmatched_minus_M4_darts": {
+     "correct": {
+      "per_image": 0.04817275747508306,
+      "ci95": [
+       -0.016581632653061226,
+       0.11888111888111888
+      ]
+     },
+     "credit": {
+      "per_image": -0.19684385382059802,
+      "ci95": [
+       -0.2694610778443114,
+       -0.1344621513944223
+      ]
+     }
+    }
+   }
+  }
+ }
+}

@@ -65,12 +65,27 @@
       : `<span class="kbadge kbadge--known"${tip}>Known${score}</span>`;
   }
 
+  // 'right' | 'wrong' | 'review' | null. When the verifier answered, its answer is what the
+  // page shows, so that answer is graded (server: ground_truth.py, taxonomy rule).
+  function verdict(d) {
+    const o = d && d.gt && OUTCOME[d.gt.outcome];
+    if (!o) return null;
+    const v = d.gt.verifier;
+    if (v) return v.correct == null ? 'review' : v.correct ? 'right' : 'wrong';
+    return o.good ? 'right' : 'wrong';
+  }
+
   function truthChip(d) {
     const o = d.gt && OUTCOME[d.gt.outcome];
     if (!o) return '';
     const what = d.gt.gt_class && d.gt.outcome !== 'BG_FP' && d.gt.outcome !== 'LOC_ERR'
       ? ` · actually ${esc(d.gt.gt_class)}` : '';
-    return `<span class="tchip ${o.good ? 'tchip--right' : 'tchip--wrong'}">${o.label}${what}</span>`;
+    const v = d.gt.verifier, k = verdict(d);
+    let label = o.label;
+    if (v && k === 'review') label = 'Held for review';
+    else if (v && k === 'right' && v.level !== 'species') label = `Correct at the ${esc(v.answer)} level`;
+    else if (v && k === 'right') label = 'Correct';
+    return `<span class="tchip tchip--${k}">${label}${what}</span>`;
   }
 
   /* ── Canvas ─────────────────────────────────────────── */
@@ -98,8 +113,14 @@
       const [x1, y1, x2, y2] = d.bbox;
       const unk = d.novelty && d.novelty.unknown;
       let col = confColor(d.combined_confidence);
-      if (byTruth && d.gt) col = (OUTCOME[d.gt.outcome] || {}).good ? COLORS.right : COLORS.wrong;
+      if (byTruth && d.gt) {
+        const k = verdict(d);
+        col = k === 'right' ? COLORS.right : k === 'review' ? COLORS.unknown : COLORS.wrong;
+      }
       else if (unk) col = COLORS.unknown;
+      if (d.taxon && !(byTruth && d.gt)) {   // the verifier's answer sets the colour when present
+        col = d.taxon.level == null ? COLORS.unknown : confColor(d.taxon.p_correct);
+      }
 
       g.lineWidth = lw;
       g.strokeStyle = col;
@@ -109,6 +130,12 @@
 
       let text = `${d.classifier_class} ${Math.round(d.combined_confidence * 100)}%`;
       if (unk) text = `? ${text}`;
+      const tx = d.taxon;   // risk-controlled verifier: the deepest answer that is safe at its error target
+      if (tx) {
+        if (tx.level == null) text = `needs review (~${d.classifier_class})`;
+        else if (tx.level === 'species') text = `${d.classifier_class} ${Math.round(tx.p_correct * 100)}%`;
+        else text = `${tx.node} ${Math.round(tx.p_correct * 100)}% (~${d.classifier_class})`;
+      }
       const tw = g.measureText(text).width + fs * 0.7, th = fs * 1.45;
       const ly = y1 - th >= 0 ? y1 - th : y1;
       g.fillStyle = col;
@@ -127,12 +154,14 @@
     el.thrCount.innerHTML = `<b>${shown.length}</b> of ${S.dets.length} boxes shown`;
 
     if (S.hasGt) {
-      const ok = shown.filter((d) => d.gt && (OUTCOME[d.gt.outcome] || {}).good).length;
-      const bad = shown.length - ok;
+      const ok = shown.filter((d) => verdict(d) === 'right').length;
+      const held = shown.filter((d) => verdict(d) === 'review').length;
+      const bad = shown.length - ok - held;
       el.thrQuality.hidden = false;
       el.thrQuality.innerHTML = shown.length
         ? `<span class="q q--right"><b>${ok}</b> correct</span>` +
           `<span class="q q--wrong"><b>${bad}</b> wrong</span>` +
+          (held ? `<span class="q q--rate"><b>${held}</b> held for review</span>` : '') +
           `<span class="q q--rate">${Math.round((100 * ok) / shown.length)}% of the boxes you can see are right</span>`
         : `<span class="q q--rate">No boxes at this threshold.</span>`;
     } else {

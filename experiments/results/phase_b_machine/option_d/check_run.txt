@@ -1,0 +1,30 @@
+{
+ "bandit": {
+  "risk": 0.18431924219413562,
+  "answers_per_image": 1.433649289099526,
+  "correct_per_image": 1.0308056872037914,
+  "species_correct_per_image": 0.9158767772511849,
+  "error_among_reported": 0.28099173553719003
+ },
+ "option_d": {
+  "risk": 0.18734117122457564,
+  "answers_per_image": 1.386255924170616,
+  "correct_per_image": 1.0023696682464456,
+  "species_correct_per_image": 0.9075829383886256,
+  "error_among_reported": 0.27692307692307694
+ },
+ "option_d_minus_bandit": {
+  "risk": 0.003021929030440018,
+  "risk_ci95": [
+   -0.008236255898796896,
+   0.014571506748809138
+  ],
+  "correct_per_image": -0.02843601895734582,
+  "correct_ci95": [
+   -0.04954954954954955,
+   -0.00805523590333717
+  ]
+ },
+ "threshold": 0.38
+}
+guarantee carries over: True

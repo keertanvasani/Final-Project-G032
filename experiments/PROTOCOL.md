@@ -1187,3 +1187,297 @@ the text above left open, settled from names only:
   sea-cucumber 1,631; fish 973; crab 846; starfish 845; machine 650; shrimp 629;
   crinoid 600; unseen 5,995 (Echinodermata 2,248, Animal 1,219, Decapoda 794,
   Chordata 638, Cnidaria 326, Arthropoda 70); Man-made 144; excluded 1,040.
+
+## 19. H3 on FathomNet Part A (registered 2026-11-26, before the H3 statistic is computed)
+
+§7.4 registered three confirmatory hypotheses; H1 and H2 were tested on S_test (§12), but
+**H3 never was**: S_test's unseen-taxon sample was too small for it on the earlier stack
+(§11), and §15/§16 tested the verifier through H-risk, H4–H6 instead. S_test is closed for
+the verifier (§16). This section tests H3 once, on FathomNet Part A's evaluation half.
+
+> **H3 — uncertainty-aware abstention reduces confident errors on unseen taxa.** At
+> matched GT-anchored coverage, the OOD-aware gate yields a lower `OOD_ERR` rate among
+> accepted detections than the baseline confidence gate.
+
+**Disclosure.** F_eval was read for §18 (E1–E4). What has been seen of it: the risk, answer
+counts and the number of unseen boxes given a *correct* answer (`fathomnet_test.json`).
+Nothing below has been computed: no confidence-gate result, no matched-coverage comparison
+and no count of unseen boxes given a *wrong* answer. Every input is frozen: the §18 logs, the
+F_cal/F_eval split and the F_cal thresholds in `fathomnet_test.json`.
+
+### 19.1 Definitions
+
+* **Boxes:** F_eval boxes of the deployed agent matched to a scorable FathomNet box, exactly
+  as in §18.5 (1,660 boxes, 392 on unseen animals).
+* **OOD-aware gate (the verifier):** hierarchical mode, F_cal threshold at α = 0.20
+  (0.81, from `fathomnet_test.json`). A box is *accepted* when the verifier reports a node;
+  the answer is wrong when that node is not on the box's true path.
+* **Baseline confidence gate:** each box keeps its species label; the box is accepted when
+  its deployed calibrated confidence (`combined_confidence`) is among the top *k*, with ties
+  broken by `raw_combined_confidence`. *k* = the number of boxes the verifier accepts on
+  F_eval, so coverage is matched exactly. Wrong = species label ≠ ground truth.
+* **`OOD_ERR` rate among accepted** = accepted boxes on unseen animals given a wrong answer
+  ÷ all accepted boxes.
+* *Coverage* = accepted ÷ all F_eval boxes (GT-anchored: matched boxes only).
+
+### 19.2 Tests
+
+| | Claim | Test |
+|---|---|---|
+| **H3** (primary) | Verifier `OOD_ERR` rate < baseline confidence gate's | one-sided paired dive bootstrap, 2,000 resamples, seed 0 |
+| H3-U | Verifier `OOD_ERR` rate < the deployed gate's: confidence gate **plus** the deployed energy Unknown flag (boxes flagged Unknown are not accepted; the top *k* of the rest are, or all of them if fewer) | same |
+
+* Holm–Bonferroni over {H3, H3-U} at α = 0.05.
+* In each resample, *k* and the gate's cut-off stay fixed at their F_eval values; the
+  rates are recomputed on the resampled dives.
+* Descriptive: the same at α = 0.10 (verifier threshold 0.90); unseen boxes given a wrong
+  answer as a share of unseen boxes; known-animal error among accepted; for H3-U, the
+  achieved coverage if it falls short of *k*.
+
+### 19.3 Expectations, stated before the run
+
+* H3 should hold. A confidence gate gives every accepted unseen animal a known species, so
+  each one is an error. The verifier can answer "Animal" or abstain.
+* H3-U is the meaningful test, because the deployed system already flags some unseen
+  animals as Unknown. Step 1 measured that flag at only 8.6 % of unseen detections on JODD,
+  so H3-U is expected to hold too, by a smaller margin.
+* If either fails, it is reported as a failure.
+
+Script: `experiments/test_h3_fathomnet.py`, committed before it is run. Output:
+`experiments/results/external_fathomnet/h3_test.json`. Single use.
+
+## 20. Literature baselines for the verifier (registered 2026-11-27, before any baseline is computed)
+
+**Descriptive only.** S_test and FathomNet F_eval are already used for the verifier's
+claims (§16, §18, §19). This section adds comparisons with published methods on the same
+boxes. It tests no hypothesis and changes no earlier result. Nothing is tuned on the
+evaluation data, and every method is run once.
+
+### 20.1 Settings (exactly the verifier's own evaluations)
+
+| Setting | Calibration | Evaluation | Boxes |
+|---|---|---|---|
+| **JODD** | all S_policy dives, eligible boxes (§16, as `week6_calibrate_thresholds.py`) | all S_test dives | the deployed agent's final boxes (`week3/*_verifier.jsonl`); unmatched boxes count as wrong if answered |
+| **FathomNet** | F_cal (§18.3 split) | F_eval | matched, scorable boxes only (§18.5) |
+
+Risk = dive-level share of boxes given a wrong answer, as in §14/§18. An answer is
+correct when its node lies on the true taxon's path in the §14.1 tree.
+
+### 20.2 Methods
+
+All methods use the frozen classifier's softmax over the 9 known classes and the logged box
+fields; nothing is retrained. Methods 1–6 each have one parameter. That parameter is set
+by **the same Learn-then-Test procedure as ours** (Hoeffding–Bentkus, δ = 0.10, dive as
+the unit, a fixed grid from strict to lenient, stopping at the first failure). This
+isolates *what is scored and answered* from *how the threshold is chosen*.
+
+| # | Method | Answer | Parameter, grid |
+|---|---|---|---|
+| 1 | **Ours, hierarchical** (§14) | deepest level with combiner P ≥ t | t, 0.99 … 0.00 |
+| 2 | **Ours, flat** | species if combiner P ≥ t | t, 0.99 … 0.00 |
+| 3 | **Softmax response** (Geifman & El-Yaniv 2017) | the box's final species if the classifier's probability for it ≥ τ | τ, 0.99 … 0.00 |
+| 4 | **Energy score** (Liu et al. 2020) | final species if −energy ≥ τ | τ = the calibration boxes' −energy at quantiles 1.00, 0.99, …, 0.00 |
+| 5 | **Calibrated confidence** (the deployed isotonic `combined_confidence`) | final species if confidence ≥ τ | τ, 0.99 … 0.00 |
+| 6 | **DARTS** (Deng et al. 2012, "hedging your bets") | argmax over tree nodes of (r(v) + λ)·p(v) | λ = 10^(3 − 6i/99), i = 0 … 99, then 0 |
+| 7 | **Split conformal + LCA** (LAC score, Sadinle et al. 2019) | the lowest common ancestor of the prediction set | none: q̂ at level 1 − α from the calibration boxes |
+
+* **DARTS details.** p(v) is the summed softmax of the leaves under v. The reward is
+  information gain, r(v) = log₂ 9 − log₂ (leaves under v). A virtual root over "Animal" and
+  "Man-made" has p = 1 and r = 0; choosing it means abstaining. Ties go to the deeper node.
+  The species answer is the argmax leaf, as published, not our agent's vote.
+* **Conformal details.** Conformal prediction is calibrated by its own rule, not by
+  Learn-then-Test, using calibration boxes matched to a known class (the standard
+  closed-set setting). The prediction set is {y : p_y ≥ 1 − q̂}. An empty set or one spanning
+  both kingdoms means abstain. Also reported: coverage of the true class on known
+  evaluation boxes, and mean set size.
+
+### 20.3 Reported (per setting, α ∈ {0.10, 0.20})
+
+* The chosen parameter, realised risk, and risk ≤ α.
+* Answers, correct answers, credit and species-level correct answers, all per image.
+* Unseen-animal boxes given a correct answer and a wrong answer.
+* Ours (hierarchical) minus each baseline in correct answers per image, with a 95%
+  paired dive-bootstrap interval (2,000 resamples, seed 0). Descriptive: no p-values, no
+  multiplicity correction.
+* Risk–coverage curves over each method's full parameter grid on the evaluation set,
+  for figures only.
+
+### 20.4 Expectations, stated before the run
+
+* Every Learn-then-Test method should meet risk ≤ α. Conformal + LCA may not, because
+  unseen animals are never in its label space.
+* DARTS is the closest competitor; it should beat the flat methods on correct answers.
+  We expect ours to be at least as good, because the combiner uses detector, energy and
+  agreement signals that DARTS does not.
+* If a baseline beats ours, it is reported as such.
+
+**Plumbing check before the run:** the generic Learn-then-Test code must reproduce the
+frozen thresholds for methods 1–2: 0.72 / 0.38 and 0.64 / 0.27 on JODD, and
+0.90 / 0.81 and 0.88 / 0.78 on FathomNet. No baseline output is read before the run.
+Script: `experiments/test_baselines.py`. Output:
+`experiments/results/baselines/baselines.json`.
+
+### 20.5 Amendment, post-hoc (registered 2026-11-27, after §20's run, before this one)
+
+**What §20's run showed.** At α = 0.10, softmax response and DARTS found no admissible
+parameter on either setting, so they abstained on every box. Even the strictest grid point
+(τ = 0.99; λ = 1,000) answers too many boxes, because the classifier's softmax is often
+above 0.99. That is a property of the grid we registered, not of the methods.
+
+**Sensitivity run.** This run is post-hoc and labelled as such. It is a single run,
+calibration-only, with the same Learn-then-Test procedure. It extends only these two grids
+at the strict end:
+* **Softmax response:** τ = 1 − 10^(−6 + 0.06 i), i = 0 … 49, then the registered grid
+  0.99 … 0.00.
+* **DARTS:** λ = 10^(6 − 3 i / 50), i = 0 … 49, then the registered grid.
+
+Every other method, and the §20 output, are unchanged. The paper reports the §20 grid and
+this extension side by side. Output: `experiments/results/baselines/baselines_extended_grid.json`.
+
+## 21. Option D in the app: image agent + verifier together (registered 2026-11-27, before the run)
+
+**Descriptive only.** Decision taken: the app runs the two-step image agent at λ_m
+(0.00892128865561972) in front of the deployed chain, plus the hierarchical verifier at
+α = 0.20 with the S_policy thresholds (`week6/verifier_deploy.json`). Each part was
+confirmed on S_test separately (§16), but the verifier's guarantee was calibrated and
+tested on the *deployed bandit's* boxes. The image agent changes some images' final
+boxes (second pass on an enhanced copy), so the verifier's risk on the combined system
+has not been measured.
+
+**21.1 Data.** S_policy (844 images). S_test is closed for these components (§16) and is
+not used. S_policy is where the thresholds were chosen, so its risk is in-sample and
+optimistic; the comparison of interest is the **paired difference** between the two
+systems on the same images and the same thresholds, not the absolute level.
+
+**21.2 Run.** `experiments/log_verifier_inputs.py --split S_policy --option-d` writes
+`option_d/S_policy_verifier.jsonl` (same fields as `week3/S_policy_verifier.jsonl`). One
+run. The bandit log `week3/S_policy_verifier.jsonl` (hash d36ec85c…) is the comparison.
+
+**21.3 Analysis** (`experiments/option_d_check.py`). For each system, with the frozen
+combiner of `week4/verifier.json` and the S_policy thresholds (hierarchical 0.72 / 0.38,
+flat 0.64 / 0.27), at α 0.10 and 0.20:
+* dive-level risk (§14 definition, all boxes, dives with boxes);
+* correct answers per image, answers per image, error among reported;
+* the paired dive bootstrap (2,000 resamples, seed 0) of option D minus bandit for risk
+  and correct answers per image.
+
+**21.4 Reading.** If option D's risk at α 0.20 is ≤ 0.20 and its paired risk difference
+has a 95% interval that includes 0 or is negative, the deployed guarantee is taken to
+carry over to the combined system (descriptively). Otherwise the app falls back to the
+verifier alone (image agent off) until the verifier is re-calibrated on option-D boxes,
+which would need a new registration and a fresh split.
+
+## 22. Synthetic degradation with option D (registered 2026-11-27, before any degraded image is run)
+
+**Descriptive only.** Question: as image quality drops in a controlled way (ground truth
+unchanged), does the verifier, with thresholds fixed on clean images, keep its error rate
+near α by stepping back and abstaining, or does it keep answering and become wrong? And
+does the image agent re-run more often on damaged images?
+
+**22.1 Data.** S_policy (844 images). S_test stays closed (§16). The clean condition is
+in-sample for the thresholds (§21: risk 0.187 at α 0.20), so the comparison of interest is
+each damaged condition against clean, and option D against the bandit on the same images.
+
+**22.2 Damage.** The seven transforms of `experiments/degrade.py`, unchanged, at its three
+severities: gaussian blur (kernel 3 / 7 / 13), motion blur (5 / 11 / 21), noise (σ 10 / 25
+/ 45), low light (× 0.60 / 0.40 / 0.25), low contrast (0.60 / 0.40 / 0.25), colour shift
+(red × 0.80 / 0.60 / 0.40), JPEG compression (quality 40 / 20 / 10). Plus clean: 22
+conditions. Noise is seeded per (image, condition), so both systems see identical pixels.
+Damaged images are never saved.
+
+**22.3 Systems.** (a) Option D as in `config.py` (image agent λ_m + hierarchical verifier
+α 0.20); (b) the pre-D bandit chain (`config.pin_pre_d()`) with the same verifier applied
+offline. Same frozen combiner (`week6/verifier_deploy.json`) and S_policy thresholds
+(hierarchical 0.72 / 0.38, flat 0.64 / 0.27) for both, never re-fitted.
+
+**22.4 Measures per condition and system.** Dive-level risk (§14) for hierarchical at α
+0.10 and 0.20, and flat at α 0.20; share of 2,000 dive bootstrap resamples (seed 0) with
+risk ≤ α; answers, correct answers and species-correct answers per image; answer level
+mix (species / group / phylum / kingdom / abstain); final boxes; matched boxes; image
+status counts; for option D, the share of images re-run and the share keeping the second
+pass. Paired dive bootstrap of option D − bandit for risk and correct per image at α 0.20.
+
+**22.5 Reading.** For each condition, the guarantee is said to *hold under that damage*
+if hierarchical risk at α 0.20 is ≤ 0.20, and to be *robust* if ≥ 90% of resamples are
+≤ 0.20. Expected before the run: mild severities hold; severe noise, motion blur and low
+contrast break it, because the combiner's features were fitted on clean images; low light
+is partly absorbed by the app's own enhancement; option D re-runs more often as damage
+grows. Any break means that condition needs its own calibration data; no threshold is
+changed in this section.
+
+## 23. Re-fitting the combiner on FathomNet (registered 2026-11-27, before any re-fit is computed)
+
+**Descriptive only.** This is the fourth use of F_eval (after §18, §19, §20), so no
+confirmatory claim is made. Question: on FathomNet, DARTS calibrated by our Learn-then-Test
+beat our hierarchical verifier at α 0.20 (−0.094 correct per image, §20). Is that because
+the combiner, fitted on JODD, uses features that shift out of domain, so that re-fitting
+it on FathomNet data closes the gap?
+
+**23.1 Split.** Part A as in §18.5 (same F_cal / F_eval). F_cal's 425 dives are split by
+dive (sorted, `random.Random(23).shuffle`, first half) into **F_fit** (fit the combiner)
+and **F_thr** (Learn-then-Test thresholds). Learn-then-Test must use dives the combiner
+was not fitted on, so no method may use all of F_cal for both jobs.
+
+**23.2 Methods.** All hierarchical, thresholds by Learn-then-Test on F_thr (δ 0.10,
+Hoeffding–Bentkus, dive unit, the registered 0.99 → 0 grid), evaluated on all F_eval boxes:
+* **M1 frozen**: the JODD combiner unchanged (`week4/verifier.json`). It controls for the
+  smaller calibration set.
+* **M2 re-fit, all features**: per-level logistic (`week0_analyse.logistic_fit`, l2 = 1),
+  same 10 features, fitted on F_fit.
+* **M3 re-fit, classifier-only**: the same, but with only the 5 classifier features
+  (node_prob, p_top, entropy, energy, unknown); no detector, agreement or box-size features.
+* **M4 DARTS**: as in §20, λ by Learn-then-Test on F_thr over the §20.5 extended λ grid.
+
+The literal "DARTS + combiner" hybrid is not added: the combiner's first feature at each
+level (node_prob) is already the DARTS node posterior of that level's candidate node, so
+M2 and M3 already combine the two.
+
+Reference values (not recomputed): §20 ours with thresholds from all of F_cal, 0.646
+correct per image at α 0.20, and DARTS 0.741.
+
+**23.3 Measures.** At α 0.10 and 0.20: risk, correct per image, species-correct per image,
+unseen boxes answered wrongly, all with the §20 `metrics` function. Paired dive bootstrap
+(2,000, seed 0) for M2 − M1, M3 − M1, M2 − M4 and M3 − M4 in correct per image.
+
+**23.4 Plumbing check before the run.** Learn-then-Test of M1 on *all* of F_cal must
+reproduce the §18 thresholds (0.90 / 0.81). This touches F_cal only.
+
+**23.5 Expectations.** If detector-side features shift, M3 ≥ M2 > M1 and M3 comes close to
+M4. If M2 and M3 do not beat M1, the gap comes from DARTS's choice of node across the whole
+tree, not from the features. M1 gets fewer correct answers than the §20 value of 0.646,
+because it is calibrated on half the dives.
+
+## 24. The §23 re-fit on FathomNet Part B, with false detections (registered 2026-11-27, before the run)
+
+**Descriptive only.** §23 scored only boxes matched to an annotation (Part A), so a
+re-fitted combiner could learn that "Animal" is nearly always right. Part B (all-VERIFIED
+images) keeps every final box, so false detections count as errors (§18.6). Question: does
+the §23 re-fit's advantage over DARTS and the frozen combiner survive when false
+detections are scored?
+
+**24.1 Data.** Part B images whose dive is **not** an F_cal dive (F_cal from §18.5, seed 0):
+197 dives, 602 images. Part B images from F_cal dives (104 dives, 257 images) are dropped,
+because F_fit and F_thr came from those dives. Boxes are every final box of the
+`F_ext_verifier.jsonl` log except those matched to an excluded concept (as §18.6). An
+unmatched box is wrong at every level. Part B was read before only by §18.6, whose
+verifier rows used the frozen combiner.
+
+**24.2 Methods.** M1–M4 exactly as §23 (same F_fit / F_thr split, seed 23, same fits,
+Learn-then-Test on F_thr matched boxes), plus:
+* **M5 re-fit with unmatched boxes**: as M2 (all 10 features), but fitted on *all* F_fit
+  final boxes and thresholded on *all* F_thr final boxes, with unmatched boxes counted
+  wrong at every level. In Part A an unmatched box may be an unannotated animal, so M5 is
+  pessimistic about coarse answers; it is the natural remedy if M2 fails on Part B.
+
+**24.3 Measures.** At α 0.10 and 0.20, with the §20 `metrics` function on the held-out
+Part B boxes: risk, correct, species-correct and credit per image, unseen wrong, and the
+number of unmatched boxes answered (false detections given a label). Paired dive bootstrap
+(2,000, seed 0) in correct and in credit per image for M2 − M1, M2 − M4, M5 − M1 and M5 − M4.
+
+**24.4 Plumbing check.** The §23 parameters (M1 0.89 / 0.81, M2 0.79 / 0.67, M3 0.79 /
+0.64, M4 λ as in `refit.json`) must be reproduced before any Part B box is scored.
+
+**24.5 Expectations.** M2's risk rises above α on Part B, because it labels false
+detections "Animal"; M1 and M4 stay closer to α. M5 keeps the risk down but loses part of
+M2's gain. If M2 still meets α and leads DARTS on credit, the §23 advantage is not an
+artefact of matched-only scoring.
