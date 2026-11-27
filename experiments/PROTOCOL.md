@@ -1446,3 +1446,38 @@ reproduce the §18 thresholds (0.90 / 0.81). This touches F_cal only.
 M4. If M2 and M3 do not beat M1, the gap comes from DARTS's choice of node across the whole
 tree, not from the features. M1 gets fewer correct answers than the §20 value of 0.646,
 because it is calibrated on half the dives.
+
+## 24. The §23 re-fit on FathomNet Part B, with false detections (registered 2026-11-27, before the run)
+
+**Descriptive only.** §23 scored only boxes matched to an annotation (Part A), so a
+re-fitted combiner could learn that "Animal" is nearly always right. Part B (all-VERIFIED
+images) keeps every final box, so false detections count as errors (§18.6). Question: does
+the §23 re-fit's advantage over DARTS and the frozen combiner survive when false
+detections are scored?
+
+**24.1 Data.** Part B images whose dive is **not** an F_cal dive (F_cal from §18.5, seed 0):
+197 dives, 602 images. Part B images from F_cal dives (104 dives, 257 images) are dropped,
+because F_fit and F_thr came from those dives. Boxes are every final box of the
+`F_ext_verifier.jsonl` log except those matched to an excluded concept (as §18.6). An
+unmatched box is wrong at every level. Part B was read before only by §18.6, whose
+verifier rows used the frozen combiner.
+
+**24.2 Methods.** M1–M4 exactly as §23 (same F_fit / F_thr split, seed 23, same fits,
+Learn-then-Test on F_thr matched boxes), plus:
+* **M5 re-fit with unmatched boxes**: as M2 (all 10 features), but fitted on *all* F_fit
+  final boxes and thresholded on *all* F_thr final boxes, with unmatched boxes counted
+  wrong at every level. In Part A an unmatched box may be an unannotated animal, so M5 is
+  pessimistic about coarse answers; it is the natural remedy if M2 fails on Part B.
+
+**24.3 Measures.** At α 0.10 and 0.20, with the §20 `metrics` function on the held-out
+Part B boxes: risk, correct, species-correct and credit per image, unseen wrong, and the
+number of unmatched boxes answered (false detections given a label). Paired dive bootstrap
+(2,000, seed 0) in correct and in credit per image for M2 − M1, M2 − M4, M5 − M1 and M5 − M4.
+
+**24.4 Plumbing check.** The §23 parameters (M1 0.89 / 0.81, M2 0.79 / 0.67, M3 0.79 /
+0.64, M4 λ as in `refit.json`) must be reproduced before any Part B box is scored.
+
+**24.5 Expectations.** M2's risk rises above α on Part B, because it labels false
+detections "Animal"; M1 and M4 stay closer to α. M5 keeps the risk down but loses part of
+M2's gain. If M2 still meets α and leads DARTS on credit, the §23 advantage is not an
+artefact of matched-only scoring.
