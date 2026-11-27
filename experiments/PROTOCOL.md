@@ -1404,3 +1404,45 @@ contrast break it, because the combiner's features were fitted on clean images; 
 is partly absorbed by the app's own enhancement; option D re-runs more often as damage
 grows. Any break means that condition needs its own calibration data; no threshold is
 changed in this section.
+
+## 23. Re-fitting the combiner on FathomNet (registered 2026-11-27, before any re-fit is computed)
+
+**Descriptive only.** This is the fourth use of F_eval (after §18, §19, §20), so no
+confirmatory claim is made. Question: on FathomNet, DARTS calibrated by our Learn-then-Test
+beat our hierarchical verifier at α 0.20 (−0.094 correct per image, §20). Is that because
+the combiner, fitted on JODD, uses features that shift out of domain, so that re-fitting
+it on FathomNet data closes the gap?
+
+**23.1 Split.** Part A as in §18.5 (same F_cal / F_eval). F_cal's 425 dives are split by
+dive (sorted, `random.Random(23).shuffle`, first half) into **F_fit** (fit the combiner)
+and **F_thr** (Learn-then-Test thresholds). Learn-then-Test must use dives the combiner
+was not fitted on, so no method may use all of F_cal for both jobs.
+
+**23.2 Methods.** All hierarchical, thresholds by Learn-then-Test on F_thr (δ 0.10,
+Hoeffding–Bentkus, dive unit, the registered 0.99 → 0 grid), evaluated on all F_eval boxes:
+* **M1 frozen**: the JODD combiner unchanged (`week4/verifier.json`). It controls for the
+  smaller calibration set.
+* **M2 re-fit, all features**: per-level logistic (`week0_analyse.logistic_fit`, l2 = 1),
+  same 10 features, fitted on F_fit.
+* **M3 re-fit, classifier-only**: the same, but with only the 5 classifier features
+  (node_prob, p_top, entropy, energy, unknown); no detector, agreement or box-size features.
+* **M4 DARTS**: as in §20, λ by Learn-then-Test on F_thr over the §20.5 extended λ grid.
+
+The literal "DARTS + combiner" hybrid is not added: the combiner's first feature at each
+level (node_prob) is already the DARTS node posterior of that level's candidate node, so
+M2 and M3 already combine the two.
+
+Reference values (not recomputed): §20 ours with thresholds from all of F_cal, 0.646
+correct per image at α 0.20, and DARTS 0.741.
+
+**23.3 Measures.** At α 0.10 and 0.20: risk, correct per image, species-correct per image,
+unseen boxes answered wrongly, all with the §20 `metrics` function. Paired dive bootstrap
+(2,000, seed 0) for M2 − M1, M3 − M1, M2 − M4 and M3 − M4 in correct per image.
+
+**23.4 Plumbing check before the run.** Learn-then-Test of M1 on *all* of F_cal must
+reproduce the §18 thresholds (0.90 / 0.81). This touches F_cal only.
+
+**23.5 Expectations.** If detector-side features shift, M3 ≥ M2 > M1 and M3 comes close to
+M4. If M2 and M3 do not beat M1, the gap comes from DARTS's choice of node across the whole
+tree, not from the features. M1 gets fewer correct answers than the §20 value of 0.646,
+because it is calibrated on half the dives.
