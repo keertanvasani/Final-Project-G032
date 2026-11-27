@@ -1,0 +1,136 @@
+{
+  "protocol": "PROTOCOL \u00a721",
+  "images": 844,
+  "dives": 315,
+  "boxes": {
+    "bandit": 1463,
+    "option_d": 1371
+  },
+  "alphas": {
+    "0.1": {
+      "hierarchical": {
+        "bandit": {
+          "risk": 0.0897497744851222,
+          "answers_per_image": 1.1090047393364928,
+          "correct_per_image": 0.9466824644549763,
+          "species_correct_per_image": 0.7464454976303317,
+          "error_among_reported": 0.1463675213675214
+        },
+        "option_d": {
+          "risk": 0.09831735009111023,
+          "answers_per_image": 1.1090047393364928,
+          "correct_per_image": 0.9383886255924171,
+          "species_correct_per_image": 0.745260663507109,
+          "error_among_reported": 0.15384615384615385
+        },
+        "option_d_minus_bandit": {
+          "risk": 0.008567575605988031,
+          "risk_ci95": [
+            0.0011697732863630572,
+            0.01599227453345603
+          ],
+          "correct_per_image": -0.008293838862559189,
+          "correct_ci95": [
+            -0.02176541717049577,
+            0.0057405281285878304
+          ]
+        },
+        "threshold": 0.72
+      },
+      "flat": {
+        "bandit": {
+          "risk": 0.0926725753684494,
+          "answers_per_image": 0.9845971563981043,
+          "correct_per_image": 0.8270142180094787,
+          "species_correct_per_image": 0.8270142180094787,
+          "error_among_reported": 0.16004813477737667
+        },
+        "option_d": {
+          "risk": 0.09947972903402544,
+          "answers_per_image": 0.985781990521327,
+          "correct_per_image": 0.8210900473933649,
+          "species_correct_per_image": 0.8210900473933649,
+          "error_among_reported": 0.1670673076923077
+        },
+        "option_d_minus_bandit": {
+          "risk": 0.006807153665576035,
+          "risk_ci95": [
+            0.00031481352641422877,
+            0.013972149113533963
+          ],
+          "correct_per_image": -0.005924170616113833,
+          "correct_ci95": [
+            -0.016548463356973995,
+            0.005605381165919282
+          ]
+        },
+        "threshold": 0.64
+      }
+    },
+    "0.2": {
+      "hierarchical": {
+        "bandit": {
+          "risk": 0.18431924219413562,
+          "answers_per_image": 1.433649289099526,
+          "correct_per_image": 1.0308056872037914,
+          "species_correct_per_image": 0.9158767772511849,
+          "error_among_reported": 0.28099173553719003
+        },
+        "option_d": {
+          "risk": 0.18734117122457564,
+          "answers_per_image": 1.386255924170616,
+          "correct_per_image": 1.0023696682464456,
+          "species_correct_per_image": 0.9075829383886256,
+          "error_among_reported": 0.27692307692307694
+        },
+        "option_d_minus_bandit": {
+          "risk": 0.003021929030440018,
+          "risk_ci95": [
+            -0.008236255898796896,
+            0.014571506748809138
+          ],
+          "correct_per_image": -0.02843601895734582,
+          "correct_ci95": [
+            -0.04954954954954955,
+            -0.00805523590333717
+          ]
+        },
+        "threshold": 0.38
+      },
+      "flat": {
+        "bandit": {
+          "risk": 0.18622041774589596,
+          "answers_per_image": 1.3613744075829384,
+          "correct_per_image": 0.9537914691943128,
+          "species_correct_per_image": 0.9537914691943128,
+          "error_among_reported": 0.299390774586597
+        },
+        "option_d": {
+          "risk": 0.19094788430993817,
+          "answers_per_image": 1.3317535545023698,
+          "correct_per_image": 0.9407582938388626,
+          "species_correct_per_image": 0.9407582938388626,
+          "error_among_reported": 0.29359430604982206
+        },
+        "option_d_minus_bandit": {
+          "risk": 0.004727466564042215,
+          "risk_ci95": [
+            -0.006413446802740169,
+            0.016934749206528765
+          ],
+          "correct_per_image": -0.013033175355450233,
+          "correct_ci95": [
+            -0.027251184834123223,
+            0.0011682242990654205
+          ]
+        },
+        "threshold": 0.27
+      }
+    }
+  },
+  "reading_21_4": {
+    "risk_le_alpha": true,
+    "risk_diff_ci_lower_le_0": true
+  },
+  "guarantee_carries_over": true
+}

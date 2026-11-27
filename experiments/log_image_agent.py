@@ -34,6 +34,8 @@ from ablation_deepsea import DIVE_RE, MAN, image_path  # noqa: E402
 from agentic import loop, policy, probes  # noqa: E402
 from pipeline import EnsemblePipeline  # noqa: E402
 
+config.pin_pre_d()   # reproduce the committed logs: the pre-option-D app settings
+
 OUT = ROOT / "experiments" / "results" / "phase_b_machine" / "week1"
 ALLOWED = ("S_cal", "S_policy")      # S_policy opened by PROTOCOL §15
 

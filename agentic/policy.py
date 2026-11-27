@@ -188,6 +188,10 @@ class ImageAgentPolicy(Policy):
         import config
         p = Path(path or getattr(config, "AGENT_IMAGE_POLICY", ""))
         self.spec = json.loads(p.read_text()) if p.is_file() else None
+        lam = getattr(config, "AGENT_IMAGE_LAMBDA", None)
+        if self.spec is not None and lam is not None and path is None:
+            # Operating point chosen in config (e.g. λ_m); the fitted Q-functions are unchanged.
+            self.spec = dict(self.spec, **{"lambda": float(lam)})
 
     def _spec(self):
         if self.spec is None:

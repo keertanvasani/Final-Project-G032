@@ -14,6 +14,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import importlib
 import json
 import sys
 import time
@@ -31,6 +32,10 @@ from eval import harness  # noqa: E402
 from log_image_agent import harness_fields  # noqa: E402
 from pipeline import EnsemblePipeline  # noqa: E402
 
+import config  # noqa: E402
+
+config.pin_pre_d()   # reproduce the committed logs: the pre-option-D app settings
+OUT_D = ROOT / "experiments" / "results" / "phase_b_machine" / "option_d"
 OUT = ROOT / "experiments" / "results" / "phase_b_machine" / "week3"
 ALLOWED = ("S_cal", "S_policy")      # S_policy opened by PROTOCOL §15
 
@@ -41,7 +46,16 @@ def main() -> None:
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--confirmatory", action="store_true",
                     help="required for S_test: the single registered run (PROTOCOL §16)")
+    ap.add_argument("--option-d", action="store_true",
+                    help="log with the app's option-D settings (image agent + verifier, PROTOCOL §21); "
+                         "writes to option_d/, never S_test")
     args = ap.parse_args()
+    out = OUT
+    if args.option_d:
+        if args.split == "S_test":
+            raise SystemExit("S_test is closed for these components (§16)")
+        importlib.reload(config)   # undo pin_pre_d: the settings as committed in config.py
+        out = OUT_D
     if args.split == "S_test":
         if not (args.confirmatory and args.limit is None):
             raise SystemExit("S_test: only the full --confirmatory run registered in PROTOCOL §16")
@@ -53,8 +67,8 @@ def main() -> None:
     files = sorted(man["files"][args.split])[: args.limit]
     pipe = EnsemblePipeline(profile="deepsea")
     classes = list(pipe.classifier.class_names)
-    OUT.mkdir(parents=True, exist_ok=True)
-    dest = OUT / f"{args.split}_verifier.jsonl"
+    out.mkdir(parents=True, exist_ok=True)
+    dest = out / f"{args.split}_verifier.jsonl"
     t0, nb = time.time(), 0
     with dest.open("w", encoding="utf-8") as fh:
         for k, fn in enumerate(files):

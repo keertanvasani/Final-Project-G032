@@ -29,6 +29,8 @@ from agentic.probes import PROBE_KEYS, state_columns  # noqa: E402
 from log_image_agent import harness_fields  # noqa: E402
 from pipeline import EnsemblePipeline  # noqa: E402
 
+config.pin_pre_d()   # reproduce the committed logs: the pre-option-D app settings
+
 DIR = ROOT / "experiments" / "results" / "phase_b_machine" / "week1"
 
 

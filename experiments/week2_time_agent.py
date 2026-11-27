@@ -23,6 +23,8 @@ from ablation_deepsea import MAN, image_path  # noqa: E402
 from agentic import loop, policy  # noqa: E402
 from pipeline import EnsemblePipeline  # noqa: E402
 
+config.pin_pre_d()   # reproduce the committed logs: the pre-option-D app settings
+
 
 def main() -> None:
     ap = argparse.ArgumentParser()
