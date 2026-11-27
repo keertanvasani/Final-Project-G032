@@ -290,10 +290,10 @@ def main() -> None:
     check(spec)
     out = {"protocol": "PROTOCOL §20.5, post-hoc extended grids" if EXTENDED else "PROTOCOL §20 (descriptive)", "JODD": setting(*jodd(spec)),
            "FathomNet": setting(*fathomnet(spec))}
-    OUT.parent.mkdir(parents=True, exist_ok=True)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
     enc = lambda o: bool(o) if isinstance(o, np.bool_) else float(o)   # noqa: E731
     OUT.write_text(json.dumps(out, indent=1, default=enc) + "\n")
-    print(f"wrote {OUT}")
+    print(f"wrote {out_path}")
 
 
 if __name__ == "__main__":
