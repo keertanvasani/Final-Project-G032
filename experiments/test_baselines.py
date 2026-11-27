@@ -156,7 +156,16 @@ GRID_LAM = [10 ** (3 - 6 * i / 99) for i in range(100)] + [0.0]
 QS = [round(1 - 0.01 * i, 2) for i in range(101)]
 
 
+EXTENDED = "--extended" in sys.argv           # §20.5 post-hoc sensitivity run
+GRID_SR_EXT = [1 - 10 ** (-6 + 0.06 * i) for i in range(50)] + GRID
+GRID_LAM_EXT = [10 ** (6 - 3 * i / 50) for i in range(50)] + GRID_LAM
+
+
 def grid_for(name, B, i_cal):
+    if EXTENDED and name == "softmax_response":
+        return GRID_SR_EXT
+    if EXTENDED and name == "darts":
+        return GRID_LAM_EXT
     if name == "energy":
         return [float(np.quantile(B.negE[i_cal], q)) for q in QS]
     return GRID_LAM if name == "darts" else GRID
@@ -275,10 +284,11 @@ def main() -> None:
     if "--check" in sys.argv:
         check(spec)
         return
-    if OUT.exists():
-        raise SystemExit(f"{OUT} exists: §20 is single-use")
+    out_path = OUT.with_name("baselines_extended_grid.json") if EXTENDED else OUT
+    if out_path.exists():
+        raise SystemExit(f"{out_path} exists: single-use")
     check(spec)
-    out = {"protocol": "PROTOCOL §20 (descriptive)", "JODD": setting(*jodd(spec)),
+    out = {"protocol": "PROTOCOL §20.5, post-hoc extended grids" if EXTENDED else "PROTOCOL §20 (descriptive)", "JODD": setting(*jodd(spec)),
            "FathomNet": setting(*fathomnet(spec))}
     OUT.parent.mkdir(parents=True, exist_ok=True)
     enc = lambda o: bool(o) if isinstance(o, np.bool_) else float(o)   # noqa: E731
