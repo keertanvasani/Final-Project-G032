@@ -292,7 +292,7 @@ def main() -> None:
            "FathomNet": setting(*fathomnet(spec))}
     out_path.parent.mkdir(parents=True, exist_ok=True)
     enc = lambda o: bool(o) if isinstance(o, np.bool_) else float(o)   # noqa: E731
-    OUT.write_text(json.dumps(out, indent=1, default=enc) + "\n")
+    out_path.write_text(json.dumps(out, indent=1, default=enc) + "\n")
     print(f"wrote {out_path}")
 
 
