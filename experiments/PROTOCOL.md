@@ -1245,3 +1245,74 @@ F_cal/F_eval split and the F_cal thresholds in `fathomnet_test.json`.
 
 Script: `experiments/test_h3_fathomnet.py`, committed before it is run. Output:
 `experiments/results/external_fathomnet/h3_test.json`. Single use.
+
+## 20. Literature baselines for the verifier (registered 2026-11-27, before any baseline is computed)
+
+**Descriptive only.** S_test and FathomNet F_eval are already used for the verifier's
+claims (§16, §18, §19). This section adds comparisons with published methods on the same
+boxes. It tests no hypothesis and changes no earlier result. Nothing is tuned on the
+evaluation data, and every method is run once.
+
+### 20.1 Settings (exactly the verifier's own evaluations)
+
+| Setting | Calibration | Evaluation | Boxes |
+|---|---|---|---|
+| **JODD** | all S_policy dives, eligible boxes (§16, as `week6_calibrate_thresholds.py`) | all S_test dives | the deployed agent's final boxes (`week3/*_verifier.jsonl`); unmatched boxes count as wrong if answered |
+| **FathomNet** | F_cal (§18.3 split) | F_eval | matched, scorable boxes only (§18.5) |
+
+Risk = dive-level share of boxes given a wrong answer, as in §14/§18. An answer is
+correct when its node lies on the true taxon's path in the §14.1 tree.
+
+### 20.2 Methods
+
+All methods use the frozen classifier's softmax over the 9 known classes and the logged box
+fields; nothing is retrained. Methods 1–6 each have one parameter. That parameter is set
+by **the same Learn-then-Test procedure as ours** (Hoeffding–Bentkus, δ = 0.10, dive as
+the unit, a fixed grid from strict to lenient, stopping at the first failure). This
+isolates *what is scored and answered* from *how the threshold is chosen*.
+
+| # | Method | Answer | Parameter, grid |
+|---|---|---|---|
+| 1 | **Ours, hierarchical** (§14) | deepest level with combiner P ≥ t | t, 0.99 … 0.00 |
+| 2 | **Ours, flat** | species if combiner P ≥ t | t, 0.99 … 0.00 |
+| 3 | **Softmax response** (Geifman & El-Yaniv 2017) | the box's final species if the classifier's probability for it ≥ τ | τ, 0.99 … 0.00 |
+| 4 | **Energy score** (Liu et al. 2020) | final species if −energy ≥ τ | τ = the calibration boxes' −energy at quantiles 1.00, 0.99, …, 0.00 |
+| 5 | **Calibrated confidence** (the deployed isotonic `combined_confidence`) | final species if confidence ≥ τ | τ, 0.99 … 0.00 |
+| 6 | **DARTS** (Deng et al. 2012, "hedging your bets") | argmax over tree nodes of (r(v) + λ)·p(v) | λ = 10^(3 − 6i/99), i = 0 … 99, then 0 |
+| 7 | **Split conformal + LCA** (LAC score, Sadinle et al. 2019) | the lowest common ancestor of the prediction set | none: q̂ at level 1 − α from the calibration boxes |
+
+* **DARTS details.** p(v) is the summed softmax of the leaves under v. The reward is
+  information gain, r(v) = log₂ 9 − log₂ (leaves under v). A virtual root over "Animal" and
+  "Man-made" has p = 1 and r = 0; choosing it means abstaining. Ties go to the deeper node.
+  The species answer is the argmax leaf, as published, not our agent's vote.
+* **Conformal details.** Conformal prediction is calibrated by its own rule, not by
+  Learn-then-Test, using calibration boxes matched to a known class (the standard
+  closed-set setting). The prediction set is {y : p_y ≥ 1 − q̂}. An empty set or one spanning
+  both kingdoms means abstain. Also reported: coverage of the true class on known
+  evaluation boxes, and mean set size.
+
+### 20.3 Reported (per setting, α ∈ {0.10, 0.20})
+
+* The chosen parameter, realised risk, and risk ≤ α.
+* Answers, correct answers, credit and species-level correct answers, all per image.
+* Unseen-animal boxes given a correct answer and a wrong answer.
+* Ours (hierarchical) minus each baseline in correct answers per image, with a 95%
+  paired dive-bootstrap interval (2,000 resamples, seed 0). Descriptive: no p-values, no
+  multiplicity correction.
+* Risk–coverage curves over each method's full parameter grid on the evaluation set,
+  for figures only.
+
+### 20.4 Expectations, stated before the run
+
+* Every Learn-then-Test method should meet risk ≤ α. Conformal + LCA may not, because
+  unseen animals are never in its label space.
+* DARTS is the closest competitor; it should beat the flat methods on correct answers.
+  We expect ours to be at least as good, because the combiner uses detector, energy and
+  agreement signals that DARTS does not.
+* If a baseline beats ours, it is reported as such.
+
+**Plumbing check before the run:** the generic Learn-then-Test code must reproduce the
+frozen thresholds for methods 1–2: 0.72 / 0.38 and 0.64 / 0.27 on JODD, and
+0.90 / 0.81 and 0.88 / 0.78 on FathomNet. No baseline output is read before the run.
+Script: `experiments/test_baselines.py`. Output:
+`experiments/results/baselines/baselines.json`.
