@@ -1366,3 +1366,41 @@ has a 95% interval that includes 0 or is negative, the deployed guarantee is tak
 carry over to the combined system (descriptively). Otherwise the app falls back to the
 verifier alone (image agent off) until the verifier is re-calibrated on option-D boxes,
 which would need a new registration and a fresh split.
+
+## 22. Synthetic degradation with option D (registered 2026-11-27, before any degraded image is run)
+
+**Descriptive only.** Question: as image quality drops in a controlled way (ground truth
+unchanged), does the verifier, with thresholds fixed on clean images, keep its error rate
+near α by stepping back and abstaining, or does it keep answering and become wrong? And
+does the image agent re-run more often on damaged images?
+
+**22.1 Data.** S_policy (844 images). S_test stays closed (§16). The clean condition is
+in-sample for the thresholds (§21: risk 0.187 at α 0.20), so the comparison of interest is
+each damaged condition against clean, and option D against the bandit on the same images.
+
+**22.2 Damage.** The seven transforms of `experiments/degrade.py`, unchanged, at its three
+severities: gaussian blur (kernel 3 / 7 / 13), motion blur (5 / 11 / 21), noise (σ 10 / 25
+/ 45), low light (× 0.60 / 0.40 / 0.25), low contrast (0.60 / 0.40 / 0.25), colour shift
+(red × 0.80 / 0.60 / 0.40), JPEG compression (quality 40 / 20 / 10). Plus clean: 22
+conditions. Noise is seeded per (image, condition), so both systems see identical pixels.
+Damaged images are never saved.
+
+**22.3 Systems.** (a) Option D as in `config.py` (image agent λ_m + hierarchical verifier
+α 0.20); (b) the pre-D bandit chain (`config.pin_pre_d()`) with the same verifier applied
+offline. Same frozen combiner (`week6/verifier_deploy.json`) and S_policy thresholds
+(hierarchical 0.72 / 0.38, flat 0.64 / 0.27) for both, never re-fitted.
+
+**22.4 Measures per condition and system.** Dive-level risk (§14) for hierarchical at α
+0.10 and 0.20, and flat at α 0.20; share of 2,000 dive bootstrap resamples (seed 0) with
+risk ≤ α; answers, correct answers and species-correct answers per image; answer level
+mix (species / group / phylum / kingdom / abstain); final boxes; matched boxes; image
+status counts; for option D, the share of images re-run and the share keeping the second
+pass. Paired dive bootstrap of option D − bandit for risk and correct per image at α 0.20.
+
+**22.5 Reading.** For each condition, the guarantee is said to *hold under that damage*
+if hierarchical risk at α 0.20 is ≤ 0.20, and to be *robust* if ≥ 90% of resamples are
+≤ 0.20. Expected before the run: mild severities hold; severe noise, motion blur and low
+contrast break it, because the combiner's features were fitted on clean images; low light
+is partly absorbed by the app's own enhancement; option D re-runs more often as damage
+grows. Any break means that condition needs its own calibration data; no threshold is
+changed in this section.
