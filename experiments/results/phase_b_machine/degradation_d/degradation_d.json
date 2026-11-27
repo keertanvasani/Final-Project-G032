@@ -1,0 +1,2647 @@
+{
+  "protocol": "PROTOCOL \u00a722",
+  "images": 844,
+  "dives": 315,
+  "conditions": {
+    "clean": {
+      "option_d": {
+        "final_boxes": 1371,
+        "matched_boxes": 1055,
+        "status": {
+          "complete": 663,
+          "needs_review": 181
+        },
+        "rerun_share": 0.17061611374407584,
+        "kept_second_share": 0.13507109004739337,
+        "hier_0.2": {
+          "risk": 0.18734117122457564,
+          "share_resamples_le_alpha": 0.7895,
+          "answers_per_image": 1.386255924170616,
+          "correct_per_image": 1.0023696682464456,
+          "species_correct_per_image": 0.9075829383886256,
+          "level_mix": {
+            "abstain": 201,
+            "species": 1022,
+            "group": 40,
+            "phylum": 0,
+            "kingdom": 108
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.09831735009111023,
+          "share_resamples_le_alpha": 0.5695,
+          "answers_per_image": 1.1090047393364928,
+          "correct_per_image": 0.9383886255924171,
+          "species_correct_per_image": 0.745260663507109,
+          "level_mix": {
+            "abstain": 435,
+            "species": 734,
+            "group": 39,
+            "phylum": 0,
+            "kingdom": 163
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.19094788430993817,
+          "share_resamples_le_alpha": 0.7165,
+          "answers_per_image": 1.3317535545023698,
+          "correct_per_image": 0.9407582938388626,
+          "species_correct_per_image": 0.9407582938388626,
+          "level_mix": {
+            "abstain": 247,
+            "species": 1124,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "bandit": {
+        "final_boxes": 1463,
+        "matched_boxes": 1087,
+        "status": {
+          "complete": 681,
+          "needs_review": 163
+        },
+        "rerun_share": 0.0,
+        "kept_second_share": 0.0,
+        "hier_0.2": {
+          "risk": 0.18431924219413562,
+          "share_resamples_le_alpha": 0.8555,
+          "answers_per_image": 1.433649289099526,
+          "correct_per_image": 1.0308056872037914,
+          "species_correct_per_image": 0.9158767772511849,
+          "level_mix": {
+            "abstain": 253,
+            "species": 1038,
+            "group": 38,
+            "phylum": 0,
+            "kingdom": 134
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.0897497744851222,
+          "share_resamples_le_alpha": 0.807,
+          "answers_per_image": 1.1090047393364928,
+          "correct_per_image": 0.9466824644549763,
+          "species_correct_per_image": 0.7464454976303317,
+          "level_mix": {
+            "abstain": 527,
+            "species": 727,
+            "group": 39,
+            "phylum": 0,
+            "kingdom": 170
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.18622041774589596,
+          "share_resamples_le_alpha": 0.818,
+          "answers_per_image": 1.3613744075829384,
+          "correct_per_image": 0.9537914691943128,
+          "species_correct_per_image": 0.9537914691943128,
+          "level_mix": {
+            "abstain": 314,
+            "species": 1149,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "option_d_minus_bandit": {
+        "risk_ci95": [
+          -0.008236255898796896,
+          0.014571506748809138
+        ],
+        "correct_ci95": [
+          -0.04954954954954955,
+          -0.00805523590333717
+        ]
+      },
+      "reading_22_5": {
+        "holds": true,
+        "robust": false
+      }
+    },
+    "gaussian_blur_1": {
+      "option_d": {
+        "final_boxes": 1275,
+        "matched_boxes": 1026,
+        "status": {
+          "complete": 672,
+          "needs_review": 172
+        },
+        "rerun_share": 0.15876777251184834,
+        "kept_second_share": 0.1338862559241706,
+        "hier_0.2": {
+          "risk": 0.21249605333094984,
+          "share_resamples_le_alpha": 0.2435,
+          "answers_per_image": 1.3175355450236967,
+          "correct_per_image": 0.9609004739336493,
+          "species_correct_per_image": 0.8601895734597157,
+          "level_mix": {
+            "abstain": 163,
+            "species": 975,
+            "group": 25,
+            "phylum": 0,
+            "kingdom": 112
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.10928184661898106,
+          "share_resamples_le_alpha": 0.262,
+          "answers_per_image": 1.0236966824644549,
+          "correct_per_image": 0.8696682464454977,
+          "species_correct_per_image": 0.6741706161137441,
+          "level_mix": {
+            "abstain": 411,
+            "species": 663,
+            "group": 25,
+            "phylum": 0,
+            "kingdom": 176
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.21945801810647833,
+          "share_resamples_le_alpha": 0.1475,
+          "answers_per_image": 1.2476303317535544,
+          "correct_per_image": 0.8921800947867299,
+          "species_correct_per_image": 0.8921800947867299,
+          "level_mix": {
+            "abstain": 222,
+            "species": 1053,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "bandit": {
+        "final_boxes": 1340,
+        "matched_boxes": 1049,
+        "status": {
+          "complete": 682,
+          "needs_review": 162
+        },
+        "rerun_share": 0.0,
+        "kept_second_share": 0.0,
+        "hier_0.2": {
+          "risk": 0.19520785721000936,
+          "share_resamples_le_alpha": 0.6175,
+          "answers_per_image": 1.3400473933649288,
+          "correct_per_image": 0.985781990521327,
+          "species_correct_per_image": 0.8696682464454977,
+          "level_mix": {
+            "abstain": 209,
+            "species": 970,
+            "group": 26,
+            "phylum": 0,
+            "kingdom": 135
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.09761429953144539,
+          "share_resamples_le_alpha": 0.583,
+          "answers_per_image": 1.0236966824644549,
+          "correct_per_image": 0.8850710900473934,
+          "species_correct_per_image": 0.6789099526066351,
+          "level_mix": {
+            "abstain": 476,
+            "species": 659,
+            "group": 25,
+            "phylum": 0,
+            "kingdom": 180
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.19993801654494722,
+          "share_resamples_le_alpha": 0.5245,
+          "answers_per_image": 1.2630331753554502,
+          "correct_per_image": 0.9075829383886256,
+          "species_correct_per_image": 0.9075829383886256,
+          "level_mix": {
+            "abstain": 274,
+            "species": 1066,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "option_d_minus_bandit": {
+        "risk_ci95": [
+          0.001603385585900452,
+          0.03458934991891849
+        ],
+        "correct_ci95": [
+          -0.03945745992601726,
+          -0.009791921664626682
+        ]
+      },
+      "reading_22_5": {
+        "holds": false,
+        "robust": false
+      }
+    },
+    "gaussian_blur_2": {
+      "option_d": {
+        "final_boxes": 902,
+        "matched_boxes": 755,
+        "status": {
+          "complete": 544,
+          "needs_review": 300
+        },
+        "rerun_share": 0.11611374407582939,
+        "kept_second_share": 0.1066350710900474,
+        "hier_0.2": {
+          "risk": 0.21987033586828855,
+          "share_resamples_le_alpha": 0.1675,
+          "answers_per_image": 0.9229857819905213,
+          "correct_per_image": 0.6789099526066351,
+          "species_correct_per_image": 0.5912322274881516,
+          "level_mix": {
+            "abstain": 123,
+            "species": 663,
+            "group": 19,
+            "phylum": 0,
+            "kingdom": 97
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.09862671841739677,
+          "share_resamples_le_alpha": 0.547,
+          "answers_per_image": 0.7251184834123223,
+          "correct_per_image": 0.6101895734597157,
+          "species_correct_per_image": 0.4324644549763033,
+          "level_mix": {
+            "abstain": 290,
+            "species": 438,
+            "group": 26,
+            "phylum": 0,
+            "kingdom": 148
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.2194470379147486,
+          "share_resamples_le_alpha": 0.179,
+          "answers_per_image": 0.8637440758293838,
+          "correct_per_image": 0.6244075829383886,
+          "species_correct_per_image": 0.6244075829383886,
+          "level_mix": {
+            "abstain": 173,
+            "species": 729,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "bandit": {
+        "final_boxes": 959,
+        "matched_boxes": 775,
+        "status": {
+          "complete": 555,
+          "needs_review": 289
+        },
+        "rerun_share": 0.0,
+        "kept_second_share": 0.0,
+        "hier_0.2": {
+          "risk": 0.18094457011082374,
+          "share_resamples_le_alpha": 0.8525,
+          "answers_per_image": 0.9289099526066351,
+          "correct_per_image": 0.7049763033175356,
+          "species_correct_per_image": 0.5959715639810427,
+          "level_mix": {
+            "abstain": 175,
+            "species": 652,
+            "group": 17,
+            "phylum": 0,
+            "kingdom": 115
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.08355919019180875,
+          "share_resamples_le_alpha": 0.8975,
+          "answers_per_image": 0.7120853080568721,
+          "correct_per_image": 0.6066350710900474,
+          "species_correct_per_image": 0.43483412322274884,
+          "level_mix": {
+            "abstain": 358,
+            "species": 432,
+            "group": 26,
+            "phylum": 0,
+            "kingdom": 143
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.18728193380354335,
+          "share_resamples_le_alpha": 0.7385,
+          "answers_per_image": 0.8625592417061612,
+          "correct_per_image": 0.6303317535545023,
+          "species_correct_per_image": 0.6303317535545023,
+          "level_mix": {
+            "abstain": 231,
+            "species": 728,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "option_d_minus_bandit": {
+        "risk_ci95": [
+          0.017169390828719405,
+          0.06182272849021281
+        ],
+        "correct_ci95": [
+          -0.03859250851305335,
+          -0.012571428571428572
+        ]
+      },
+      "reading_22_5": {
+        "holds": false,
+        "robust": false
+      }
+    },
+    "gaussian_blur_3": {
+      "option_d": {
+        "final_boxes": 63,
+        "matched_boxes": 47,
+        "status": {
+          "needs_review": 800,
+          "complete": 44
+        },
+        "rerun_share": 0.0071090047393364926,
+        "kept_second_share": 0.0071090047393364926,
+        "hier_0.2": {
+          "risk": 0.24358974358974358,
+          "share_resamples_le_alpha": 0.271,
+          "answers_per_image": 0.06042654028436019,
+          "correct_per_image": 0.045023696682464455,
+          "species_correct_per_image": 0.041469194312796206,
+          "level_mix": {
+            "abstain": 12,
+            "species": 43,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 8
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.14529914529914528,
+          "share_resamples_le_alpha": 0.21,
+          "answers_per_image": 0.04265402843601896,
+          "correct_per_image": 0.03317535545023697,
+          "species_correct_per_image": 0.017772511848341232,
+          "level_mix": {
+            "abstain": 27,
+            "species": 18,
+            "group": 3,
+            "phylum": 0,
+            "kingdom": 15
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.22649572649572652,
+          "share_resamples_le_alpha": 0.3565,
+          "answers_per_image": 0.054502369668246446,
+          "correct_per_image": 0.041469194312796206,
+          "species_correct_per_image": 0.041469194312796206,
+          "level_mix": {
+            "abstain": 17,
+            "species": 46,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "bandit": {
+        "final_boxes": 69,
+        "matched_boxes": 49,
+        "status": {
+          "needs_review": 799,
+          "complete": 45
+        },
+        "rerun_share": 0.0,
+        "kept_second_share": 0.0,
+        "hier_0.2": {
+          "risk": 0.25,
+          "share_resamples_le_alpha": 0.2245,
+          "answers_per_image": 0.06516587677725119,
+          "correct_per_image": 0.04739336492890995,
+          "species_correct_per_image": 0.04265402843601896,
+          "level_mix": {
+            "abstain": 14,
+            "species": 44,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 11
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.14166666666666666,
+          "share_resamples_le_alpha": 0.2245,
+          "answers_per_image": 0.041469194312796206,
+          "correct_per_image": 0.031990521327014215,
+          "species_correct_per_image": 0.018957345971563982,
+          "level_mix": {
+            "abstain": 34,
+            "species": 19,
+            "group": 2,
+            "phylum": 0,
+            "kingdom": 14
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.20833333333333331,
+          "share_resamples_le_alpha": 0.4775,
+          "answers_per_image": 0.05687203791469194,
+          "correct_per_image": 0.04383886255924171,
+          "species_correct_per_image": 0.04383886255924171,
+          "level_mix": {
+            "abstain": 21,
+            "species": 48,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "option_d_minus_bandit": {
+        "risk_ci95": [
+          -0.05803571428571436,
+          0.03409090909090906
+        ],
+        "correct_ci95": [
+          -0.006134969325153374,
+          0.0
+        ]
+      },
+      "reading_22_5": {
+        "holds": false,
+        "robust": false
+      }
+    },
+    "motion_blur_1": {
+      "option_d": {
+        "final_boxes": 1146,
+        "matched_boxes": 931,
+        "status": {
+          "complete": 645,
+          "needs_review": 199
+        },
+        "rerun_share": 0.17417061611374407,
+        "kept_second_share": 0.14691943127962084,
+        "hier_0.2": {
+          "risk": 0.22918003208636747,
+          "share_resamples_le_alpha": 0.057,
+          "answers_per_image": 1.2014218009478672,
+          "correct_per_image": 0.8637440758293838,
+          "species_correct_per_image": 0.7559241706161137,
+          "level_mix": {
+            "abstain": 132,
+            "species": 878,
+            "group": 21,
+            "phylum": 0,
+            "kingdom": 115
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.11748969870184853,
+          "share_resamples_le_alpha": 0.0935,
+          "answers_per_image": 0.9395734597156398,
+          "correct_per_image": 0.7855450236966824,
+          "species_correct_per_image": 0.590047393364929,
+          "level_mix": {
+            "abstain": 353,
+            "species": 592,
+            "group": 25,
+            "phylum": 0,
+            "kingdom": 176
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.2301789678944735,
+          "share_resamples_le_alpha": 0.0505,
+          "answers_per_image": 1.132701421800948,
+          "correct_per_image": 0.7938388625592417,
+          "species_correct_per_image": 0.7938388625592417,
+          "level_mix": {
+            "abstain": 190,
+            "species": 956,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "bandit": {
+        "final_boxes": 1268,
+        "matched_boxes": 987,
+        "status": {
+          "complete": 665,
+          "needs_review": 179
+        },
+        "rerun_share": 0.0,
+        "kept_second_share": 0.0,
+        "hier_0.2": {
+          "risk": 0.2104689901231003,
+          "share_resamples_le_alpha": 0.266,
+          "answers_per_image": 1.2654028436018958,
+          "correct_per_image": 0.9146919431279621,
+          "species_correct_per_image": 0.7890995260663507,
+          "level_mix": {
+            "abstain": 200,
+            "species": 907,
+            "group": 26,
+            "phylum": 0,
+            "kingdom": 135
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.09832221871695557,
+          "share_resamples_le_alpha": 0.567,
+          "answers_per_image": 0.9585308056872038,
+          "correct_per_image": 0.8092417061611374,
+          "species_correct_per_image": 0.6078199052132701,
+          "level_mix": {
+            "abstain": 459,
+            "species": 600,
+            "group": 27,
+            "phylum": 0,
+            "kingdom": 182
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.21312129378864988,
+          "share_resamples_le_alpha": 0.214,
+          "answers_per_image": 1.1848341232227488,
+          "correct_per_image": 0.8317535545023697,
+          "species_correct_per_image": 0.8317535545023697,
+          "level_mix": {
+            "abstain": 268,
+            "species": 1000,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "option_d_minus_bandit": {
+        "risk_ci95": [
+          0.0038212273700238275,
+          0.03431905777776956
+        ],
+        "correct_ci95": [
+          -0.07738095238095238,
+          -0.02732919254658385
+        ]
+      },
+      "reading_22_5": {
+        "holds": false,
+        "robust": false
+      }
+    },
+    "motion_blur_2": {
+      "option_d": {
+        "final_boxes": 1290,
+        "matched_boxes": 733,
+        "status": {
+          "complete": 642,
+          "needs_review": 202
+        },
+        "rerun_share": 0.20497630331753555,
+        "kept_second_share": 0.1646919431279621,
+        "hier_0.2": {
+          "risk": 0.4007432005774541,
+          "share_resamples_le_alpha": 0.0,
+          "answers_per_image": 1.2819905213270142,
+          "correct_per_image": 0.6255924170616114,
+          "species_correct_per_image": 0.5213270142180095,
+          "level_mix": {
+            "abstain": 208,
+            "species": 941,
+            "group": 39,
+            "phylum": 0,
+            "kingdom": 102
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.1873833977768103,
+          "share_resamples_le_alpha": 0.0,
+          "answers_per_image": 0.8341232227488151,
+          "correct_per_image": 0.5462085308056872,
+          "species_correct_per_image": 0.36255924170616116,
+          "level_mix": {
+            "abstain": 586,
+            "species": 477,
+            "group": 42,
+            "phylum": 0,
+            "kingdom": 185
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.4260451832988885,
+          "share_resamples_le_alpha": 0.0,
+          "answers_per_image": 1.2630331753554502,
+          "correct_per_image": 0.5639810426540285,
+          "species_correct_per_image": 0.5639810426540285,
+          "level_mix": {
+            "abstain": 224,
+            "species": 1066,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "bandit": {
+        "final_boxes": 1418,
+        "matched_boxes": 790,
+        "status": {
+          "complete": 671,
+          "needs_review": 173
+        },
+        "rerun_share": 0.0,
+        "kept_second_share": 0.0,
+        "hier_0.2": {
+          "risk": 0.3657866776392047,
+          "share_resamples_le_alpha": 0.0,
+          "answers_per_image": 1.3329383886255923,
+          "correct_per_image": 0.6741706161137441,
+          "species_correct_per_image": 0.54739336492891,
+          "level_mix": {
+            "abstain": 293,
+            "species": 957,
+            "group": 42,
+            "phylum": 0,
+            "kingdom": 126
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.17090426419629942,
+          "share_resamples_le_alpha": 0.0,
+          "answers_per_image": 0.8542654028436019,
+          "correct_per_image": 0.5687203791469194,
+          "species_correct_per_image": 0.3744075829383886,
+          "level_mix": {
+            "abstain": 697,
+            "species": 474,
+            "group": 42,
+            "phylum": 0,
+            "kingdom": 205
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.3901000408635478,
+          "share_resamples_le_alpha": 0.0,
+          "answers_per_image": 1.29739336492891,
+          "correct_per_image": 0.5936018957345972,
+          "species_correct_per_image": 0.5936018957345972,
+          "level_mix": {
+            "abstain": 323,
+            "species": 1095,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "option_d_minus_bandit": {
+        "risk_ci95": [
+          0.01729881973528319,
+          0.053571051227374766
+        ],
+        "correct_ci95": [
+          -0.07044025157232704,
+          -0.029171528588098017
+        ]
+      },
+      "reading_22_5": {
+        "holds": false,
+        "robust": false
+      }
+    },
+    "motion_blur_3": {
+      "option_d": {
+        "final_boxes": 1218,
+        "matched_boxes": 545,
+        "status": {
+          "complete": 570,
+          "needs_review": 274
+        },
+        "rerun_share": 0.2796208530805687,
+        "kept_second_share": 0.21919431279620852,
+        "hier_0.2": {
+          "risk": 0.4412942250479995,
+          "share_resamples_le_alpha": 0.0,
+          "answers_per_image": 1.0841232227488151,
+          "correct_per_image": 0.4277251184834123,
+          "species_correct_per_image": 0.3305687203791469,
+          "level_mix": {
+            "abstain": 303,
+            "species": 771,
+            "group": 24,
+            "phylum": 0,
+            "kingdom": 120
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.19104347944026112,
+          "share_resamples_le_alpha": 0.0,
+          "answers_per_image": 0.6374407582938388,
+          "correct_per_image": 0.3590047393364929,
+          "species_correct_per_image": 0.20497630331753555,
+          "level_mix": {
+            "abstain": 680,
+            "species": 318,
+            "group": 39,
+            "phylum": 0,
+            "kingdom": 181
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.4708392401800077,
+          "share_resamples_le_alpha": 0.0,
+          "answers_per_image": 1.061611374407583,
+          "correct_per_image": 0.36255924170616116,
+          "species_correct_per_image": 0.36255924170616116,
+          "level_mix": {
+            "abstain": 322,
+            "species": 896,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "bandit": {
+        "final_boxes": 1384,
+        "matched_boxes": 603,
+        "status": {
+          "complete": 618,
+          "needs_review": 226
+        },
+        "rerun_share": 0.0,
+        "kept_second_share": 0.0,
+        "hier_0.2": {
+          "risk": 0.38519281140048534,
+          "share_resamples_le_alpha": 0.0,
+          "answers_per_image": 1.1244075829383886,
+          "correct_per_image": 0.4609004739336493,
+          "species_correct_per_image": 0.3341232227488152,
+          "level_mix": {
+            "abstain": 435,
+            "species": 762,
+            "group": 33,
+            "phylum": 0,
+            "kingdom": 154
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.144053952681369,
+          "share_resamples_le_alpha": 0.0005,
+          "answers_per_image": 0.6208530805687204,
+          "correct_per_image": 0.3637440758293839,
+          "species_correct_per_image": 0.19786729857819904,
+          "level_mix": {
+            "abstain": 860,
+            "species": 292,
+            "group": 37,
+            "phylum": 0,
+            "kingdom": 195
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.4096384648127174,
+          "share_resamples_le_alpha": 0.0,
+          "answers_per_image": 1.09478672985782,
+          "correct_per_image": 0.38744075829383884,
+          "species_correct_per_image": 0.38744075829383884,
+          "level_mix": {
+            "abstain": 460,
+            "species": 924,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "option_d_minus_bandit": {
+        "risk_ci95": [
+          0.03359896133170154,
+          0.07830391776631596
+        ],
+        "correct_ci95": [
+          -0.05513784461152882,
+          -0.013431013431013432
+        ]
+      },
+      "reading_22_5": {
+        "holds": false,
+        "robust": false
+      }
+    },
+    "noise_1": {
+      "option_d": {
+        "final_boxes": 857,
+        "matched_boxes": 676,
+        "status": {
+          "needs_review": 344,
+          "complete": 500
+        },
+        "rerun_share": 0.2014218009478673,
+        "kept_second_share": 0.18364928909952608,
+        "hier_0.2": {
+          "risk": 0.21812159529784567,
+          "share_resamples_le_alpha": 0.1725,
+          "answers_per_image": 0.8720379146919431,
+          "correct_per_image": 0.6421800947867299,
+          "species_correct_per_image": 0.5462085308056872,
+          "level_mix": {
+            "abstain": 121,
+            "species": 621,
+            "group": 21,
+            "phylum": 0,
+            "kingdom": 94
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.09789926808010412,
+          "share_resamples_le_alpha": 0.57,
+          "answers_per_image": 0.6327014218009479,
+          "correct_per_image": 0.5319905213270142,
+          "species_correct_per_image": 0.3909952606635071,
+          "level_mix": {
+            "abstain": 323,
+            "species": 393,
+            "group": 27,
+            "phylum": 0,
+            "kingdom": 114
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.21732252135570918,
+          "share_resamples_le_alpha": 0.1825,
+          "answers_per_image": 0.8234597156398105,
+          "correct_per_image": 0.5876777251184834,
+          "species_correct_per_image": 0.5876777251184834,
+          "level_mix": {
+            "abstain": 162,
+            "species": 695,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "bandit": {
+        "final_boxes": 1013,
+        "matched_boxes": 755,
+        "status": {
+          "needs_review": 282,
+          "complete": 562
+        },
+        "rerun_share": 0.0,
+        "kept_second_share": 0.0,
+        "hier_0.2": {
+          "risk": 0.19357701584491022,
+          "share_resamples_le_alpha": 0.6495,
+          "answers_per_image": 0.9549763033175356,
+          "correct_per_image": 0.6990521327014217,
+          "species_correct_per_image": 0.5829383886255924,
+          "level_mix": {
+            "abstain": 207,
+            "species": 662,
+            "group": 24,
+            "phylum": 0,
+            "kingdom": 120
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.07349175013748917,
+          "share_resamples_le_alpha": 0.9855,
+          "answers_per_image": 0.6575829383886256,
+          "correct_per_image": 0.5616113744075829,
+          "species_correct_per_image": 0.4004739336492891,
+          "level_mix": {
+            "abstain": 458,
+            "species": 400,
+            "group": 27,
+            "phylum": 0,
+            "kingdom": 128
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.19023858020040474,
+          "share_resamples_le_alpha": 0.7305,
+          "answers_per_image": 0.8838862559241706,
+          "correct_per_image": 0.6232227488151659,
+          "species_correct_per_image": 0.6232227488151659,
+          "level_mix": {
+            "abstain": 267,
+            "species": 746,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "option_d_minus_bandit": {
+        "risk_ci95": [
+          0.0039785674405370675,
+          0.04642047781380257
+        ],
+        "correct_ci95": [
+          -0.076158940397351,
+          -0.03741496598639456
+        ]
+      },
+      "reading_22_5": {
+        "holds": false,
+        "robust": false
+      }
+    },
+    "noise_2": {
+      "option_d": {
+        "final_boxes": 298,
+        "matched_boxes": 221,
+        "status": {
+          "needs_review": 635,
+          "complete": 209
+        },
+        "rerun_share": 0.09123222748815166,
+        "kept_second_share": 0.08530805687203792,
+        "hier_0.2": {
+          "risk": 0.2282272902135916,
+          "share_resamples_le_alpha": 0.159,
+          "answers_per_image": 0.28791469194312796,
+          "correct_per_image": 0.1990521327014218,
+          "species_correct_per_image": 0.15639810426540285,
+          "level_mix": {
+            "abstain": 55,
+            "species": 181,
+            "group": 12,
+            "phylum": 0,
+            "kingdom": 50
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.10916461772626156,
+          "share_resamples_le_alpha": 0.3505,
+          "answers_per_image": 0.1872037914691943,
+          "correct_per_image": 0.14928909952606634,
+          "species_correct_per_image": 0.09004739336492891,
+          "level_mix": {
+            "abstain": 140,
+            "species": 94,
+            "group": 13,
+            "phylum": 0,
+            "kingdom": 51
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.20465151287069094,
+          "share_resamples_le_alpha": 0.4365,
+          "answers_per_image": 0.25,
+          "correct_per_image": 0.16824644549763032,
+          "species_correct_per_image": 0.16824644549763032,
+          "level_mix": {
+            "abstain": 87,
+            "species": 211,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "bandit": {
+        "final_boxes": 345,
+        "matched_boxes": 241,
+        "status": {
+          "needs_review": 613,
+          "complete": 231
+        },
+        "rerun_share": 0.0,
+        "kept_second_share": 0.0,
+        "hier_0.2": {
+          "risk": 0.20553728070175437,
+          "share_resamples_le_alpha": 0.428,
+          "answers_per_image": 0.30450236966824645,
+          "correct_per_image": 0.21445497630331753,
+          "species_correct_per_image": 0.1623222748815166,
+          "level_mix": {
+            "abstain": 88,
+            "species": 182,
+            "group": 12,
+            "phylum": 0,
+            "kingdom": 63
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.10511173767752714,
+          "share_resamples_le_alpha": 0.432,
+          "answers_per_image": 0.18601895734597157,
+          "correct_per_image": 0.1504739336492891,
+          "species_correct_per_image": 0.08649289099526067,
+          "level_mix": {
+            "abstain": 188,
+            "species": 89,
+            "group": 15,
+            "phylum": 0,
+            "kingdom": 53
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.1952694235588972,
+          "share_resamples_le_alpha": 0.5905,
+          "answers_per_image": 0.25829383886255924,
+          "correct_per_image": 0.17417061611374407,
+          "species_correct_per_image": 0.17417061611374407,
+          "level_mix": {
+            "abstain": 127,
+            "species": 218,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "option_d_minus_bandit": {
+        "risk_ci95": [
+          -0.005372911402323155,
+          0.05464580854389772
+        ],
+        "correct_ci95": [
+          -0.027085590465872156,
+          -0.004602991944764097
+        ]
+      },
+      "reading_22_5": {
+        "holds": false,
+        "robust": false
+      }
+    },
+    "noise_3": {
+      "option_d": {
+        "final_boxes": 99,
+        "matched_boxes": 66,
+        "status": {
+          "needs_review": 764,
+          "complete": 80
+        },
+        "rerun_share": 0.041469194312796206,
+        "kept_second_share": 0.04028436018957346,
+        "hier_0.2": {
+          "risk": 0.3333333333333333,
+          "share_resamples_le_alpha": 0.007,
+          "answers_per_image": 0.09123222748815166,
+          "correct_per_image": 0.0533175355450237,
+          "species_correct_per_image": 0.02962085308056872,
+          "level_mix": {
+            "abstain": 22,
+            "species": 45,
+            "group": 3,
+            "phylum": 0,
+            "kingdom": 29
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.1111111111111111,
+          "share_resamples_le_alpha": 0.4025,
+          "answers_per_image": 0.0533175355450237,
+          "correct_per_image": 0.04028436018957346,
+          "species_correct_per_image": 0.01066350710900474,
+          "level_mix": {
+            "abstain": 54,
+            "species": 15,
+            "group": 4,
+            "phylum": 0,
+            "kingdom": 26
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.2752525252525252,
+          "share_resamples_le_alpha": 0.0815,
+          "answers_per_image": 0.06753554502369669,
+          "correct_per_image": 0.035545023696682464,
+          "species_correct_per_image": 0.035545023696682464,
+          "level_mix": {
+            "abstain": 42,
+            "species": 57,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "bandit": {
+        "final_boxes": 123,
+        "matched_boxes": 81,
+        "status": {
+          "needs_review": 748,
+          "complete": 96
+        },
+        "rerun_share": 0.0,
+        "kept_second_share": 0.0,
+        "hier_0.2": {
+          "risk": 0.31333333333333335,
+          "share_resamples_le_alpha": 0.011,
+          "answers_per_image": 0.10426540284360189,
+          "correct_per_image": 0.06042654028436019,
+          "species_correct_per_image": 0.030805687203791468,
+          "level_mix": {
+            "abstain": 35,
+            "species": 46,
+            "group": 5,
+            "phylum": 0,
+            "kingdom": 37
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.09833333333333333,
+          "share_resamples_le_alpha": 0.547,
+          "answers_per_image": 0.05568720379146919,
+          "correct_per_image": 0.041469194312796206,
+          "species_correct_per_image": 0.01066350710900474,
+          "level_mix": {
+            "abstain": 76,
+            "species": 15,
+            "group": 3,
+            "phylum": 0,
+            "kingdom": 29
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.2511111111111111,
+          "share_resamples_le_alpha": 0.1395,
+          "answers_per_image": 0.07819905213270142,
+          "correct_per_image": 0.041469194312796206,
+          "species_correct_per_image": 0.041469194312796206,
+          "level_mix": {
+            "abstain": 57,
+            "species": 66,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "option_d_minus_bandit": {
+        "risk_ci95": [
+          -0.018161805173362633,
+          0.055973773676541994
+        ],
+        "correct_ci95": [
+          -0.01288056206088993,
+          -0.002336448598130841
+        ]
+      },
+      "reading_22_5": {
+        "holds": false,
+        "robust": false
+      }
+    },
+    "low_light_1": {
+      "option_d": {
+        "final_boxes": 1345,
+        "matched_boxes": 1066,
+        "status": {
+          "complete": 674,
+          "needs_review": 170
+        },
+        "rerun_share": 0.13744075829383887,
+        "kept_second_share": 0.11137440758293839,
+        "hier_0.2": {
+          "risk": 0.1964014870533458,
+          "share_resamples_le_alpha": 0.5755,
+          "answers_per_image": 1.386255924170616,
+          "correct_per_image": 1.0260663507109005,
+          "species_correct_per_image": 0.9182464454976303,
+          "level_mix": {
+            "abstain": 175,
+            "species": 1017,
+            "group": 33,
+            "phylum": 0,
+            "kingdom": 120
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.09911729762530905,
+          "share_resamples_le_alpha": 0.536,
+          "answers_per_image": 1.0876777251184835,
+          "correct_per_image": 0.9253554502369669,
+          "species_correct_per_image": 0.7298578199052133,
+          "level_mix": {
+            "abstain": 427,
+            "species": 715,
+            "group": 46,
+            "phylum": 0,
+            "kingdom": 157
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.20410311274937448,
+          "share_resamples_le_alpha": 0.408,
+          "answers_per_image": 1.3341232227488151,
+          "correct_per_image": 0.9549763033175356,
+          "species_correct_per_image": 0.9549763033175356,
+          "level_mix": {
+            "abstain": 219,
+            "species": 1126,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "bandit": {
+        "final_boxes": 1402,
+        "matched_boxes": 1090,
+        "status": {
+          "complete": 684,
+          "needs_review": 160
+        },
+        "rerun_share": 0.0,
+        "kept_second_share": 0.0,
+        "hier_0.2": {
+          "risk": 0.19388214615092028,
+          "share_resamples_le_alpha": 0.649,
+          "answers_per_image": 1.4016587677725119,
+          "correct_per_image": 1.0390995260663507,
+          "species_correct_per_image": 0.9218009478672986,
+          "level_mix": {
+            "abstain": 219,
+            "species": 1015,
+            "group": 45,
+            "phylum": 0,
+            "kingdom": 123
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.0973757195060484,
+          "share_resamples_le_alpha": 0.5825,
+          "answers_per_image": 1.0864928909952607,
+          "correct_per_image": 0.9241706161137441,
+          "species_correct_per_image": 0.726303317535545,
+          "level_mix": {
+            "abstain": 485,
+            "species": 710,
+            "group": 44,
+            "phylum": 0,
+            "kingdom": 163
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.1942733688594741,
+          "share_resamples_le_alpha": 0.63,
+          "answers_per_image": 1.3364928909952607,
+          "correct_per_image": 0.9585308056872038,
+          "species_correct_per_image": 0.9585308056872038,
+          "level_mix": {
+            "abstain": 274,
+            "species": 1128,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "option_d_minus_bandit": {
+        "risk_ci95": [
+          -0.010238124577581137,
+          0.014374775588343935
+        ],
+        "correct_ci95": [
+          -0.029171528588098017,
+          0.003278688524590164
+        ]
+      },
+      "reading_22_5": {
+        "holds": true,
+        "robust": false
+      }
+    },
+    "low_light_2": {
+      "option_d": {
+        "final_boxes": 1280,
+        "matched_boxes": 1025,
+        "status": {
+          "complete": 660,
+          "needs_review": 184
+        },
+        "rerun_share": 0.13507109004739337,
+        "kept_second_share": 0.11255924170616113,
+        "hier_0.2": {
+          "risk": 0.1906641130895722,
+          "share_resamples_le_alpha": 0.714,
+          "answers_per_image": 1.292654028436019,
+          "correct_per_image": 0.9597156398104265,
+          "species_correct_per_image": 0.8566350710900474,
+          "level_mix": {
+            "abstain": 189,
+            "species": 954,
+            "group": 23,
+            "phylum": 0,
+            "kingdom": 114
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.09804787140367362,
+          "share_resamples_le_alpha": 0.567,
+          "answers_per_image": 1.033175355450237,
+          "correct_per_image": 0.8755924170616114,
+          "species_correct_per_image": 0.6824644549763034,
+          "level_mix": {
+            "abstain": 408,
+            "species": 671,
+            "group": 40,
+            "phylum": 0,
+            "kingdom": 161
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.20029460259753576,
+          "share_resamples_le_alpha": 0.4975,
+          "answers_per_image": 1.2440758293838863,
+          "correct_per_image": 0.9016587677725119,
+          "species_correct_per_image": 0.9016587677725119,
+          "level_mix": {
+            "abstain": 230,
+            "species": 1050,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "bandit": {
+        "final_boxes": 1332,
+        "matched_boxes": 1045,
+        "status": {
+          "complete": 666,
+          "needs_review": 178
+        },
+        "rerun_share": 0.0,
+        "kept_second_share": 0.0,
+        "hier_0.2": {
+          "risk": 0.18298878462999557,
+          "share_resamples_le_alpha": 0.858,
+          "answers_per_image": 1.2985781990521328,
+          "correct_per_image": 0.9703791469194313,
+          "species_correct_per_image": 0.8507109004739336,
+          "level_mix": {
+            "abstain": 236,
+            "species": 935,
+            "group": 25,
+            "phylum": 0,
+            "kingdom": 136
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.08921506362201498,
+          "share_resamples_le_alpha": 0.816,
+          "answers_per_image": 1.0177725118483412,
+          "correct_per_image": 0.8661137440758294,
+          "species_correct_per_image": 0.6729857819905213,
+          "level_mix": {
+            "abstain": 473,
+            "species": 660,
+            "group": 37,
+            "phylum": 0,
+            "kingdom": 162
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.1816073064740412,
+          "share_resamples_le_alpha": 0.869,
+          "answers_per_image": 1.2381516587677726,
+          "correct_per_image": 0.9063981042654028,
+          "species_correct_per_image": 0.9063981042654028,
+          "level_mix": {
+            "abstain": 287,
+            "species": 1045,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "option_d_minus_bandit": {
+        "risk_ci95": [
+          -0.004799915635257779,
+          0.020294219836835048
+        ],
+        "correct_ci95": [
+          -0.0244173140954495,
+          0.0024813895781637717
+        ]
+      },
+      "reading_22_5": {
+        "holds": true,
+        "robust": false
+      }
+    },
+    "low_light_3": {
+      "option_d": {
+        "final_boxes": 1171,
+        "matched_boxes": 940,
+        "status": {
+          "complete": 635,
+          "needs_review": 209
+        },
+        "rerun_share": 0.12440758293838862,
+        "kept_second_share": 0.10781990521327015,
+        "hier_0.2": {
+          "risk": 0.1942730326202457,
+          "share_resamples_le_alpha": 0.6285,
+          "answers_per_image": 1.169431279620853,
+          "correct_per_image": 0.8767772511848341,
+          "species_correct_per_image": 0.768957345971564,
+          "level_mix": {
+            "abstain": 184,
+            "species": 839,
+            "group": 26,
+            "phylum": 0,
+            "kingdom": 122
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.0891985232382912,
+          "share_resamples_le_alpha": 0.827,
+          "answers_per_image": 0.9075829383886256,
+          "correct_per_image": 0.773696682464455,
+          "species_correct_per_image": 0.580568720379147,
+          "level_mix": {
+            "abstain": 405,
+            "species": 563,
+            "group": 32,
+            "phylum": 0,
+            "kingdom": 171
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.19805375660571106,
+          "share_resamples_le_alpha": 0.545,
+          "answers_per_image": 1.1184834123222749,
+          "correct_per_image": 0.8139810426540285,
+          "species_correct_per_image": 0.8139810426540285,
+          "level_mix": {
+            "abstain": 227,
+            "species": 944,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "bandit": {
+        "final_boxes": 1209,
+        "matched_boxes": 949,
+        "status": {
+          "complete": 645,
+          "needs_review": 199
+        },
+        "rerun_share": 0.0,
+        "kept_second_share": 0.0,
+        "hier_0.2": {
+          "risk": 0.18434501988965024,
+          "share_resamples_le_alpha": 0.832,
+          "answers_per_image": 1.1599526066350712,
+          "correct_per_image": 0.8732227488151659,
+          "species_correct_per_image": 0.7606635071090048,
+          "level_mix": {
+            "abstain": 230,
+            "species": 824,
+            "group": 30,
+            "phylum": 0,
+            "kingdom": 125
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.08385534363889474,
+          "share_resamples_le_alpha": 0.923,
+          "answers_per_image": 0.8945497630331753,
+          "correct_per_image": 0.764218009478673,
+          "species_correct_per_image": 0.5758293838862559,
+          "level_mix": {
+            "abstain": 454,
+            "species": 560,
+            "group": 29,
+            "phylum": 0,
+            "kingdom": 166
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.18663922074658656,
+          "share_resamples_le_alpha": 0.7975,
+          "answers_per_image": 1.103080568720379,
+          "correct_per_image": 0.8045023696682464,
+          "species_correct_per_image": 0.8045023696682464,
+          "level_mix": {
+            "abstain": 278,
+            "species": 931,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "option_d_minus_bandit": {
+        "risk_ci95": [
+          -0.003538723383933823,
+          0.023614314260427594
+        ],
+        "correct_ci95": [
+          -0.011494252873563218,
+          0.020330368487928845
+        ]
+      },
+      "reading_22_5": {
+        "holds": true,
+        "robust": false
+      }
+    },
+    "low_contrast_1": {
+      "option_d": {
+        "final_boxes": 1348,
+        "matched_boxes": 1062,
+        "status": {
+          "complete": 667,
+          "needs_review": 177
+        },
+        "rerun_share": 0.17535545023696683,
+        "kept_second_share": 0.1386255924170616,
+        "hier_0.2": {
+          "risk": 0.19622057228059464,
+          "share_resamples_le_alpha": 0.5955,
+          "answers_per_image": 1.3874407582938388,
+          "correct_per_image": 1.0319905213270142,
+          "species_correct_per_image": 0.9206161137440758,
+          "level_mix": {
+            "abstain": 177,
+            "species": 1026,
+            "group": 24,
+            "phylum": 0,
+            "kingdom": 121
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.09616622310935494,
+          "share_resamples_le_alpha": 0.63,
+          "answers_per_image": 1.0936018957345972,
+          "correct_per_image": 0.9312796208530806,
+          "species_correct_per_image": 0.7227488151658767,
+          "level_mix": {
+            "abstain": 425,
+            "species": 708,
+            "group": 35,
+            "phylum": 0,
+            "kingdom": 180
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.20470332674585567,
+          "share_resamples_le_alpha": 0.395,
+          "answers_per_image": 1.3151658767772512,
+          "correct_per_image": 0.9454976303317536,
+          "species_correct_per_image": 0.9454976303317536,
+          "level_mix": {
+            "abstain": 238,
+            "species": 1110,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "bandit": {
+        "final_boxes": 1425,
+        "matched_boxes": 1087,
+        "status": {
+          "complete": 677,
+          "needs_review": 167
+        },
+        "rerun_share": 0.0,
+        "kept_second_share": 0.0,
+        "hier_0.2": {
+          "risk": 0.18878479814669546,
+          "share_resamples_le_alpha": 0.758,
+          "answers_per_image": 1.4158767772511849,
+          "correct_per_image": 1.052132701421801,
+          "species_correct_per_image": 0.9241706161137441,
+          "level_mix": {
+            "abstain": 230,
+            "species": 1022,
+            "group": 34,
+            "phylum": 0,
+            "kingdom": 139
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.08535698759745386,
+          "share_resamples_le_alpha": 0.888,
+          "answers_per_image": 1.066350710900474,
+          "correct_per_image": 0.919431279620853,
+          "species_correct_per_image": 0.716824644549763,
+          "level_mix": {
+            "abstain": 525,
+            "species": 695,
+            "group": 30,
+            "phylum": 0,
+            "kingdom": 175
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.19803093872252164,
+          "share_resamples_le_alpha": 0.555,
+          "answers_per_image": 1.3376777251184835,
+          "correct_per_image": 0.9537914691943128,
+          "species_correct_per_image": 0.9537914691943128,
+          "level_mix": {
+            "abstain": 296,
+            "species": 1129,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "option_d_minus_bandit": {
+        "risk_ci95": [
+          -0.005512756564424404,
+          0.02089888274093929
+        ],
+        "correct_ci95": [
+          -0.035169988276670575,
+          -0.006053268765133172
+        ]
+      },
+      "reading_22_5": {
+        "holds": true,
+        "robust": false
+      }
+    },
+    "low_contrast_2": {
+      "option_d": {
+        "final_boxes": 1302,
+        "matched_boxes": 1041,
+        "status": {
+          "needs_review": 181,
+          "complete": 663
+        },
+        "rerun_share": 0.17535545023696683,
+        "kept_second_share": 0.1338862559241706,
+        "hier_0.2": {
+          "risk": 0.19538099522124464,
+          "share_resamples_le_alpha": 0.6325,
+          "answers_per_image": 1.3033175355450237,
+          "correct_per_image": 0.9715639810426541,
+          "species_correct_per_image": 0.8554502369668247,
+          "level_mix": {
+            "abstain": 202,
+            "species": 949,
+            "group": 28,
+            "phylum": 0,
+            "kingdom": 123
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.09965020534452987,
+          "share_resamples_le_alpha": 0.5185,
+          "answers_per_image": 1.0260663507109005,
+          "correct_per_image": 0.8720379146919431,
+          "species_correct_per_image": 0.6492890995260664,
+          "level_mix": {
+            "abstain": 436,
+            "species": 638,
+            "group": 39,
+            "phylum": 0,
+            "kingdom": 189
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.2085479247972844,
+          "share_resamples_le_alpha": 0.3065,
+          "answers_per_image": 1.2476303317535544,
+          "correct_per_image": 0.8957345971563981,
+          "species_correct_per_image": 0.8957345971563981,
+          "level_mix": {
+            "abstain": 249,
+            "species": 1053,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "bandit": {
+        "final_boxes": 1382,
+        "matched_boxes": 1060,
+        "status": {
+          "needs_review": 172,
+          "complete": 672
+        },
+        "rerun_share": 0.0,
+        "kept_second_share": 0.0,
+        "hier_0.2": {
+          "risk": 0.1787878214025124,
+          "share_resamples_le_alpha": 0.918,
+          "answers_per_image": 1.3234597156398105,
+          "correct_per_image": 0.9869668246445498,
+          "species_correct_per_image": 0.8518957345971564,
+          "level_mix": {
+            "abstain": 265,
+            "species": 931,
+            "group": 35,
+            "phylum": 0,
+            "kingdom": 151
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.09036377369046056,
+          "share_resamples_le_alpha": 0.781,
+          "answers_per_image": 0.9893364928909952,
+          "correct_per_image": 0.8424170616113744,
+          "species_correct_per_image": 0.6398104265402843,
+          "level_mix": {
+            "abstain": 547,
+            "species": 625,
+            "group": 40,
+            "phylum": 0,
+            "kingdom": 170
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.1853703149584283,
+          "share_resamples_le_alpha": 0.8215,
+          "answers_per_image": 1.2440758293838863,
+          "correct_per_image": 0.8992890995260664,
+          "species_correct_per_image": 0.8992890995260664,
+          "level_mix": {
+            "abstain": 332,
+            "species": 1050,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "option_d_minus_bandit": {
+        "risk_ci95": [
+          0.0006530164909849812,
+          0.034312319772997035
+        ],
+        "correct_ci95": [
+          -0.033210332103321034,
+          0.0012360939431396785
+        ]
+      },
+      "reading_22_5": {
+        "holds": true,
+        "robust": false
+      }
+    },
+    "low_contrast_3": {
+      "option_d": {
+        "final_boxes": 1131,
+        "matched_boxes": 914,
+        "status": {
+          "needs_review": 228,
+          "complete": 616
+        },
+        "rerun_share": 0.15876777251184834,
+        "kept_second_share": 0.12559241706161137,
+        "hier_0.2": {
+          "risk": 0.20038434817251805,
+          "share_resamples_le_alpha": 0.5045,
+          "answers_per_image": 1.150473933649289,
+          "correct_per_image": 0.8672985781990521,
+          "species_correct_per_image": 0.7393364928909952,
+          "level_mix": {
+            "abstain": 160,
+            "species": 821,
+            "group": 21,
+            "phylum": 0,
+            "kingdom": 129
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.1011245892818188,
+          "share_resamples_le_alpha": 0.475,
+          "answers_per_image": 0.8791469194312796,
+          "correct_per_image": 0.7488151658767772,
+          "species_correct_per_image": 0.5379146919431279,
+          "level_mix": {
+            "abstain": 389,
+            "species": 524,
+            "group": 42,
+            "phylum": 0,
+            "kingdom": 176
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.1917978030844563,
+          "share_resamples_le_alpha": 0.6965,
+          "answers_per_image": 1.061611374407583,
+          "correct_per_image": 0.7760663507109005,
+          "species_correct_per_image": 0.7760663507109005,
+          "level_mix": {
+            "abstain": 235,
+            "species": 896,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "bandit": {
+        "final_boxes": 1189,
+        "matched_boxes": 918,
+        "status": {
+          "needs_review": 218,
+          "complete": 626
+        },
+        "rerun_share": 0.0,
+        "kept_second_share": 0.0,
+        "hier_0.2": {
+          "risk": 0.19113498859186262,
+          "share_resamples_le_alpha": 0.709,
+          "answers_per_image": 1.1445497630331753,
+          "correct_per_image": 0.8601895734597157,
+          "species_correct_per_image": 0.7061611374407583,
+          "level_mix": {
+            "abstain": 223,
+            "species": 783,
+            "group": 31,
+            "phylum": 0,
+            "kingdom": 152
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.09182326794023318,
+          "share_resamples_le_alpha": 0.749,
+          "answers_per_image": 0.8530805687203792,
+          "correct_per_image": 0.7274881516587678,
+          "species_correct_per_image": 0.5071090047393365,
+          "level_mix": {
+            "abstain": 469,
+            "species": 493,
+            "group": 45,
+            "phylum": 0,
+            "kingdom": 182
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.18085116876686935,
+          "share_resamples_le_alpha": 0.8825,
+          "answers_per_image": 1.0438388625592416,
+          "correct_per_image": 0.7535545023696683,
+          "species_correct_per_image": 0.7535545023696683,
+          "level_mix": {
+            "abstain": 308,
+            "species": 881,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "option_d_minus_bandit": {
+        "risk_ci95": [
+          -0.007517104794988544,
+          0.027138639795711877
+        ],
+        "correct_ci95": [
+          -0.013201320132013201,
+          0.02832512315270936
+        ]
+      },
+      "reading_22_5": {
+        "holds": false,
+        "robust": false
+      }
+    },
+    "colour_shift_1": {
+      "option_d": {
+        "final_boxes": 1348,
+        "matched_boxes": 1050,
+        "status": {
+          "complete": 669,
+          "needs_review": 175
+        },
+        "rerun_share": 0.14928909952606634,
+        "kept_second_share": 0.12677725118483413,
+        "hier_0.2": {
+          "risk": 0.20034991759614929,
+          "share_resamples_le_alpha": 0.505,
+          "answers_per_image": 1.3708530805687205,
+          "correct_per_image": 1.0023696682464456,
+          "species_correct_per_image": 0.9123222748815166,
+          "level_mix": {
+            "abstain": 191,
+            "species": 1017,
+            "group": 24,
+            "phylum": 0,
+            "kingdom": 116
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.10572122442991935,
+          "share_resamples_le_alpha": 0.3365,
+          "answers_per_image": 1.0817535545023698,
+          "correct_per_image": 0.9158767772511849,
+          "species_correct_per_image": 0.7393364928909952,
+          "level_mix": {
+            "abstain": 435,
+            "species": 728,
+            "group": 42,
+            "phylum": 0,
+            "kingdom": 143
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.2096509561012757,
+          "share_resamples_le_alpha": 0.28,
+          "answers_per_image": 1.3317535545023698,
+          "correct_per_image": 0.9537914691943128,
+          "species_correct_per_image": 0.9537914691943128,
+          "level_mix": {
+            "abstain": 224,
+            "species": 1124,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "bandit": {
+        "final_boxes": 1427,
+        "matched_boxes": 1086,
+        "status": {
+          "complete": 683,
+          "needs_review": 161
+        },
+        "rerun_share": 0.0,
+        "kept_second_share": 0.0,
+        "hier_0.2": {
+          "risk": 0.18061045681374197,
+          "share_resamples_le_alpha": 0.9045,
+          "answers_per_image": 1.4016587677725119,
+          "correct_per_image": 1.042654028436019,
+          "species_correct_per_image": 0.9241706161137441,
+          "level_mix": {
+            "abstain": 244,
+            "species": 1027,
+            "group": 22,
+            "phylum": 0,
+            "kingdom": 134
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.09639143759954164,
+          "share_resamples_le_alpha": 0.6175,
+          "answers_per_image": 1.085308056872038,
+          "correct_per_image": 0.9229857819905213,
+          "species_correct_per_image": 0.745260663507109,
+          "level_mix": {
+            "abstain": 511,
+            "species": 727,
+            "group": 39,
+            "phylum": 0,
+            "kingdom": 150
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.18562515486517356,
+          "share_resamples_le_alpha": 0.823,
+          "answers_per_image": 1.34478672985782,
+          "correct_per_image": 0.9680094786729858,
+          "species_correct_per_image": 0.9680094786729858,
+          "level_mix": {
+            "abstain": 292,
+            "species": 1135,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "option_d_minus_bandit": {
+        "risk_ci95": [
+          0.0068982065139812365,
+          0.033322581512740285
+        ],
+        "correct_ci95": [
+          -0.06209150326797386,
+          -0.02064516129032258
+        ]
+      },
+      "reading_22_5": {
+        "holds": false,
+        "robust": false
+      }
+    },
+    "colour_shift_2": {
+      "option_d": {
+        "final_boxes": 1288,
+        "matched_boxes": 1021,
+        "status": {
+          "complete": 655,
+          "needs_review": 189
+        },
+        "rerun_share": 0.1362559241706161,
+        "kept_second_share": 0.11255924170616113,
+        "hier_0.2": {
+          "risk": 0.2208732611829997,
+          "share_resamples_le_alpha": 0.1135,
+          "answers_per_image": 1.316350710900474,
+          "correct_per_image": 0.95260663507109,
+          "species_correct_per_image": 0.8625592417061612,
+          "level_mix": {
+            "abstain": 177,
+            "species": 968,
+            "group": 30,
+            "phylum": 0,
+            "kingdom": 113
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.11085933947356647,
+          "share_resamples_le_alpha": 0.21,
+          "answers_per_image": 1.028436018957346,
+          "correct_per_image": 0.8507109004739336,
+          "species_correct_per_image": 0.6812796208530806,
+          "level_mix": {
+            "abstain": 420,
+            "species": 683,
+            "group": 32,
+            "phylum": 0,
+            "kingdom": 153
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.2124638524345397,
+          "share_resamples_le_alpha": 0.225,
+          "answers_per_image": 1.2571090047393365,
+          "correct_per_image": 0.9004739336492891,
+          "species_correct_per_image": 0.9004739336492891,
+          "level_mix": {
+            "abstain": 227,
+            "species": 1061,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "bandit": {
+        "final_boxes": 1391,
+        "matched_boxes": 1060,
+        "status": {
+          "complete": 671,
+          "needs_review": 173
+        },
+        "rerun_share": 0.0,
+        "kept_second_share": 0.0,
+        "hier_0.2": {
+          "risk": 0.20097283300871457,
+          "share_resamples_le_alpha": 0.473,
+          "answers_per_image": 1.3601895734597156,
+          "correct_per_image": 0.9928909952606635,
+          "species_correct_per_image": 0.8732227488151659,
+          "level_mix": {
+            "abstain": 243,
+            "species": 976,
+            "group": 31,
+            "phylum": 0,
+            "kingdom": 141
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.10390200117758888,
+          "share_resamples_le_alpha": 0.3865,
+          "answers_per_image": 1.0308056872037914,
+          "correct_per_image": 0.8578199052132701,
+          "species_correct_per_image": 0.683649289099526,
+          "level_mix": {
+            "abstain": 521,
+            "species": 683,
+            "group": 32,
+            "phylum": 0,
+            "kingdom": 155
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.2001771161629872,
+          "share_resamples_le_alpha": 0.4865,
+          "answers_per_image": 1.2855450236966826,
+          "correct_per_image": 0.9170616113744076,
+          "species_correct_per_image": 0.9170616113744076,
+          "level_mix": {
+            "abstain": 306,
+            "species": 1085,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "option_d_minus_bandit": {
+        "risk_ci95": [
+          0.009029055517413093,
+          0.0322296514731438
+        ],
+        "correct_ci95": [
+          -0.05748502994011976,
+          -0.022809123649459785
+        ]
+      },
+      "reading_22_5": {
+        "holds": false,
+        "robust": false
+      }
+    },
+    "colour_shift_3": {
+      "option_d": {
+        "final_boxes": 1280,
+        "matched_boxes": 996,
+        "status": {
+          "complete": 639,
+          "needs_review": 205
+        },
+        "rerun_share": 0.12677725118483413,
+        "kept_second_share": 0.09597156398104266,
+        "hier_0.2": {
+          "risk": 0.2127785408699643,
+          "share_resamples_le_alpha": 0.235,
+          "answers_per_image": 1.2748815165876777,
+          "correct_per_image": 0.919431279620853,
+          "species_correct_per_image": 0.8116113744075829,
+          "level_mix": {
+            "abstain": 204,
+            "species": 916,
+            "group": 38,
+            "phylum": 0,
+            "kingdom": 122
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.10867924740201357,
+          "share_resamples_le_alpha": 0.27,
+          "answers_per_image": 0.9964454976303317,
+          "correct_per_image": 0.8210900473933649,
+          "species_correct_per_image": 0.6196682464454977,
+          "level_mix": {
+            "abstain": 439,
+            "species": 629,
+            "group": 41,
+            "phylum": 0,
+            "kingdom": 171
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.22018800641135833,
+          "share_resamples_le_alpha": 0.1095,
+          "answers_per_image": 1.2180094786729858,
+          "correct_per_image": 0.8590047393364929,
+          "species_correct_per_image": 0.8590047393364929,
+          "level_mix": {
+            "abstain": 252,
+            "species": 1028,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "bandit": {
+        "final_boxes": 1359,
+        "matched_boxes": 1025,
+        "status": {
+          "complete": 660,
+          "needs_review": 184
+        },
+        "rerun_share": 0.0,
+        "kept_second_share": 0.0,
+        "hier_0.2": {
+          "risk": 0.20828264504142416,
+          "share_resamples_le_alpha": 0.317,
+          "answers_per_image": 1.319905213270142,
+          "correct_per_image": 0.9514218009478673,
+          "species_correct_per_image": 0.8151658767772512,
+          "level_mix": {
+            "abstain": 245,
+            "species": 922,
+            "group": 37,
+            "phylum": 0,
+            "kingdom": 155
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.10286400411356965,
+          "share_resamples_le_alpha": 0.424,
+          "answers_per_image": 0.9988151658767772,
+          "correct_per_image": 0.8281990521327014,
+          "species_correct_per_image": 0.6232227488151659,
+          "level_mix": {
+            "abstain": 516,
+            "species": 626,
+            "group": 38,
+            "phylum": 0,
+            "kingdom": 179
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.2088501621583453,
+          "share_resamples_le_alpha": 0.2915,
+          "answers_per_image": 1.2191943127962086,
+          "correct_per_image": 0.8613744075829384,
+          "species_correct_per_image": 0.8613744075829384,
+          "level_mix": {
+            "abstain": 330,
+            "species": 1029,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "option_d_minus_bandit": {
+        "risk_ci95": [
+          -0.008472905066681025,
+          0.01724189832858311
+        ],
+        "correct_ci95": [
+          -0.04720496894409938,
+          -0.016374269005847954
+        ]
+      },
+      "reading_22_5": {
+        "holds": false,
+        "robust": false
+      }
+    },
+    "compression_1": {
+      "option_d": {
+        "final_boxes": 1204,
+        "matched_boxes": 944,
+        "status": {
+          "complete": 651,
+          "needs_review": 193
+        },
+        "rerun_share": 0.18127962085308058,
+        "kept_second_share": 0.14691943127962084,
+        "hier_0.2": {
+          "risk": 0.21483746792750574,
+          "share_resamples_le_alpha": 0.189,
+          "answers_per_image": 1.2097156398104265,
+          "correct_per_image": 0.8601895734597157,
+          "species_correct_per_image": 0.7701421800947867,
+          "level_mix": {
+            "abstain": 183,
+            "species": 886,
+            "group": 24,
+            "phylum": 0,
+            "kingdom": 111
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.09905845361279408,
+          "share_resamples_le_alpha": 0.539,
+          "answers_per_image": 0.9478672985781991,
+          "correct_per_image": 0.7902843601895735,
+          "species_correct_per_image": 0.6101895734597157,
+          "level_mix": {
+            "abstain": 404,
+            "species": 611,
+            "group": 34,
+            "phylum": 0,
+            "kingdom": 155
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.21559821381793134,
+          "share_resamples_le_alpha": 0.1755,
+          "answers_per_image": 1.1563981042654028,
+          "correct_per_image": 0.7997630331753555,
+          "species_correct_per_image": 0.7997630331753555,
+          "level_mix": {
+            "abstain": 228,
+            "species": 976,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "bandit": {
+        "final_boxes": 1329,
+        "matched_boxes": 1007,
+        "status": {
+          "complete": 673,
+          "needs_review": 171
+        },
+        "rerun_share": 0.0,
+        "kept_second_share": 0.0,
+        "hier_0.2": {
+          "risk": 0.19757934663849414,
+          "share_resamples_le_alpha": 0.566,
+          "answers_per_image": 1.2677725118483412,
+          "correct_per_image": 0.9087677725118484,
+          "species_correct_per_image": 0.8009478672985783,
+          "level_mix": {
+            "abstain": 259,
+            "species": 912,
+            "group": 30,
+            "phylum": 0,
+            "kingdom": 128
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.0922857367806889,
+          "share_resamples_le_alpha": 0.7405,
+          "answers_per_image": 0.9632701421800948,
+          "correct_per_image": 0.8080568720379147,
+          "species_correct_per_image": 0.6255924170616114,
+          "level_mix": {
+            "abstain": 516,
+            "species": 617,
+            "group": 32,
+            "phylum": 0,
+            "kingdom": 164
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.2032354094733139,
+          "share_resamples_le_alpha": 0.42,
+          "answers_per_image": 1.2144549763033174,
+          "correct_per_image": 0.840047393364929,
+          "species_correct_per_image": 0.840047393364929,
+          "level_mix": {
+            "abstain": 304,
+            "species": 1025,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "option_d_minus_bandit": {
+        "risk_ci95": [
+          0.0025383319269300375,
+          0.03260153380369499
+        ],
+        "correct_ci95": [
+          -0.06944444444444445,
+          -0.029525032092426188
+        ]
+      },
+      "reading_22_5": {
+        "holds": false,
+        "robust": false
+      }
+    },
+    "compression_2": {
+      "option_d": {
+        "final_boxes": 968,
+        "matched_boxes": 720,
+        "status": {
+          "needs_review": 280,
+          "complete": 564
+        },
+        "rerun_share": 0.20023696682464456,
+        "kept_second_share": 0.17298578199052134,
+        "hier_0.2": {
+          "risk": 0.2509319874025756,
+          "share_resamples_le_alpha": 0.0005,
+          "answers_per_image": 0.9609004739336493,
+          "correct_per_image": 0.6409952606635071,
+          "species_correct_per_image": 0.5758293838862559,
+          "level_mix": {
+            "abstain": 157,
+            "species": 724,
+            "group": 18,
+            "phylum": 0,
+            "kingdom": 69
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.10272352919411742,
+          "share_resamples_le_alpha": 0.431,
+          "answers_per_image": 0.7061611374407583,
+          "correct_per_image": 0.5734597156398105,
+          "species_correct_per_image": 0.45023696682464454,
+          "level_mix": {
+            "abstain": 372,
+            "species": 469,
+            "group": 22,
+            "phylum": 0,
+            "kingdom": 105
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.26362228185757597,
+          "share_resamples_le_alpha": 0.0,
+          "answers_per_image": 0.9443127962085308,
+          "correct_per_image": 0.6007109004739336,
+          "species_correct_per_image": 0.6007109004739336,
+          "level_mix": {
+            "abstain": 171,
+            "species": 797,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "bandit": {
+        "final_boxes": 1099,
+        "matched_boxes": 822,
+        "status": {
+          "needs_review": 238,
+          "complete": 606
+        },
+        "rerun_share": 0.0,
+        "kept_second_share": 0.0,
+        "hier_0.2": {
+          "risk": 0.2007636847250636,
+          "share_resamples_le_alpha": 0.486,
+          "answers_per_image": 1.0,
+          "correct_per_image": 0.7061611374407583,
+          "species_correct_per_image": 0.6232227488151659,
+          "level_mix": {
+            "abstain": 255,
+            "species": 742,
+            "group": 18,
+            "phylum": 0,
+            "kingdom": 84
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.070659392372101,
+          "share_resamples_le_alpha": 0.9985,
+          "answers_per_image": 0.7120853080568721,
+          "correct_per_image": 0.5983412322274881,
+          "species_correct_per_image": 0.46800947867298576,
+          "level_mix": {
+            "abstain": 498,
+            "species": 474,
+            "group": 21,
+            "phylum": 0,
+            "kingdom": 106
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.21376154020906868,
+          "share_resamples_le_alpha": 0.2105,
+          "answers_per_image": 0.9680094786729858,
+          "correct_per_image": 0.6492890995260664,
+          "species_correct_per_image": 0.6492890995260664,
+          "level_mix": {
+            "abstain": 282,
+            "species": 817,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "option_d_minus_bandit": {
+        "risk_ci95": [
+          0.02801244359600194,
+          0.07425296883894628
+        ],
+        "correct_ci95": [
+          -0.09490740740740741,
+          -0.041189931350114416
+        ]
+      },
+      "reading_22_5": {
+        "holds": false,
+        "robust": false
+      }
+    },
+    "compression_3": {
+      "option_d": {
+        "final_boxes": 648,
+        "matched_boxes": 358,
+        "status": {
+          "needs_review": 416,
+          "complete": 428
+        },
+        "rerun_share": 0.17535545023696683,
+        "kept_second_share": 0.14691943127962084,
+        "hier_0.2": {
+          "risk": 0.4130523380523381,
+          "share_resamples_le_alpha": 0.0,
+          "answers_per_image": 0.6196682464454977,
+          "correct_per_image": 0.28672985781990523,
+          "species_correct_per_image": 0.2618483412322275,
+          "level_mix": {
+            "abstain": 125,
+            "species": 478,
+            "group": 13,
+            "phylum": 0,
+            "kingdom": 32
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.23372122122122124,
+          "share_resamples_le_alpha": 0.0,
+          "answers_per_image": 0.4206161137440758,
+          "correct_per_image": 0.2334123222748815,
+          "species_correct_per_image": 0.18246445497630331,
+          "level_mix": {
+            "abstain": 293,
+            "species": 281,
+            "group": 15,
+            "phylum": 0,
+            "kingdom": 59
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.46932825682825685,
+          "share_resamples_le_alpha": 0.0,
+          "answers_per_image": 0.6492890995260664,
+          "correct_per_image": 0.2725118483412322,
+          "species_correct_per_image": 0.2725118483412322,
+          "level_mix": {
+            "abstain": 100,
+            "species": 548,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "bandit": {
+        "final_boxes": 728,
+        "matched_boxes": 422,
+        "status": {
+          "needs_review": 393,
+          "complete": 451
+        },
+        "rerun_share": 0.0,
+        "kept_second_share": 0.0,
+        "hier_0.2": {
+          "risk": 0.3476264782639556,
+          "share_resamples_le_alpha": 0.0,
+          "answers_per_image": 0.6362559241706162,
+          "correct_per_image": 0.32109004739336494,
+          "species_correct_per_image": 0.28672985781990523,
+          "level_mix": {
+            "abstain": 191,
+            "species": 483,
+            "group": 11,
+            "phylum": 0,
+            "kingdom": 43
+          }
+        },
+        "hier_0.1": {
+          "risk": 0.16508067787559624,
+          "share_resamples_le_alpha": 0.0,
+          "answers_per_image": 0.39928909952606634,
+          "correct_per_image": 0.2476303317535545,
+          "species_correct_per_image": 0.18838862559241706,
+          "level_mix": {
+            "abstain": 391,
+            "species": 261,
+            "group": 12,
+            "phylum": 0,
+            "kingdom": 64
+          }
+        },
+        "flat_0.2": {
+          "risk": 0.401673630110563,
+          "share_resamples_le_alpha": 0.0,
+          "answers_per_image": 0.669431279620853,
+          "correct_per_image": 0.3068720379146919,
+          "species_correct_per_image": 0.3068720379146919,
+          "level_mix": {
+            "abstain": 163,
+            "species": 565,
+            "group": 0,
+            "phylum": 0,
+            "kingdom": 0
+          }
+        }
+      },
+      "option_d_minus_bandit": {
+        "risk_ci95": [
+          0.034007045691828275,
+          0.09812720161590416
+        ],
+        "correct_ci95": [
+          -0.05182567726737338,
+          -0.01903553299492386
+        ]
+      },
+      "reading_22_5": {
+        "holds": false,
+        "robust": false
+      }
+    }
+  }
+}
