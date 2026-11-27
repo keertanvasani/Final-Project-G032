@@ -96,6 +96,17 @@ def grade(contents: bytes, detections: list[dict[str, Any]],
             h.KNOWN_CLASSES = saved
     for det, o in zip(detections, outcomes):
         det["gt"] = {"outcome": o["outcome"], "gt_class": o["gt_class"]}
+        tl = det.get("taxon")
+        if tl is not None:
+            # Grade the verifier's answer too, by the experiments' rule (taxonomy.is_correct): a
+            # coarse node is right when it lies on the true taxon's path, e.g. "Animal" for an
+            # octopus the classifier has never seen. None = the verifier abstained (needs review).
+            from agentic import taxonomy as tx
+            matched = o["outcome"] in ("TP", "CLS_ERR", "OOD_ERR")
+            det["gt"]["verifier"] = {
+                "answer": tl.get("node"), "level": tl.get("level"),
+                "correct": None if tl.get("level") is None
+                else tx.is_correct(tl["node"], o["gt_class"], matched)}
     return {
         "source": name,
         "label_space": sorted(known),

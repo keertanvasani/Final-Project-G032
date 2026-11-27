@@ -926,6 +926,7 @@ thead .vstable__mine { color: var(--cyan) !important; }
 .tchip { display: inline-block; margin: -2px 0 10px; padding: 3px 10px; border-radius: 6px; font-size: 0.76rem; font-weight: 600; }
 .tchip--right { color: var(--conf-high); background: rgba(83, 200, 0, 0.12); }
 .tchip--wrong { color: var(--danger); background: rgba(248, 113, 113, 0.12); }
+.tchip--review { color: rgb(167, 139, 250); background: rgba(167, 139, 250, 0.12); }
 
 .det { transition: opacity 0.2s var(--ease); }
 .det.is-hidden { opacity: 0.32; }

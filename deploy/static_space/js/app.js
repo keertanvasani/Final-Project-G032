@@ -391,7 +391,11 @@
     const X = window.DeepSeaInteractive;
     el.detList.innerHTML = dets.map((d, idx) => {
       const c = d.combined_confidence;
-      const label = d.agreement ? d.detector_class : `${d.detector_class} / ${d.classifier_class}`;
+      let label = d.agreement ? d.detector_class : `${d.detector_class} / ${d.classifier_class}`;
+      if (d.taxon) {   // the verifier's answer is the one the system reports
+        if (d.taxon.level == null) label = 'Needs review';
+        else if (d.taxon.level !== 'species') label = d.taxon.node;
+      }
       const bar = (v) =>
         `<div class="det__bar"><i style="width:${(v * 100).toFixed(1)}%;background:${confColor(v)}"></i></div>`;
 
