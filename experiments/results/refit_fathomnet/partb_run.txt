@@ -1,0 +1,21 @@
+plumbing check: §23 parameters reproduced; M5 0.67 / 0.55
+Part B held out: 602 images, 197 dives, 1137 boxes (426 unmatched)
+α 0.1  M1_frozen                risk 0.093  correct 0.502  species 0.228  credit 0.324  unseen wrong 31  false boxes labelled 67
+α 0.1  M2_refit_all             risk 0.315  correct 1.058  species 0.042  credit 0.436  unseen wrong 9  false boxes labelled 360
+α 0.1  M3_refit_classifier      risk 0.311  correct 1.045  species 0.000  credit 0.416  unseen wrong 11  false boxes labelled 366
+α 0.1  M4_darts                 risk 0.136  correct 0.395  species 0.282  credit 0.319  unseen wrong 25  false boxes labelled 134
+α 0.1  M5_refit_with_unmatched  risk 0.013  correct 0.299  species 0.000  credit 0.112  unseen wrong 1  false boxes labelled 21
+α 0.1  M2_refit_all_minus_M1_frozen         correct +0.556 [0.466, 0.653]  credit +0.112 [0.074, 0.157]
+α 0.1  M2_refit_all_minus_M4_darts          correct +0.663 [0.579, 0.766]  credit +0.117 [0.076, 0.157]
+α 0.1  M5_refit_with_unmatched_minus_M1_frozen correct -0.203 [-0.288, -0.138]  credit -0.212 [-0.283, -0.158]
+α 0.1  M5_refit_with_unmatched_minus_M4_darts correct -0.096 [-0.186, -0.028]  credit -0.207 [-0.293, -0.141]
+α 0.2  M1_frozen                risk 0.169  correct 0.551  species 0.326  credit 0.405  unseen wrong 75  false boxes labelled 87
+α 0.2  M2_refit_all             risk 0.410  correct 0.983  species 0.221  credit 0.524  unseen wrong 58  false boxes labelled 375
+α 0.2  M3_refit_classifier      risk 0.360  correct 1.017  species 0.090  credit 0.485  unseen wrong 29  false boxes labelled 382
+α 0.2  M4_darts                 risk 0.225  correct 0.561  species 0.397  credit 0.443  unseen wrong 66  false boxes labelled 201
+α 0.2  M5_refit_with_unmatched  risk 0.059  correct 0.610  species 0.003  credit 0.246  unseen wrong 4  false boxes labelled 65
+α 0.2  M2_refit_all_minus_M1_frozen         correct +0.432 [0.349, 0.522]  credit +0.119 [0.086, 0.164]
+α 0.2  M2_refit_all_minus_M4_darts          correct +0.422 [0.355, 0.51]  credit +0.081 [0.046, 0.121]
+α 0.2  M5_refit_with_unmatched_minus_M1_frozen correct +0.058 [-0.018, 0.124]  credit -0.159 [-0.215, -0.111]
+α 0.2  M5_refit_with_unmatched_minus_M4_darts correct +0.048 [-0.017, 0.119]  credit -0.197 [-0.269, -0.134]
+wrote D:\Final-Project-Phase-1\experiments\results\refit_fathomnet\partb.json

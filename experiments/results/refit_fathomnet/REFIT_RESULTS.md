@@ -74,3 +74,9 @@ Paired differences in correct answers per image (95% dive bootstrap):
 * **Next step, if wanted:** a registered test on FathomNet Part B, which includes false
   detections. It would re-fit and calibrate on Part A F_cal and check whether the gain
   survives. It needs no new data.
+
+## Update (§24, same day)
+
+The caveat in point 4 turned out to decide the result. On Part B, where false detections
+are scored, the re-fit's risk is 0.31–0.41, against a target of 0.10 or 0.20. Only the
+frozen JODD combiner meets α. See `PARTB_RESULTS.md`.
