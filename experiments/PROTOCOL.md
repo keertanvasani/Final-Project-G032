@@ -1316,3 +1316,20 @@ frozen thresholds for methods 1–2: 0.72 / 0.38 and 0.64 / 0.27 on JODD, and
 0.90 / 0.81 and 0.88 / 0.78 on FathomNet. No baseline output is read before the run.
 Script: `experiments/test_baselines.py`. Output:
 `experiments/results/baselines/baselines.json`.
+
+### 20.5 Amendment, post-hoc (registered 2026-11-27, after §20's run, before this one)
+
+**What §20's run showed.** At α = 0.10, softmax response and DARTS found no admissible
+parameter on either setting, so they abstained on every box. Even the strictest grid point
+(τ = 0.99; λ = 1,000) answers too many boxes, because the classifier's softmax is often
+above 0.99. That is a property of the grid we registered, not of the methods.
+
+**Sensitivity run.** This run is post-hoc and labelled as such. It is a single run,
+calibration-only, with the same Learn-then-Test procedure. It extends only these two grids
+at the strict end:
+* **Softmax response:** τ = 1 − 10^(−6 + 0.06 i), i = 0 … 49, then the registered grid
+  0.99 … 0.00.
+* **DARTS:** λ = 10^(6 − 3 i / 50), i = 0 … 49, then the registered grid.
+
+Every other method, and the §20 output, are unchanged. The paper reports the §20 grid and
+this extension side by side. Output: `experiments/results/baselines/baselines_extended_grid.json`.
