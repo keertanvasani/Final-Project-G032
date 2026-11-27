@@ -200,6 +200,10 @@ class ImageAgentPolicy(Policy):
 
     def rerun(self, obs):
         sp = self._spec()
+        pipe = obs.extra.get("pipeline")
+        if pipe is not None and getattr(pipe, "profile", "deepsea") != "deepsea":
+            # Fitted on deep-sea logs only; the chain falls back (no re-run) on other profiles.
+            raise ValueError("image agent is fitted for the deep-sea profile only")
         obs.extra["probe_keys"] = sp.get("probe_keys", PROBE_KEYS)
         s1 = pass_states(obs)[0]
         best, arm = 0.0, None

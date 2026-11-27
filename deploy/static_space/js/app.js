@@ -418,6 +418,14 @@
               <span class="det__pct">${pct(d.classifier_confidence)}</span>
             </div>
           </div>
+          ${d.taxon ? `<div class="det__model det__verifier">
+              <span class="who">Verifier</span>
+              <span class="cls">${escapeHtml(d.taxon.level == null ? 'needs review'
+                : d.taxon.level === 'species' ? d.classifier_class : d.taxon.node)}</span>
+              <span class="det__pct">${d.taxon.level == null
+                ? `nothing safe at ${Math.round(d.taxon.alpha * 100)}% error`
+                : `${d.taxon.level} · ${pct(d.taxon.p_correct)}`}</span>
+            </div>` : ''}
           <div class="det__bbox">
             <span class="det__agree ${d.agreement ? 'det__agree--yes' : 'det__agree--no'}">
               ${d.agreement ? '✓ models agree' : '⚠ resolved by vote'}

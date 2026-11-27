@@ -100,6 +100,9 @@
       let col = confColor(d.combined_confidence);
       if (byTruth && d.gt) col = (OUTCOME[d.gt.outcome] || {}).good ? COLORS.right : COLORS.wrong;
       else if (unk) col = COLORS.unknown;
+      if (d.taxon && !(byTruth && d.gt)) {   // the verifier's answer sets the colour when present
+        col = d.taxon.level == null ? COLORS.unknown : confColor(d.taxon.p_correct);
+      }
 
       g.lineWidth = lw;
       g.strokeStyle = col;
@@ -109,6 +112,12 @@
 
       let text = `${d.classifier_class} ${Math.round(d.combined_confidence * 100)}%`;
       if (unk) text = `? ${text}`;
+      const tx = d.taxon;   // risk-controlled verifier: the deepest answer that is safe at its error target
+      if (tx) {
+        if (tx.level == null) text = `needs review (~${d.classifier_class})`;
+        else if (tx.level === 'species') text = `${d.classifier_class} ${Math.round(tx.p_correct * 100)}%`;
+        else text = `${tx.node} ${Math.round(tx.p_correct * 100)}% (~${d.classifier_class})`;
+      }
       const tw = g.measureText(text).width + fs * 0.7, th = fs * 1.45;
       const ly = y1 - th >= 0 ? y1 - th : y1;
       g.fillStyle = col;
